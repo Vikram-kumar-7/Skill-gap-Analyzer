@@ -1,0 +1,17 @@
+{
+  "javascript": ["js", "ecmascript"],
+  "typescript": ["ts"],
+  "react": ["react.js", "reactjs"],
+  "node.js": ["node", "nodejs"],
+  "vue.js": ["vue", "vuejs"],
+  "angular": ["angularjs"],
+  "next.js": ["nextjs"],
+  "postgresql": ["postgres"],
+  "aws": ["amazon web services"],
+  "gcp": ["google cloud", "google cloud platform"],
+  "machine learning": ["ml"],
+  "artificial intelligence": ["ai"],
+  "deep learning": ["dl"],
+  "natural language processing": ["nlp"],
+  "c++": ["cpp"]
+}

@@ -1,0 +1,28 @@
+{
+  "react": [
+    { "title": "Real-time Chat App", "desc": "Build a chat app using React, WebSocket, and a backend of your choice. Include typing indicators and read receipts.", "difficulty": "Medium" },
+    { "title": "E-commerce Dashboard", "desc": "Create a merchant dashboard with charts, data grids, and state management using Redux or Zustand.", "difficulty": "Hard" }
+  ],
+  "node.js": [
+    { "title": "RESTful Task API", "desc": "Build an API with JWT auth, rate limiting, and MongoDB integration. Document with Swagger.", "difficulty": "Medium" },
+    { "title": "Real-time Notifications Service", "desc": "Microservice handling email and push notifications using RabbitMQ and Node.js.", "difficulty": "Hard" }
+  ],
+  "python": [
+    { "title": "Data Scraper & Analyzer", "desc": "Scrape financial data, clean it with Pandas, and visualize trends over time.", "difficulty": "Medium" },
+    { "title": "Automated Trading Bot", "desc": "Connect to a crypto API and implement a simple moving average crossover strategy.", "difficulty": "Hard" }
+  ],
+  "machine learning": [
+    { "title": "Customer Churn Predictor", "desc": "Train a Random Forest model on a telecom dataset to predict which users will cancel their subscription.", "difficulty": "Hard" },
+    { "title": "Image Classifier API", "desc": "Use a pre-trained ResNet model and wrap it in a FastAPI endpoint for uploading images.", "difficulty": "Medium" }
+  ],
+  "aws": [
+    { "title": "Serverless Image Resizer", "desc": "Upload image to S3 -> Trigger Lambda -> Resize -> Save to new bucket.", "difficulty": "Medium" },
+    { "title": "Highly Available Web App", "desc": "Deploy an app across 2 AZs with an Application Load Balancer and Auto Scaling Group.", "difficulty": "Hard" }
+  ],
+  "docker": [
+    { "title": "Multi-container Environment", "desc": "Dockerize a frontend, backend, and database. Connect them using Docker Compose and custom networks.", "difficulty": "Medium" }
+  ],
+  "sql": [
+    { "title": "E-commerce Schema Design", "desc": "Design a 3NF normalized database schema for a store including users, orders, products, and reviews. Write complex join queries.", "difficulty": "Medium" }
+  ]
+}

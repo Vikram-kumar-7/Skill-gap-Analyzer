@@ -1,0 +1,4798 @@
+[
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Pandas",
+      "Deep Learning",
+      "Spark",
+      "SQL",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Jenkins",
+      "Bash",
+      "AWS",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Bash",
+      "Jenkins",
+      "Kubernetes",
+      "AWS",
+      "Docker",
+      "CI/CD"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "REST API",
+      "TypeScript",
+      "AWS",
+      "Docker",
+      "React",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Data Science",
+      "Python",
+      "SQL",
+      "Docker",
+      "PyTorch",
+      "AWS",
+      "NLP",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "Docker",
+      "MongoDB",
+      "React",
+      "HTML",
+      "CSS",
+      "TypeScript",
+      "REST API"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Machine Learning",
+      "Deep Learning",
+      "Pandas",
+      "TensorFlow",
+      "R",
+      "Python",
+      "Tableau"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Firebase",
+      "Swift",
+      "Kotlin",
+      "Java",
+      "Flutter",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Vue.js",
+      "CSS",
+      "HTML",
+      "Next.js",
+      "TypeScript",
+      "Figma",
+      "React"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Machine Learning",
+      "Deep Learning",
+      "Python",
+      "NLP"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "AWS",
+      "Azure",
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "AWS",
+      "Bash",
+      "CI/CD",
+      "Azure",
+      "Jenkins"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Node.js",
+      "AWS",
+      "Microservices",
+      "Python",
+      "Docker",
+      "Java"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "CSS",
+      "MongoDB",
+      "JavaScript",
+      "REST API",
+      "HTML",
+      "TypeScript",
+      "AWS",
+      "React"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Python",
+      "NLP",
+      "Deep Learning"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Go",
+      "MongoDB",
+      "AWS",
+      "Node.js"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Jest",
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "AWS",
+      "Microservices",
+      "Redis",
+      "MongoDB",
+      "Java",
+      "Go",
+      "Python"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "R",
+      "TensorFlow",
+      "NLP",
+      "Machine Learning",
+      "Deep Learning",
+      "SQL",
+      "Tableau"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Docker",
+      "Python",
+      "PyTorch"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "TypeScript",
+      "React Native",
+      "JavaScript",
+      "REST API",
+      "Flutter",
+      "Java",
+      "Kotlin",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "AWS",
+      "Docker",
+      "TensorFlow",
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "HTML",
+      "REST API",
+      "TypeScript",
+      "CSS",
+      "React"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Jest",
+      "JavaScript",
+      "Vue.js",
+      "Figma"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "TypeScript",
+      "Flutter",
+      "Swift",
+      "Java",
+      "Firebase",
+      "Kotlin"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Data Science",
+      "NLP",
+      "TensorFlow",
+      "AWS",
+      "PyTorch",
+      "Docker",
+      "Deep Learning",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "PyTorch",
+      "AWS",
+      "Deep Learning",
+      "TensorFlow",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "TypeScript",
+      "AWS",
+      "CSS",
+      "Docker",
+      "REST API",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "AWS",
+      "Azure",
+      "Docker",
+      "Linux",
+      "Bash",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Tableau",
+      "Python",
+      "TensorFlow",
+      "SQL",
+      "Deep Learning",
+      "Spark",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "NLP",
+      "Data Science",
+      "AWS",
+      "Docker"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Kubernetes",
+      "Google Cloud",
+      "Bash"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Vue.js",
+      "Figma",
+      "Next.js",
+      "CSS",
+      "HTML",
+      "Tailwind",
+      "Jest",
+      "React"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Python",
+      "Linux",
+      "SQL",
+      "Cryptography",
+      "Cybersecurity",
+      "AWS",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Java",
+      "Docker",
+      "MongoDB",
+      "Redis",
+      "Node.js",
+      "Express",
+      "Microservices",
+      "Go"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "HTML",
+      "TypeScript",
+      "Docker",
+      "AWS",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Tableau",
+      "Python",
+      "Pandas"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "SQL",
+      "Bash",
+      "Cybersecurity",
+      "Cryptography",
+      "Python",
+      "Linux",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "JavaScript",
+      "React Native",
+      "TypeScript",
+      "Flutter",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Express",
+      "MongoDB",
+      "PostgreSQL",
+      "Microservices"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Linux",
+      "Azure",
+      "Jenkins"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "Microservices",
+      "Kubernetes",
+      "Serverless",
+      "Linux",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "SQL",
+      "NLP",
+      "TensorFlow",
+      "Docker",
+      "PyTorch",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Data Science",
+      "Docker",
+      "NLP",
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Express",
+      "SQL",
+      "Java",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "PostgreSQL",
+      "REST API",
+      "React",
+      "HTML",
+      "Next.js"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Docker",
+      "Data Science",
+      "PyTorch",
+      "AWS",
+      "Deep Learning",
+      "NLP"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Node.js",
+      "Docker",
+      "MongoDB",
+      "Python"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "Microservices",
+      "Google Cloud",
+      "AWS",
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "Serverless"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "NLP",
+      "TensorFlow",
+      "Docker",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "NLP",
+      "PyTorch",
+      "AWS",
+      "Deep Learning",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Linux",
+      "Azure",
+      "AWS",
+      "Bash"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Linux",
+      "Azure",
+      "Jenkins",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Kubernetes",
+      "Docker",
+      "Azure",
+      "AWS",
+      "Serverless"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "SQL",
+      "Bash",
+      "AWS",
+      "Linux",
+      "Docker",
+      "Cybersecurity",
+      "Python",
+      "Cryptography"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Flutter",
+      "JavaScript",
+      "Firebase",
+      "React Native",
+      "Kotlin",
+      "Swift",
+      "REST API",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "Kubernetes",
+      "Terraform",
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Swift",
+      "React Native",
+      "Firebase",
+      "Java",
+      "Flutter",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Kubernetes",
+      "Linux",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Linux",
+      "Cryptography",
+      "Cybersecurity",
+      "AWS",
+      "Bash",
+      "SQL",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "AWS",
+      "Terraform",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Tailwind",
+      "Figma",
+      "TypeScript",
+      "CSS",
+      "Jest",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "PostgreSQL",
+      "Node.js",
+      "Redis",
+      "MongoDB",
+      "Java",
+      "Go"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Pandas",
+      "Machine Learning",
+      "Python",
+      "Deep Learning",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Flutter",
+      "TypeScript",
+      "Firebase",
+      "React Native",
+      "Kotlin",
+      "Java",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Redis",
+      "PostgreSQL",
+      "Microservices",
+      "AWS",
+      "Java"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Firebase",
+      "Flutter",
+      "Kotlin",
+      "REST API",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "React Native",
+      "Firebase",
+      "Java",
+      "Flutter",
+      "Kotlin",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "AWS",
+      "TensorFlow",
+      "Data Science",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "Docker",
+      "Python",
+      "Data Science",
+      "PyTorch"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "PyTorch",
+      "Docker",
+      "TensorFlow",
+      "NLP",
+      "Data Science",
+      "Python"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Terraform",
+      "Bash",
+      "Linux",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Go",
+      "Python",
+      "Java",
+      "Docker",
+      "AWS",
+      "MongoDB",
+      "Microservices",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "React Native",
+      "Firebase",
+      "Java",
+      "Flutter",
+      "Kotlin",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "NLP",
+      "SQL",
+      "Pandas",
+      "R"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "AWS",
+      "Linux",
+      "Terraform",
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "Bash"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Linux",
+      "Cryptography",
+      "Cybersecurity",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "R",
+      "Tableau",
+      "Spark",
+      "Python"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "Docker",
+      "Serverless",
+      "Azure",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "AWS",
+      "Docker",
+      "PostgreSQL",
+      "TypeScript",
+      "MongoDB"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Linux",
+      "Python",
+      "AWS",
+      "Cryptography",
+      "Cybersecurity",
+      "Bash"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Docker",
+      "Python",
+      "PyTorch",
+      "Deep Learning",
+      "Data Science",
+      "AWS",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "R",
+      "TensorFlow",
+      "Machine Learning",
+      "Tableau",
+      "Deep Learning",
+      "NLP",
+      "Pandas"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Spark",
+      "Pandas",
+      "NLP",
+      "Machine Learning",
+      "Deep Learning",
+      "Python"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "AWS",
+      "React",
+      "Node.js",
+      "Docker",
+      "PostgreSQL",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Jest",
+      "CSS",
+      "Next.js",
+      "Tailwind"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Next.js",
+      "CSS",
+      "HTML",
+      "JavaScript",
+      "React",
+      "Vue.js",
+      "Jest"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Firebase",
+      "React Native",
+      "REST API",
+      "TypeScript",
+      "Kotlin",
+      "JavaScript",
+      "Java",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "AWS",
+      "Python",
+      "SQL",
+      "Cryptography"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Azure",
+      "Linux",
+      "Docker",
+      "Terraform",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Docker",
+      "Bash",
+      "Cryptography",
+      "SQL",
+      "Python",
+      "AWS",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "AWS",
+      "Docker",
+      "TensorFlow",
+      "SQL",
+      "Python",
+      "NLP",
+      "Deep Learning",
+      "PyTorch"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Linux",
+      "Terraform",
+      "Google Cloud",
+      "Docker",
+      "Azure",
+      "Kubernetes",
+      "Microservices",
+      "Serverless"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "Linux",
+      "AWS",
+      "Kubernetes",
+      "Azure",
+      "Terraform",
+      "Serverless"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "React",
+      "PostgreSQL",
+      "TypeScript",
+      "JavaScript",
+      "HTML",
+      "AWS",
+      "CSS"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Bash",
+      "Terraform",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Docker",
+      "Python",
+      "Linux",
+      "Bash",
+      "Cryptography",
+      "AWS"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "Docker",
+      "Kubernetes",
+      "Jenkins",
+      "Linux",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Figma",
+      "Tailwind"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "React",
+      "HTML",
+      "Next.js",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "React",
+      "Node.js",
+      "JavaScript",
+      "REST API",
+      "HTML",
+      "Next.js",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Python",
+      "AWS",
+      "Docker",
+      "SQL",
+      "Cybersecurity",
+      "Cryptography"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Python",
+      "NLP",
+      "SQL",
+      "Machine Learning",
+      "Spark",
+      "R"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Figma",
+      "Next.js",
+      "Jest",
+      "HTML",
+      "React",
+      "JavaScript",
+      "Vue.js",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "SQL",
+      "AWS",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "Kubernetes",
+      "Google Cloud",
+      "Microservices",
+      "Azure",
+      "Linux",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "AWS",
+      "Docker",
+      "Node.js",
+      "Express",
+      "Microservices",
+      "SQL",
+      "PostgreSQL",
+      "Java"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "React",
+      "Node.js",
+      "JavaScript",
+      "Next.js",
+      "REST API"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Docker",
+      "Data Science",
+      "Python",
+      "NLP",
+      "TensorFlow",
+      "PyTorch"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Spark",
+      "TensorFlow",
+      "Machine Learning",
+      "SQL",
+      "Deep Learning",
+      "Python"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Linux",
+      "Kubernetes",
+      "Azure",
+      "Terraform",
+      "AWS",
+      "CI/CD",
+      "Bash",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Figma",
+      "Next.js",
+      "Jest",
+      "HTML",
+      "CSS",
+      "React"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "React",
+      "Docker",
+      "HTML",
+      "REST API",
+      "JavaScript",
+      "CSS",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Python",
+      "Cybersecurity",
+      "Linux",
+      "AWS",
+      "Cryptography",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Redis",
+      "Microservices",
+      "Node.js",
+      "Docker",
+      "MongoDB",
+      "Python"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "Vue.js",
+      "HTML",
+      "TypeScript",
+      "Tailwind"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "Node.js",
+      "REST API",
+      "TypeScript",
+      "React",
+      "JavaScript",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Kotlin",
+      "Firebase",
+      "Flutter",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "REST API",
+      "React",
+      "CSS",
+      "PostgreSQL",
+      "JavaScript",
+      "Docker",
+      "Node.js",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "TypeScript",
+      "HTML",
+      "React",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "JavaScript",
+      "TypeScript",
+      "Flutter",
+      "React Native",
+      "Java",
+      "Firebase"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Microservices",
+      "Google Cloud",
+      "Docker",
+      "Kubernetes",
+      "Linux",
+      "AWS",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Node.js",
+      "Java",
+      "Microservices",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Spark",
+      "TensorFlow",
+      "Python",
+      "Machine Learning",
+      "R"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "React",
+      "Vue.js",
+      "Figma",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Data Science",
+      "Python",
+      "NLP",
+      "TensorFlow",
+      "Deep Learning"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Python",
+      "AWS",
+      "Bash",
+      "Cybersecurity",
+      "Linux",
+      "Cryptography"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "CI/CD",
+      "Bash",
+      "Linux",
+      "Terraform",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Data Science",
+      "Python",
+      "PyTorch",
+      "NLP",
+      "Deep Learning"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Docker",
+      "SQL",
+      "Express",
+      "MongoDB",
+      "AWS",
+      "Python",
+      "Java",
+      "Go"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Python",
+      "PyTorch",
+      "SQL",
+      "AWS",
+      "Docker",
+      "NLP",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Microservices",
+      "Google Cloud",
+      "Azure",
+      "Serverless",
+      "AWS",
+      "Docker",
+      "Kubernetes",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Redis",
+      "Docker",
+      "Microservices",
+      "PostgreSQL",
+      "SQL",
+      "Go",
+      "Express",
+      "AWS"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "CI/CD",
+      "Docker",
+      "Jenkins",
+      "Azure",
+      "AWS",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "React",
+      "Jest",
+      "Next.js",
+      "Vue.js",
+      "Figma"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "SQL",
+      "Docker",
+      "Node.js",
+      "Go"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "TypeScript",
+      "Figma",
+      "JavaScript",
+      "Next.js",
+      "Vue.js"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "SQL",
+      "Linux",
+      "AWS",
+      "Cryptography",
+      "Bash",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "Node.js",
+      "REST API",
+      "Next.js",
+      "PostgreSQL",
+      "MongoDB",
+      "React",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Serverless",
+      "Docker",
+      "Azure",
+      "AWS",
+      "Linux",
+      "Terraform",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Python",
+      "MongoDB",
+      "SQL",
+      "Redis",
+      "Go",
+      "Docker",
+      "Microservices",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Google Cloud",
+      "Azure",
+      "Linux",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Kubernetes",
+      "Jenkins",
+      "Docker",
+      "Bash",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Docker",
+      "SQL",
+      "PyTorch",
+      "Deep Learning",
+      "Python",
+      "TensorFlow",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "Next.js",
+      "MongoDB",
+      "Docker",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Redis",
+      "Express",
+      "SQL",
+      "Java"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "SQL",
+      "PostgreSQL",
+      "Python",
+      "Java",
+      "Docker",
+      "Microservices",
+      "MongoDB",
+      "Redis"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Linux",
+      "Python",
+      "SQL",
+      "AWS",
+      "Cryptography",
+      "Bash",
+      "Cybersecurity",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "TensorFlow",
+      "NLP",
+      "Tableau"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "Next.js",
+      "TypeScript",
+      "CSS",
+      "JavaScript",
+      "PostgreSQL",
+      "Node.js",
+      "Docker",
+      "MongoDB"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "React Native",
+      "Flutter",
+      "Firebase",
+      "Kotlin",
+      "Swift",
+      "TypeScript",
+      "REST API",
+      "Java"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Python",
+      "Bash",
+      "Linux",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "R",
+      "Python",
+      "Pandas"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Linux",
+      "Docker",
+      "Bash",
+      "Google Cloud",
+      "Terraform",
+      "CI/CD"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Linux",
+      "Microservices",
+      "Azure",
+      "Serverless",
+      "Google Cloud",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Python",
+      "SQL",
+      "Bash",
+      "Docker",
+      "AWS",
+      "Cryptography",
+      "Linux"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Azure",
+      "Google Cloud",
+      "Kubernetes",
+      "AWS",
+      "CI/CD",
+      "Jenkins",
+      "Bash"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "JavaScript",
+      "React Native",
+      "Flutter",
+      "Swift",
+      "Firebase"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Serverless",
+      "Azure",
+      "Kubernetes",
+      "Linux",
+      "Google Cloud",
+      "Microservices",
+      "Docker",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Kubernetes",
+      "Docker",
+      "Microservices",
+      "Terraform",
+      "Linux",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Java",
+      "PostgreSQL",
+      "Express",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Microservices",
+      "AWS",
+      "Google Cloud",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "Python",
+      "Spark",
+      "R",
+      "Pandas"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "HTML",
+      "Vue.js",
+      "React",
+      "Tailwind",
+      "Next.js",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Vue.js",
+      "JavaScript",
+      "HTML",
+      "TypeScript",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Python",
+      "Node.js",
+      "Java",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "Node.js",
+      "PostgreSQL",
+      "MongoDB",
+      "Docker",
+      "JavaScript",
+      "CSS",
+      "REST API"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "Data Science",
+      "NLP",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Python",
+      "Node.js",
+      "Express",
+      "Java",
+      "Microservices",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "TypeScript",
+      "Vue.js",
+      "JavaScript",
+      "CSS",
+      "Figma",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Firebase",
+      "REST API",
+      "React Native",
+      "TypeScript",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Java",
+      "Flutter",
+      "JavaScript",
+      "Kotlin",
+      "Swift",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "PostgreSQL",
+      "REST API",
+      "CSS",
+      "Docker",
+      "HTML",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Cryptography",
+      "Linux",
+      "AWS",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "PyTorch",
+      "NLP",
+      "SQL",
+      "TensorFlow",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Docker",
+      "PyTorch",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Machine Learning",
+      "Deep Learning",
+      "Spark",
+      "Tableau",
+      "R",
+      "TensorFlow",
+      "Python"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Java",
+      "Microservices",
+      "Go",
+      "Docker",
+      "Node.js",
+      "Python",
+      "AWS",
+      "Express"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Linux",
+      "Docker",
+      "Azure",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Bash",
+      "Docker",
+      "Google Cloud",
+      "Azure",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "CSS",
+      "Node.js",
+      "TypeScript",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "CSS",
+      "PostgreSQL",
+      "MongoDB",
+      "Node.js",
+      "Next.js",
+      "JavaScript",
+      "AWS",
+      "Docker"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Azure",
+      "Kubernetes",
+      "Terraform",
+      "Bash",
+      "CI/CD"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "AWS",
+      "Linux",
+      "CI/CD",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "JavaScript",
+      "React",
+      "Tailwind",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "CSS",
+      "Next.js",
+      "JavaScript",
+      "AWS",
+      "HTML",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Serverless",
+      "AWS",
+      "Linux",
+      "Kubernetes",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Spark",
+      "Deep Learning",
+      "Python",
+      "TensorFlow",
+      "Pandas",
+      "Tableau"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Swift",
+      "TypeScript",
+      "JavaScript",
+      "Firebase"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Docker",
+      "Azure",
+      "Serverless",
+      "Microservices",
+      "Kubernetes",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Vue.js",
+      "CSS",
+      "Jest",
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Spark",
+      "Pandas",
+      "Tableau",
+      "NLP",
+      "SQL",
+      "R",
+      "Deep Learning",
+      "Python"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "HTML",
+      "CSS",
+      "Vue.js",
+      "Tailwind",
+      "Jest",
+      "Figma"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Vue.js",
+      "Tailwind"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Docker",
+      "SQL",
+      "Linux",
+      "Bash",
+      "Cryptography",
+      "Python"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "Swift",
+      "TypeScript",
+      "JavaScript",
+      "Firebase",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "AWS",
+      "JavaScript",
+      "TypeScript",
+      "Next.js",
+      "React",
+      "MongoDB"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Cybersecurity",
+      "Linux",
+      "SQL",
+      "Cryptography",
+      "Docker",
+      "AWS",
+      "Python"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Java",
+      "REST API",
+      "React Native",
+      "Kotlin",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "R",
+      "TensorFlow",
+      "SQL",
+      "Spark",
+      "Pandas",
+      "Python"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Tailwind",
+      "Jest",
+      "Vue.js",
+      "React",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Java",
+      "REST API",
+      "React Native",
+      "Kotlin",
+      "JavaScript",
+      "Swift",
+      "TypeScript",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "TensorFlow",
+      "NLP",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "AWS",
+      "JavaScript",
+      "Docker",
+      "CSS",
+      "TypeScript",
+      "PostgreSQL",
+      "Node.js",
+      "Next.js"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Linux",
+      "Docker",
+      "Azure",
+      "Bash",
+      "Google Cloud",
+      "CI/CD",
+      "Jenkins",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "HTML",
+      "React",
+      "Tailwind",
+      "Next.js",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "JavaScript",
+      "Next.js",
+      "Tailwind",
+      "CSS",
+      "React",
+      "HTML",
+      "Vue.js"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Bash",
+      "Kubernetes",
+      "Azure",
+      "Docker",
+      "Jenkins",
+      "Terraform",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "TypeScript",
+      "MongoDB",
+      "React",
+      "CSS",
+      "HTML",
+      "Docker",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Figma",
+      "Next.js",
+      "HTML",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Swift",
+      "TypeScript",
+      "Firebase",
+      "REST API",
+      "Kotlin",
+      "React Native",
+      "Java",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "AWS",
+      "TypeScript",
+      "Next.js",
+      "Docker",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "HTML",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Kotlin",
+      "JavaScript",
+      "Swift",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Data Science",
+      "AWS",
+      "Python",
+      "SQL",
+      "PyTorch",
+      "TensorFlow",
+      "Docker"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Google Cloud",
+      "Bash",
+      "CI/CD"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Microservices",
+      "SQL",
+      "Node.js",
+      "Docker",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "HTML",
+      "TypeScript",
+      "REST API",
+      "PostgreSQL",
+      "Docker",
+      "Node.js",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "TensorFlow",
+      "Machine Learning",
+      "R"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "React",
+      "TypeScript",
+      "Docker",
+      "CSS",
+      "Next.js",
+      "AWS",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Python",
+      "Docker",
+      "AWS",
+      "Microservices",
+      "SQL",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "Figma",
+      "Jest",
+      "TypeScript",
+      "Vue.js",
+      "React"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "Figma",
+      "Jest",
+      "Vue.js",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "CSS",
+      "PostgreSQL",
+      "AWS",
+      "JavaScript",
+      "REST API",
+      "Node.js"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Linux",
+      "Docker",
+      "Jenkins",
+      "CI/CD",
+      "Bash"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Spark",
+      "Python",
+      "SQL",
+      "R"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Microservices",
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "Serverless",
+      "Azure",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Cybersecurity",
+      "AWS",
+      "Linux",
+      "Python",
+      "SQL",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "AWS",
+      "Cryptography",
+      "Cybersecurity",
+      "Bash",
+      "Docker",
+      "SQL",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "TypeScript",
+      "Next.js",
+      "JavaScript",
+      "AWS",
+      "MongoDB",
+      "HTML",
+      "React",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Linux",
+      "CI/CD",
+      "Terraform",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Docker",
+      "TensorFlow",
+      "PyTorch",
+      "SQL",
+      "Python",
+      "AWS",
+      "NLP"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "Python",
+      "NLP",
+      "Tableau",
+      "Pandas",
+      "Spark",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "PostgreSQL",
+      "Docker",
+      "Java",
+      "Microservices",
+      "Express",
+      "Node.js"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "CI/CD",
+      "Jenkins",
+      "Terraform",
+      "Azure",
+      "Bash",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "AWS",
+      "Data Science",
+      "SQL",
+      "Python",
+      "NLP",
+      "Deep Learning",
+      "TensorFlow",
+      "PyTorch"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "TypeScript",
+      "Vue.js",
+      "Jest",
+      "Figma",
+      "React"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Java",
+      "Node.js",
+      "Redis",
+      "Go",
+      "MongoDB",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "PostgreSQL",
+      "JavaScript",
+      "Next.js",
+      "AWS",
+      "REST API"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Figma",
+      "Tailwind",
+      "HTML",
+      "TypeScript",
+      "Next.js",
+      "React"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Firebase",
+      "JavaScript",
+      "TypeScript",
+      "Swift",
+      "Kotlin",
+      "React Native",
+      "Java"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Cryptography",
+      "Linux",
+      "Python",
+      "Docker",
+      "AWS",
+      "Cybersecurity",
+      "SQL",
+      "Bash"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Kubernetes",
+      "Terraform",
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "TypeScript",
+      "HTML",
+      "CSS",
+      "REST API"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Java",
+      "Firebase",
+      "REST API",
+      "React Native",
+      "Flutter",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Bash",
+      "Google Cloud",
+      "AWS",
+      "Linux",
+      "Docker",
+      "Jenkins",
+      "CI/CD",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Jest",
+      "TypeScript",
+      "HTML",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Tailwind",
+      "Jest",
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Firebase",
+      "React Native",
+      "JavaScript",
+      "Java",
+      "Flutter",
+      "REST API"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Python",
+      "TensorFlow",
+      "Spark",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Linux",
+      "Docker",
+      "Microservices"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "JavaScript",
+      "TypeScript",
+      "Kotlin",
+      "Swift",
+      "React Native"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "Docker",
+      "Bash",
+      "Linux",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "AWS",
+      "Jenkins",
+      "Linux"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Bash",
+      "Jenkins",
+      "Azure",
+      "Google Cloud",
+      "Linux",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Serverless",
+      "Docker",
+      "Linux",
+      "Kubernetes",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "SQL",
+      "NLP",
+      "Spark",
+      "R"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Tailwind",
+      "TypeScript",
+      "React",
+      "Vue.js",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Linux",
+      "AWS",
+      "CI/CD",
+      "Kubernetes",
+      "Jenkins",
+      "Google Cloud",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "SQL",
+      "Spark",
+      "TensorFlow",
+      "R",
+      "Pandas",
+      "NLP",
+      "Python"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "Spark",
+      "R",
+      "TensorFlow",
+      "SQL",
+      "Python"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Java",
+      "REST API",
+      "Firebase",
+      "Flutter",
+      "Kotlin",
+      "React Native",
+      "Swift",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "CI/CD",
+      "Bash",
+      "AWS",
+      "Terraform",
+      "Linux",
+      "Azure"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "Java",
+      "TypeScript",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "Tableau",
+      "Pandas",
+      "Spark",
+      "Machine Learning",
+      "Python"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "React Native",
+      "Swift",
+      "JavaScript",
+      "Kotlin"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "TensorFlow",
+      "Python",
+      "Deep Learning",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "Tailwind",
+      "Next.js",
+      "TypeScript",
+      "React",
+      "HTML",
+      "Vue.js",
+      "Figma"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "SQL",
+      "Machine Learning",
+      "Tableau",
+      "Deep Learning",
+      "Pandas",
+      "TensorFlow",
+      "R"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Machine Learning",
+      "Spark",
+      "Deep Learning",
+      "Python",
+      "Tableau",
+      "TensorFlow",
+      "NLP",
+      "R"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Kotlin",
+      "REST API",
+      "React Native",
+      "Firebase",
+      "JavaScript",
+      "TypeScript",
+      "Swift"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Linux",
+      "Bash",
+      "CI/CD",
+      "Jenkins",
+      "Google Cloud",
+      "Terraform",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Linux",
+      "Microservices",
+      "AWS",
+      "Terraform",
+      "Serverless",
+      "Kubernetes",
+      "Azure"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "Docker",
+      "Bash",
+      "Kubernetes",
+      "Google Cloud",
+      "Linux",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Cryptography",
+      "Linux",
+      "AWS",
+      "Cybersecurity"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Cryptography",
+      "SQL",
+      "Python",
+      "Linux",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "AWS",
+      "Data Science",
+      "Deep Learning",
+      "SQL",
+      "TensorFlow",
+      "PyTorch",
+      "Python"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Kubernetes",
+      "Serverless",
+      "Microservices",
+      "Azure",
+      "Terraform",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Docker",
+      "AWS",
+      "Data Science",
+      "NLP",
+      "Deep Learning",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Kotlin",
+      "Firebase",
+      "REST API",
+      "TypeScript",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Google Cloud",
+      "Kubernetes",
+      "Docker",
+      "Azure",
+      "Serverless",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Linux",
+      "SQL",
+      "AWS",
+      "Cryptography",
+      "Cybersecurity",
+      "Python"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "R",
+      "Pandas",
+      "NLP",
+      "Deep Learning",
+      "Spark",
+      "Tableau",
+      "SQL",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Data Science",
+      "Python",
+      "NLP",
+      "PyTorch"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Data Science",
+      "AWS",
+      "Deep Learning"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "Data Science",
+      "TensorFlow",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "Swift",
+      "Java",
+      "TypeScript",
+      "JavaScript",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "React",
+      "Tailwind",
+      "Next.js",
+      "HTML",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "JavaScript",
+      "Kotlin",
+      "TypeScript",
+      "Java"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "CI/CD",
+      "Jenkins",
+      "Azure",
+      "Linux",
+      "Bash",
+      "Docker",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "PostgreSQL",
+      "MongoDB",
+      "React",
+      "Next.js"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Kubernetes",
+      "Bash",
+      "Jenkins",
+      "Terraform",
+      "CI/CD",
+      "AWS",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "Figma",
+      "React",
+      "TypeScript",
+      "Vue.js",
+      "HTML",
+      "Tailwind",
+      "Jest"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "TypeScript",
+      "Swift",
+      "Kotlin",
+      "React Native"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Kubernetes",
+      "Bash",
+      "Jenkins",
+      "Terraform",
+      "Linux",
+      "Azure",
+      "CI/CD",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "Node.js",
+      "JavaScript",
+      "HTML",
+      "REST API",
+      "TypeScript",
+      "CSS",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Google Cloud",
+      "Serverless",
+      "Kubernetes",
+      "Docker",
+      "Azure"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "MongoDB",
+      "PostgreSQL",
+      "REST API",
+      "JavaScript",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Microservices",
+      "Terraform",
+      "AWS",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "TypeScript",
+      "JavaScript",
+      "Swift",
+      "Java",
+      "Firebase",
+      "React Native"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "Deep Learning",
+      "Pandas",
+      "Spark",
+      "Tableau",
+      "R",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "Azure",
+      "CI/CD",
+      "Jenkins",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Google Cloud",
+      "AWS",
+      "Kubernetes",
+      "Terraform",
+      "Microservices",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "React",
+      "Docker",
+      "JavaScript",
+      "REST API",
+      "Next.js",
+      "Node.js"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "Flutter",
+      "Swift",
+      "JavaScript",
+      "React Native",
+      "Kotlin",
+      "TypeScript",
+      "Firebase"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Docker",
+      "Redis",
+      "Node.js",
+      "Go"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "React Native",
+      "Kotlin",
+      "REST API",
+      "Firebase",
+      "Flutter",
+      "TypeScript",
+      "Java"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "NLP",
+      "Data Science",
+      "Docker",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "NLP",
+      "Machine Learning",
+      "Deep Learning",
+      "SQL",
+      "R",
+      "Tableau",
+      "Pandas"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Microservices",
+      "Google Cloud",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "React Native",
+      "Kotlin",
+      "Swift",
+      "REST API",
+      "Java",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Python",
+      "SQL",
+      "Cryptography",
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "PyTorch",
+      "AWS",
+      "Docker",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Terraform",
+      "Azure",
+      "Linux",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Docker",
+      "AWS",
+      "Redis",
+      "Node.js",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Docker",
+      "Cryptography",
+      "Cybersecurity",
+      "Bash",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Cybersecurity",
+      "Python",
+      "Cryptography",
+      "Docker",
+      "Linux",
+      "AWS",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Next.js",
+      "Jest",
+      "CSS",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "R",
+      "TensorFlow",
+      "Deep Learning",
+      "Spark",
+      "SQL",
+      "NLP"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "SQL",
+      "Docker",
+      "Linux",
+      "Cybersecurity",
+      "Python",
+      "Cryptography",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Pandas",
+      "R",
+      "TensorFlow",
+      "Tableau",
+      "Spark",
+      "Deep Learning"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Flutter",
+      "REST API",
+      "Kotlin",
+      "TypeScript",
+      "JavaScript",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "Tailwind",
+      "HTML",
+      "JavaScript",
+      "Next.js",
+      "Figma",
+      "Vue.js"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "PyTorch",
+      "AWS",
+      "Data Science",
+      "Python",
+      "Docker",
+      "Deep Learning",
+      "TensorFlow",
+      "NLP"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "Deep Learning",
+      "Machine Learning",
+      "Pandas"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Tailwind",
+      "HTML",
+      "TypeScript",
+      "JavaScript",
+      "Figma",
+      "Jest",
+      "React"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "CSS",
+      "TypeScript",
+      "HTML",
+      "Docker",
+      "MongoDB",
+      "Next.js",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "SQL",
+      "Python",
+      "Pandas",
+      "NLP",
+      "Tableau",
+      "R"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "CSS",
+      "Tailwind",
+      "Jest",
+      "React",
+      "Vue.js",
+      "Figma",
+      "HTML",
+      "Next.js"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "AWS",
+      "Google Cloud",
+      "CI/CD",
+      "Kubernetes",
+      "Linux",
+      "Jenkins",
+      "Azure",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "JavaScript",
+      "Tailwind",
+      "Next.js",
+      "Figma",
+      "CSS",
+      "Vue.js"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Docker",
+      "Cybersecurity",
+      "AWS",
+      "Python",
+      "Linux",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "NLP",
+      "R",
+      "Pandas",
+      "Spark",
+      "Machine Learning",
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "PostgreSQL",
+      "HTML",
+      "AWS"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "CI/CD",
+      "Terraform",
+      "Google Cloud",
+      "Azure",
+      "Linux",
+      "Kubernetes",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Flutter",
+      "Swift",
+      "TypeScript",
+      "Firebase",
+      "React Native",
+      "JavaScript",
+      "Java",
+      "Kotlin"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "Node.js",
+      "React",
+      "AWS",
+      "Next.js",
+      "CSS",
+      "TypeScript",
+      "HTML",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Docker",
+      "Redis",
+      "Microservices",
+      "AWS",
+      "Node.js",
+      "Python",
+      "Go",
+      "PostgreSQL"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "PyTorch",
+      "TensorFlow",
+      "NLP"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "MongoDB",
+      "Node.js",
+      "PostgreSQL",
+      "SQL",
+      "Microservices",
+      "Express"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "PostgreSQL",
+      "HTML",
+      "TypeScript",
+      "CSS",
+      "Next.js",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Docker",
+      "Bash",
+      "Cybersecurity",
+      "AWS",
+      "Python",
+      "SQL",
+      "Linux",
+      "Cryptography"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Serverless",
+      "Azure",
+      "Kubernetes",
+      "Microservices",
+      "AWS",
+      "Docker",
+      "Google Cloud",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Microservices",
+      "Terraform",
+      "Azure",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Firebase",
+      "Flutter",
+      "Java",
+      "JavaScript",
+      "Swift"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Microservices",
+      "Azure",
+      "Serverless",
+      "Google Cloud",
+      "Linux",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Python",
+      "PyTorch",
+      "TensorFlow",
+      "NLP",
+      "Deep Learning",
+      "Docker",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Docker",
+      "Google Cloud",
+      "Serverless",
+      "Azure",
+      "Kubernetes",
+      "AWS",
+      "Terraform"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "TensorFlow",
+      "Pandas",
+      "SQL",
+      "Deep Learning"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Machine Learning",
+      "Pandas",
+      "SQL",
+      "Python",
+      "Spark",
+      "Tableau",
+      "R",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Serverless",
+      "Linux",
+      "Terraform",
+      "Google Cloud",
+      "Azure",
+      "Microservices",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "JavaScript",
+      "React",
+      "Tailwind",
+      "Vue.js",
+      "Next.js",
+      "TypeScript",
+      "Figma"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Java",
+      "Express",
+      "Python",
+      "MongoDB"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Machine Learning",
+      "TensorFlow",
+      "Tableau",
+      "Pandas",
+      "Spark",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Mid-level",
+    "cluster": "frontend",
+    "skills": [
+      "Vue.js",
+      "Tailwind",
+      "JavaScript",
+      "React"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "JavaScript",
+      "React Native",
+      "Kotlin",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "HTML",
+      "React",
+      "CSS"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Cryptography",
+      "SQL",
+      "Python",
+      "AWS"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "CI/CD",
+      "Google Cloud",
+      "Docker",
+      "AWS",
+      "Azure",
+      "Jenkins",
+      "Linux",
+      "Bash"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Docker",
+      "NLP",
+      "TensorFlow",
+      "Deep Learning",
+      "PyTorch",
+      "Python",
+      "AWS",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Machine Learning",
+      "NLP",
+      "R",
+      "TensorFlow"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "MongoDB",
+      "Java",
+      "Node.js",
+      "Express"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "React",
+      "PostgreSQL",
+      "Node.js"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "JavaScript",
+      "React",
+      "Node.js",
+      "AWS",
+      "Docker",
+      "REST API",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Cybersecurity",
+      "AWS",
+      "Docker",
+      "Linux"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Linux",
+      "Cybersecurity",
+      "Cryptography",
+      "Bash",
+      "Python",
+      "Docker",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Data Scientist Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "R",
+      "Deep Learning",
+      "Spark"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Senior",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "Python",
+      "TensorFlow",
+      "Docker",
+      "PyTorch",
+      "Data Science",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Cloud Architect Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Docker",
+      "Google Cloud",
+      "Microservices"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Azure",
+      "Docker",
+      "Google Cloud",
+      "AWS",
+      "Serverless"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Tableau",
+      "Pandas",
+      "Spark",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "CSS",
+      "MongoDB",
+      "PostgreSQL",
+      "AWS",
+      "Docker",
+      "Next.js",
+      "HTML",
+      "TypeScript"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "Docker",
+      "Python",
+      "PostgreSQL",
+      "AWS",
+      "MongoDB",
+      "SQL",
+      "Java"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "CSS",
+      "AWS",
+      "Next.js",
+      "Docker",
+      "REST API",
+      "TypeScript",
+      "MongoDB"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Linux",
+      "Cryptography",
+      "Python",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Docker",
+      "Python",
+      "Java",
+      "Node.js",
+      "PostgreSQL",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Security Engineer Senior",
+    "cluster": "security",
+    "skills": [
+      "Python",
+      "AWS",
+      "Cybersecurity",
+      "Docker"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "REST API",
+      "JavaScript",
+      "Java",
+      "Kotlin",
+      "TypeScript",
+      "Firebase",
+      "React Native"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Kubernetes",
+      "Serverless",
+      "Google Cloud",
+      "Microservices",
+      "Azure"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Bash",
+      "Linux",
+      "CI/CD",
+      "Docker",
+      "Google Cloud"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "React Native",
+      "REST API",
+      "Java",
+      "TypeScript",
+      "Firebase",
+      "Kotlin",
+      "Swift",
+      "Flutter"
+    ]
+  },
+  {
+    "title": "Cloud Architect Senior",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Kubernetes",
+      "Google Cloud",
+      "AWS",
+      "Docker",
+      "Azure",
+      "Terraform",
+      "Serverless"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "CI/CD",
+      "Linux",
+      "Bash",
+      "Docker",
+      "Google Cloud",
+      "AWS"
+    ]
+  },
+  {
+    "title": "Frontend Engineer Senior",
+    "cluster": "frontend",
+    "skills": [
+      "TypeScript",
+      "Vue.js",
+      "Tailwind",
+      "CSS",
+      "React",
+      "Jest",
+      "Figma",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Senior",
+    "cluster": "fullstack",
+    "skills": [
+      "Node.js",
+      "CSS",
+      "AWS",
+      "REST API",
+      "TypeScript",
+      "JavaScript",
+      "React",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Mobile Developer Senior",
+    "cluster": "mobile",
+    "skills": [
+      "Java",
+      "REST API",
+      "Flutter",
+      "React Native",
+      "Swift",
+      "JavaScript"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "SQL",
+      "Linux",
+      "Bash",
+      "Cybersecurity"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "NLP",
+      "PyTorch",
+      "AWS",
+      "Deep Learning",
+      "Python",
+      "SQL",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "Docker",
+      "AWS",
+      "Python",
+      "Redis",
+      "Microservices"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "PostgreSQL",
+      "Python",
+      "Go",
+      "Redis",
+      "Express"
+    ]
+  },
+  {
+    "title": "Data Scientist Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "Deep Learning",
+      "Pandas",
+      "R",
+      "Machine Learning"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Jenkins",
+      "Terraform",
+      "CI/CD",
+      "Kubernetes"
+    ]
+  },
+  {
+    "title": "Mobile Developer Mid-level",
+    "cluster": "mobile",
+    "skills": [
+      "TypeScript",
+      "Java",
+      "React Native",
+      "JavaScript",
+      "REST API"
+    ]
+  },
+  {
+    "title": "Full Stack Engineer Mid-level",
+    "cluster": "fullstack",
+    "skills": [
+      "Node.js",
+      "MongoDB",
+      "React",
+      "CSS",
+      "HTML"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "TensorFlow",
+      "Deep Learning",
+      "AWS",
+      "Python",
+      "Docker",
+      "Data Science"
+    ]
+  },
+  {
+    "title": "Backend Engineer Mid-level",
+    "cluster": "backend",
+    "skills": [
+      "AWS",
+      "Express",
+      "Redis",
+      "Java",
+      "Go",
+      "Node.js",
+      "Python",
+      "MongoDB"
+    ]
+  },
+  {
+    "title": "Security Engineer Mid-level",
+    "cluster": "security",
+    "skills": [
+      "Bash",
+      "Docker",
+      "Cybersecurity",
+      "Python",
+      "SQL"
+    ]
+  },
+  {
+    "title": "Machine Learning Engineer Mid-level",
+    "cluster": "data_ai",
+    "skills": [
+      "PyTorch",
+      "SQL",
+      "Data Science",
+      "Docker",
+      "Python",
+      "AWS",
+      "NLP"
+    ]
+  },
+  {
+    "title": "Backend Engineer Senior",
+    "cluster": "backend",
+    "skills": [
+      "PostgreSQL",
+      "AWS",
+      "MongoDB",
+      "Docker",
+      "Java"
+    ]
+  },
+  {
+    "title": "DevOps Engineer Mid-level",
+    "cluster": "cloud_devops",
+    "skills": [
+      "Jenkins",
+      "Terraform",
+      "Bash",
+      "CI/CD",
+      "Kubernetes"
+    ]
+  }
+]

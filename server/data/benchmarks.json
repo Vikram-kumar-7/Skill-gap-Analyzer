@@ -1,0 +1,32 @@
+{
+  "Frontend Developer": {
+    "projects": 3,
+    "tools": ["React", "TypeScript", "Tailwind CSS", "Jest", "Vite"],
+    "experience": "2-4 years",
+    "certifications": 0
+  },
+  "Backend Developer": {
+    "projects": 4,
+    "tools": ["Node.js", "PostgreSQL", "Docker", "Redis", "AWS"],
+    "experience": "3-5 years",
+    "certifications": 1
+  },
+  "Data Scientist": {
+    "projects": 5,
+    "tools": ["Python", "Pandas", "Scikit-learn", "SQL", "Tableau"],
+    "experience": "2-4 years",
+    "certifications": 1
+  },
+  "Full Stack Engineer": {
+    "projects": 5,
+    "tools": ["React", "Node.js", "TypeScript", "Docker", "PostgreSQL"],
+    "experience": "3-6 years",
+    "certifications": 1
+  },
+  "DevOps Engineer": {
+    "projects": 3,
+    "tools": ["Kubernetes", "Terraform", "AWS", "CI/CD", "Linux"],
+    "experience": "4-7 years",
+    "certifications": 2
+  }
+}

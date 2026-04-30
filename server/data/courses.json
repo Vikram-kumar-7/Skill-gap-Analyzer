@@ -1,0 +1,182 @@
+{
+  "python": {
+    "courses": [
+      { "name": "Python for Everybody", "platform": "Coursera", "url": "https://www.coursera.org/specializations/python", "type": "free", "duration": "8 weeks" },
+      { "name": "Automate the Boring Stuff with Python", "platform": "Udemy", "url": "https://www.udemy.com/course/automate/", "type": "free", "duration": "6 hours" },
+      { "name": "Python Crash Course - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=rfscVS0vtbw", "type": "free", "duration": "4.5 hours" }
+    ]
+  },
+  "javascript": {
+    "courses": [
+      { "name": "JavaScript Algorithms and Data Structures", "platform": "freeCodeCamp", "url": "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/", "type": "free", "duration": "300 hours" },
+      { "name": "The Complete JavaScript Course", "platform": "Udemy", "url": "https://www.udemy.com/course/the-complete-javascript-course/", "type": "paid", "duration": "69 hours" },
+      { "name": "JavaScript Full Course - Bro Code", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=lfmg-EJ8gm4", "type": "free", "duration": "12 hours" }
+    ]
+  },
+  "react": {
+    "courses": [
+      { "name": "React Official Docs - Learn React", "platform": "React.dev", "url": "https://react.dev/learn", "type": "free", "duration": "self-paced" },
+      { "name": "Full React Course 2024", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=CgkZ7MvWUAA", "type": "free", "duration": "12 hours" },
+      { "name": "React - The Complete Guide", "platform": "Udemy", "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/", "type": "paid", "duration": "68 hours" }
+    ]
+  },
+  "typescript": {
+    "courses": [
+      { "name": "TypeScript Handbook", "platform": "TypeScript Docs", "url": "https://www.typescriptlang.org/docs/handbook/", "type": "free", "duration": "self-paced" },
+      { "name": "TypeScript Full Course - Dave Gray", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=gieEQFIfgYc", "type": "free", "duration": "8 hours" }
+    ]
+  },
+  "node.js": {
+    "courses": [
+      { "name": "Node.js Full Course - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=Oe421EPjeBE", "type": "free", "duration": "8 hours" },
+      { "name": "The Complete Node.js Developer Course", "platform": "Udemy", "url": "https://www.udemy.com/course/the-complete-nodejs-developer-course-2/", "type": "paid", "duration": "35 hours" }
+    ]
+  },
+  "sql": {
+    "courses": [
+      { "name": "SQL for Beginners - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY", "type": "free", "duration": "4 hours" },
+      { "name": "SQL and Databases - CS50", "platform": "edX", "url": "https://cs50.harvard.edu/sql/", "type": "free", "duration": "self-paced" }
+    ]
+  },
+  "mongodb": {
+    "courses": [
+      { "name": "MongoDB University", "platform": "MongoDB", "url": "https://university.mongodb.com/", "type": "free", "duration": "self-paced" },
+      { "name": "MongoDB Crash Course - Traversy Media", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=-56x56UppqQ", "type": "free", "duration": "36 min" }
+    ]
+  },
+  "aws": {
+    "courses": [
+      { "name": "AWS Cloud Practitioner Essentials", "platform": "AWS", "url": "https://aws.amazon.com/training/", "type": "free", "duration": "6 hours" },
+      { "name": "AWS Certified Solutions Architect", "platform": "Udemy", "url": "https://www.udemy.com/course/aws-certified-solutions-architect-associate-saa-c03/", "type": "paid", "duration": "27 hours" }
+    ]
+  },
+  "docker": {
+    "courses": [
+      { "name": "Docker Tutorial for Beginners", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=fqMOX6JJhGo", "type": "free", "duration": "3 hours" },
+      { "name": "Docker Mastery", "platform": "Udemy", "url": "https://www.udemy.com/course/docker-mastery/", "type": "paid", "duration": "20 hours" }
+    ]
+  },
+  "kubernetes": {
+    "courses": [
+      { "name": "Kubernetes Course - TechWorld with Nana", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=X48VuDVv0do", "type": "free", "duration": "4 hours" },
+      { "name": "CKA Certification Course", "platform": "Udemy", "url": "https://www.udemy.com/course/certified-kubernetes-administrator-with-practice-tests/", "type": "paid", "duration": "17 hours" }
+    ]
+  },
+  "machine learning": {
+    "courses": [
+      { "name": "Machine Learning by Andrew Ng", "platform": "Coursera", "url": "https://www.coursera.org/learn/machine-learning", "type": "free", "duration": "60 hours" },
+      { "name": "ML Crash Course - Google", "platform": "Google", "url": "https://developers.google.com/machine-learning/crash-course", "type": "free", "duration": "15 hours" }
+    ]
+  },
+  "tensorflow": {
+    "courses": [
+      { "name": "TensorFlow Developer Certificate", "platform": "Coursera", "url": "https://www.coursera.org/professional-certificates/tensorflow-in-practice", "type": "paid", "duration": "16 weeks" },
+      { "name": "TensorFlow 2.0 Complete Course", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=tPYj3fFJGjk", "type": "free", "duration": "7 hours" }
+    ]
+  },
+  "pytorch": {
+    "courses": [
+      { "name": "PyTorch Tutorials", "platform": "PyTorch.org", "url": "https://pytorch.org/tutorials/", "type": "free", "duration": "self-paced" },
+      { "name": "PyTorch for Deep Learning", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=V_xro1bcAuA", "type": "free", "duration": "25 hours" }
+    ]
+  },
+  "git": {
+    "courses": [
+      { "name": "Git and GitHub for Beginners", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=RGOj5yH7evk", "type": "free", "duration": "1 hour" },
+      { "name": "Git Complete - Udemy", "platform": "Udemy", "url": "https://www.udemy.com/course/git-complete/", "type": "paid", "duration": "6 hours" }
+    ]
+  },
+  "terraform": {
+    "courses": [
+      { "name": "Terraform Course - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=SLB_c_ayRMo", "type": "free", "duration": "2.5 hours" }
+    ]
+  },
+  "graphql": {
+    "courses": [
+      { "name": "GraphQL Full Course - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=ed8SzALpx1Q", "type": "free", "duration": "4 hours" }
+    ]
+  },
+  "figma": {
+    "courses": [
+      { "name": "Figma UI Design Tutorial", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=FTFaQWZBqQ8", "type": "free", "duration": "3 hours" }
+    ]
+  },
+  "next.js": {
+    "courses": [
+      { "name": "Next.js 14 Full Course", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=wm5gMKuwSYk", "type": "free", "duration": "5 hours" },
+      { "name": "Next.js Official Tutorial", "platform": "Next.js", "url": "https://nextjs.org/learn", "type": "free", "duration": "self-paced" }
+    ]
+  },
+  "django": {
+    "courses": [
+      { "name": "Django for Beginners - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=F5mRW0jo-U4", "type": "free", "duration": "4 hours" }
+    ]
+  },
+  "flask": {
+    "courses": [
+      { "name": "Flask Tutorial - Tech With Tim", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=Z1RJmh_OqeA", "type": "free", "duration": "2 hours" }
+    ]
+  },
+  "ci/cd": {
+    "courses": [
+      { "name": "CI/CD Pipeline Tutorial", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=scEDHsr3APg", "type": "free", "duration": "1.5 hours" }
+    ]
+  },
+  "redis": {
+    "courses": [
+      { "name": "Redis Crash Course - Traversy Media", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=jgpVdJB2sKQ", "type": "free", "duration": "40 min" }
+    ]
+  },
+  "linux": {
+    "courses": [
+      { "name": "Linux Full Course - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=sWbUDq4S6Y8", "type": "free", "duration": "5 hours" }
+    ]
+  },
+  "java": {
+    "courses": [
+      { "name": "Java Full Course - Bro Code", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=xk4_1vDrzzo", "type": "free", "duration": "12 hours" },
+      { "name": "Java Programming and Software Engineering", "platform": "Coursera", "url": "https://www.coursera.org/specializations/java-programming", "type": "free", "duration": "5 months" }
+    ]
+  },
+  "spring boot": {
+    "courses": [
+      { "name": "Spring Boot Tutorial - Amigoscode", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=9SGDpanrc8U", "type": "free", "duration": "3 hours" }
+    ]
+  },
+  "go": {
+    "courses": [
+      { "name": "Go Programming - freeCodeCamp", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=un6ZyFkqFKo", "type": "free", "duration": "7 hours" }
+    ]
+  },
+  "rust": {
+    "courses": [
+      { "name": "Rust Programming Course", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=BpPEoZW5IiY", "type": "free", "duration": "14 hours" },
+      { "name": "The Rust Programming Language Book", "platform": "Rust-lang.org", "url": "https://doc.rust-lang.org/book/", "type": "free", "duration": "self-paced" }
+    ]
+  },
+  "data visualization": {
+    "courses": [
+      { "name": "Data Visualization with D3.js", "platform": "freeCodeCamp", "url": "https://www.freecodecamp.org/learn/data-visualization/", "type": "free", "duration": "300 hours" }
+    ]
+  },
+  "microservices": {
+    "courses": [
+      { "name": "Microservices Architecture Course", "platform": "YouTube", "url": "https://www.youtube.com/watch?v=lTAcCNbJ7KE", "type": "free", "duration": "2 hours" }
+    ]
+  },
+  "deep learning": {
+    "courses": [
+      { "name": "Deep Learning Specialization - Andrew Ng", "platform": "Coursera", "url": "https://www.coursera.org/specializations/deep-learning", "type": "paid", "duration": "5 months" }
+    ]
+  },
+  "generative ai": {
+    "courses": [
+      { "name": "Generative AI for Everyone - Andrew Ng", "platform": "Coursera", "url": "https://www.coursera.org/learn/generative-ai-for-everyone", "type": "free", "duration": "3 weeks" }
+    ]
+  },
+  "prompt engineering": {
+    "courses": [
+      { "name": "ChatGPT Prompt Engineering - DeepLearning.AI", "platform": "DeepLearning.AI", "url": "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/", "type": "free", "duration": "1 hour" }
+    ]
+  }
+}

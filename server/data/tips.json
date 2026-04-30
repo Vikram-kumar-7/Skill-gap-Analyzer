@@ -1,0 +1,19 @@
+{
+  "tips": [
+    { "week": 1, "category": "general", "tip": "Focus on one high-ROI skill this week. Mastering the basics deeply beats skimming many topics. Start with the skill that appears in the most job postings for your target role." },
+    { "week": 2, "category": "Frontend", "tip": "Build something visual this week. A portfolio component or a dashboard widget helps solidify React/CSS concepts and gives you something to show recruiters." },
+    { "week": 2, "category": "Backend", "tip": "Set up a clean REST API with proper error handling and validation. Employers value well-structured backend code over feature quantity." },
+    { "week": 3, "category": "general", "tip": "Start your first project now, even if it's small. A real project teaches 10x more than tutorials. Pick something that uses 2-3 of your gap skills." },
+    { "week": 4, "category": "DevOps", "tip": "Containerize one of your projects with Docker this week. This skill alone makes you 30% more marketable for mid-level roles." },
+    { "week": 4, "category": "general", "tip": "You're one month in! Review your progress — which skills feel solid? Update your proficiency levels in the Skill Tracker." },
+    { "week": 5, "category": "general", "tip": "Start practicing interview questions now, not later. Even 15 minutes daily builds confidence and reveals knowledge gaps you didn't know about." },
+    { "week": 5, "category": "Data & AI", "tip": "Focus on building an end-to-end ML pipeline this week. Understanding the full workflow (data → model → deploy) matters more than algorithm theory." },
+    { "week": 6, "category": "general", "tip": "Connect two skills together in a project. For example: React + Node.js API, or Python + Docker deployment. Interlinked skills are more valuable than isolated ones." },
+    { "week": 7, "category": "general", "tip": "Update your resume with newly acquired skills and projects. Use the Resume Builder to check your ATS score against your target job." },
+    { "week": 8, "category": "general", "tip": "Two-thirds done! Focus on depth over breadth now. If you've started 5 skills, make sure at least 3 are at Intermediate level." },
+    { "week": 9, "category": "general", "tip": "Start polishing your portfolio projects. Add README files, deploy live demos, and clean up code. First impressions matter in code reviews." },
+    { "week": 10, "category": "general", "tip": "Do at least 3 mock interviews this week. Focus on your weakest question types. Consistency beats cramming." },
+    { "week": 11, "category": "general", "tip": "Refine your system design knowledge. Even for mid-level roles, understanding architecture trade-offs sets you apart." },
+    { "week": 12, "category": "general", "tip": "Final week! Do a full mock interview, finalize your resume, and ensure your portfolio has 3+ deployed projects. You're ready to apply." }
+  ]
+}
