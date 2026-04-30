@@ -1,45 +1,45 @@
 # SkillGap Analyzer
 
-AI-powered skill gap analysis tool that compares your resume against job descriptions to identify missing skills, market demand, ROI scores, and generates personalized learning roadmaps.
+SkillGap Analyzer is a career intelligence platform where you upload your resume and paste a job description — it instantly tells you exactly which skills you're missing, scores each skill by ROI (salary impact vs learning effort), generates a personalized 12-week roadmap, and even simulates how your salary changes if you learn specific skills.
 
 ## Architecture
 
-```
-â”œâ”€â”€ client/          # React + Vite + Tailwind frontend
-â””â”€â”€ server/          # Node.js + Express backend
-```
+`
++-- client/          # React + Vite + Tailwind frontend
++-- server/          # Node.js + Express backend
+`
 
 ## Quick Start
 
 ### 1. Start the Backend
-```bash
+`ash
 cd server
 npm install
 npm run dev
-```
+`
 
 ### 2. Start the Frontend
-```bash
+`ash
 cd client
 npm install
 npm run dev
-```
+`
 
 ### 3. (Optional) Add OpenAI Key
-Create `server/.env`:
-```
+Create server/.env:
+`
 OPENAI_API_KEY=your_key_here
-```
+`
 Without an API key, the app uses a rule-based analysis engine that still provides comprehensive insights.
 
 ## Features
 
-- **PDF Resume Parsing** â€” Upload any resume PDF
-- **Deterministic Skill Extraction** â€” 150+ curated skills matched against resume & job description
-- **Market Demand Analysis** â€” Based on 70+ job listing dataset
-- **Skill ROI Scoring** â€” Composite score factoring demand, salary, difficulty, and growth
-- **Phased Learning Roadmap** â€” Skills prioritized by ROI with course recommendations
-- **AI Insights** â€” OpenAI-powered (with rule-based fallback) resume tips and interview prep
+- **PDF Resume Parsing** — Upload any resume PDF
+- **Deterministic Skill Extraction** — 150+ curated skills matched against resume & job description
+- **Market Demand Analysis** — Based on 70+ job listing dataset
+- **Skill ROI Scoring** — Composite score factoring demand, salary, difficulty, and growth
+- **Phased Learning Roadmap** — Skills prioritized by ROI with course recommendations
+- **AI Insights** — OpenAI-powered (with rule-based fallback) resume tips and interview prep
 
 ## Tech Stack
 
