@@ -15,24 +15,26 @@ function AnalysisCard({ analysis, isActive, onView, onSetActive, onDelete }) {
   const color = pct >= 70 ? "text-emerald-400" : pct >= 40 ? "text-amber-400" : "text-red-400";
 
   return (
-    <div className={`dash-card p-4 ${isActive ? "ring-1 ring-primary-500/40" : ""}`}>
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <p className="text-sm font-semibold text-white">{analysis.targetRole || "Analysis"}</p>
+    <div className={`dash-card p-4 overflow-hidden ${isActive ? "ring-1 ring-primary-500/40" : ""}`}>
+      {/* Header: title + match % — match badge never squishes the title */}
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-white truncate">{analysis.targetRole || "Analysis"}</p>
           <p className="text-[11px] text-surface-200/50 flex items-center gap-1 mt-0.5">
             <Calendar size={10} /> {date}
           </p>
         </div>
-        <span className={`text-xl font-bold ${color}`}>{pct}%</span>
+        <span className={`text-xl font-bold shrink-0 ${color}`}>{pct}%</span>
       </div>
 
-      {/* Top missing */}
+      {/* Missing skill pills — wrap gracefully, never overflow card */}
       <div className="flex flex-wrap gap-1.5 mb-4">
         {(analysis.missing || []).slice(0, 3).map(s => (
           <span key={s} className="px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 text-[10px] font-medium">{s}</span>
         ))}
       </div>
 
+      {/* Action row */}
       <div className="flex items-center gap-2 border-t border-white/[0.04] pt-3">
         <button onClick={() => onView(analysis)} className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-primary-500/10 text-primary-400 text-xs font-medium hover:bg-primary-500/20 transition-colors">
           <Eye size={12} /> View
@@ -41,7 +43,7 @@ function AnalysisCard({ analysis, isActive, onView, onSetActive, onDelete }) {
           className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${isActive ? "bg-emerald-500/10 text-emerald-400" : "bg-white/[0.04] text-surface-200/60 hover:bg-white/[0.08]"}`}>
           <CheckCircle size={12} /> {isActive ? "Active" : "Set Active"}
         </button>
-        <button onClick={() => onDelete(analysis.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 text-surface-200/40 hover:text-red-400 transition-colors">
+        <button onClick={() => onDelete(analysis.id)} className="p-1.5 rounded-lg hover:bg-red-500/10 text-surface-200/40 hover:text-red-400 transition-colors shrink-0">
           <Trash2 size={13} />
         </button>
       </div>

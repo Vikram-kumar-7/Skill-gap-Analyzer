@@ -181,7 +181,7 @@ body {
   flex-direction: column;
   z-index: 50;
   transition: transform 0.3s ease;
-  overflow: hidden;
+  overflow: hidden; /* outer clip */
 }
 
 /* nav items */
@@ -500,7 +500,9 @@ select option { background: #1e293b; color: #e2e8f0; }
 /* ======================================================
    RESPONSIVE — MOBILE
 ====================================================== */
-/* Sidebar hides on mobile, main content fills full width */
+/* On mobile (<lg), sidebar is hidden (translate-x-full) and the fixed sidebar
+   no longer reserves space. Zero out the hard-coded marginLeft so the main
+   content fills the full viewport width. */
 @media (max-width: 1023px) {
   .main-content-area {
     margin-left: 0 !important;

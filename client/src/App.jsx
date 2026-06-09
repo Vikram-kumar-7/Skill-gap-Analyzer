@@ -110,7 +110,7 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#080d1a]">
+    <div className="flex h-screen overflow-hidden bg-[#080d1a]">
       <Sidebar
         activeView={activeView}
         onNavigate={handleNavigate}
@@ -120,7 +120,7 @@ function App() {
 
       {/* Main content — offset by sidebar width on desktop, full width on mobile */}
       <div
-        className="main-content-area flex flex-col min-h-screen flex-1 overflow-hidden"
+        className="main-content-area flex flex-col flex-1 min-w-0 overflow-hidden"
         style={{ marginLeft: '220px' }}
       >
         <TopBar
@@ -131,8 +131,8 @@ function App() {
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
         />
 
-        {/* Page area — consistent padding, never overflows */}
-        <main className="flex-1 px-4 sm:px-6 xl:px-10 pt-6 pb-10 overflow-y-auto min-h-0">
+        {/* Page area — the ONLY scroll container; never overflows parent */}
+        <main className="flex-1 min-h-0 overflow-y-auto px-4 sm:px-6 xl:px-10 pt-6 pb-10">
           {activeView === "dashboard" && <DashboardPage {...pageProps} />}
           {activeView === "upload" && (
             <UploadPage

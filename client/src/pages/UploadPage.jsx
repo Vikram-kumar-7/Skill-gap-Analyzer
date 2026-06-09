@@ -89,7 +89,7 @@ export default function UploadPage({ onAnalysisComplete, aiMode }) {
   };
 
   return (
-    <div className="pt-8 sm:pt-16 animate-fade-in-up">
+    <div className="pt-8 sm:pt-16 animate-fade-in-up min-w-0 overflow-hidden">
       {/* Hero */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-500/10 border border-accent-500/20 text-accent-400 text-sm font-medium mb-6">
@@ -282,12 +282,12 @@ export default function UploadPage({ onAnalysisComplete, aiMode }) {
           ].map((feature) => (
             <div
               key={feature.label}
-              className="text-center p-3 rounded-xl bg-white/[0.02] border border-white/5"
+              className="text-center p-3 rounded-xl bg-white/[0.02] border border-white/5 min-w-0 overflow-hidden"
             >
-              <p className="text-xs text-surface-200/50 mb-0.5">
+              <p className="text-xs text-surface-200/50 mb-0.5 truncate">
                 {feature.label}
               </p>
-              <p className="text-sm font-semibold text-white">
+              <p className="text-sm font-semibold text-white truncate">
                 {feature.value}
               </p>
             </div>

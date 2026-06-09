@@ -64,18 +64,18 @@ function SkillCard({ skill, skillMeta, progress, onToggle, onComplete, isLocked 
   const hours = skillMeta?.hours || 30;
 
   return (
-    <div className={`dash-card p-4 transition-all ${isLocked ? "opacity-40" : ""} ${progress?.completed ? "ring-1 ring-emerald-500/20" : ""}`}>
+    <div className={`dash-card p-4 w-full overflow-hidden transition-all ${isLocked ? "opacity-40" : ""} ${progress?.completed ? "ring-1 ring-emerald-500/20" : ""}`}>
       <div className="flex items-start justify-between mb-2">
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            {isLocked && <Lock size={12} className="text-surface-200/40" />}
-            <h4 className="text-sm font-semibold text-white">{skill.skill}</h4>
-            {progress?.completed && <CheckCircle2 size={14} className="text-emerald-400" />}
+            {isLocked && <Lock size={12} className="text-surface-200/40 shrink-0" />}
+            <h4 className="text-sm font-semibold text-white truncate">{skill.skill}</h4>
+            {progress?.completed && <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />}
           </div>
           <div className="flex items-center gap-3 text-[11px] text-surface-200/50">
             <span className="flex items-center gap-1"><Clock size={10} />{skill.estimatedWeeks || `${hours}h`}</span>
             <DifficultyStars level={skill.difficulty} />
-            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${skill.roi >= 50 ? "bg-emerald-500/15 text-emerald-400" : skill.roi >= 20 ? "bg-amber-500/15 text-amber-400" : "bg-surface-200/10 text-surface-200/50"}`}>
+            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 ${skill.roi >= 50 ? "bg-emerald-500/15 text-emerald-400" : skill.roi >= 20 ? "bg-amber-500/15 text-amber-400" : "bg-surface-200/10 text-surface-200/50"}`}>
               ROI {skill.roi}
             </span>
           </div>
@@ -166,7 +166,8 @@ export default function RoadmapPage({ activeAnalysis, toast }) {
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      <div className="flex items-center justify-between">
+      {/* Page header row with week indicator */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h2 className="text-2xl font-bold text-white flex items-center gap-2">
           <MapIcon size={22} className="text-primary-400" /> Learning Roadmap
         </h2>
@@ -178,7 +179,7 @@ export default function RoadmapPage({ activeAnalysis, toast }) {
         </div>
       </div>
 
-      {/* Phase Timeline */}
+      {/* Phase summary timeline — horizontal scroll strip above the kanban */}
       <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
         {roadmap.map((phase, pi) => {
           const color = phaseColors[pi] || phaseColors[0];
@@ -203,29 +204,46 @@ export default function RoadmapPage({ activeAnalysis, toast }) {
         })}
       </div>
 
-      {/* Skill Cards by Phase */}
-      <div className="space-y-8">
-        {roadmap.map((phase, pi) => (
-          <div key={pi}>
-            <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-              <span className={`w-2.5 h-2.5 rounded-full ${phaseColors[pi]?.text?.replace("text-", "bg-") || "bg-blue-400"}`} />
-              {phase.phase}
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {phase.skills.map((skill) => (
-                <SkillCard
-                  key={skill.skill}
-                  skill={skill}
-                  skillMeta={skillsMeta[skill.skill.toLowerCase()]}
-                  progress={progress[skill.skill]}
-                  onToggle={handleToggle}
-                  onComplete={handleComplete}
-                  isLocked={false}
-                />
-              ))}
+      {/* ── Kanban Board: 3 phase columns ── */}
+      {/*
+        Each roadmap phase is a column. Skills belong only to their phase.
+        grid-cols-1 on mobile collapses to single-column stacked view.
+        items-start prevents columns from stretching to match tallest sibling.
+      */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        {roadmap.map((phase, pi) => {
+          const color = phaseColors[pi] || phaseColors[0];
+          return (
+            /* Each column: flex-col, min-w-0 prevents flex blowout, overflow-hidden clips children */
+            <div key={pi} className="flex flex-col gap-3 min-w-0 overflow-hidden">
+              {/* Column header */}
+              <div className={`p-3 rounded-xl bg-gradient-to-br ${color.bg} border ${color.border}`}>
+                <span className={`text-xs font-bold ${color.text}`}>Phase {pi + 1}</span>
+                <p className="text-sm font-semibold text-white mt-0.5 truncate">
+                  {phase.phase.split(":")[1]?.trim() || phase.phase}
+                </p>
+                <p className="text-[10px] text-surface-200/50 mt-0.5">Weeks {phase.timeline}</p>
+              </div>
+
+              {/* Skill cards for this phase ONLY */}
+              {phase.skills.length === 0 ? (
+                <p className="text-xs text-surface-200/30 text-center py-4">No skills in this phase</p>
+              ) : (
+                phase.skills.map((skill) => (
+                  <SkillCard
+                    key={skill.skill}
+                    skill={skill}
+                    skillMeta={skillsMeta[skill.skill.toLowerCase()]}
+                    progress={progress[skill.skill]}
+                    onToggle={handleToggle}
+                    onComplete={handleComplete}
+                    isLocked={false}
+                  />
+                ))
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

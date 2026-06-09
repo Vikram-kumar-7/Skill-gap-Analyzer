@@ -3,7 +3,7 @@ import {
   BarChart3, Search, Plus, AlertTriangle, CheckCircle2, Clock,
   BookOpen, TrendingUp, RefreshCcw, Flame, Filter
 } from "lucide-react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+// recharts no longer needed — CategoryRing uses inline SVG
 import {
   getSkillTracker, addSkill, updateSkill, getHeatmap, getStreak, recordHeatmapEntry
 } from "../utils/store";
@@ -19,20 +19,25 @@ function CategoryRing({ category, skills }) {
   const colors = { Frontend: "#60a5fa", Backend: "#a78bfa", DevOps: "#4ade80", "Data & AI": "#f472b6", Database: "#facc15", Mobile: "#38bdf8", Testing: "#fb923c", "Soft Skills": "#818cf8" };
   const color = colors[category] || "#94a3b8";
 
+  // Inline SVG ring — avoids ResponsiveContainer collapsing inside a 56x56 div
+  const r = 22, cx = 28, cy = 28;
+  const circumference = 2 * Math.PI * r;
+  const filled = circumference * (pct / 100);
+
   return (
-    <div className="flex flex-col items-center gap-1.5">
+    <div className="flex flex-col items-center gap-1.5 shrink-0">
       <div className="relative w-14 h-14">
-        <ResponsiveContainer>
-          <PieChart>
-            <Pie data={[{ v: pct }, { v: 100 - pct }]} cx="50%" cy="50%" innerRadius={18} outerRadius={26} dataKey="v" startAngle={90} endAngle={-270} strokeWidth={0}>
-              <Cell fill={color} />
-              <Cell fill="rgba(255,255,255,0.04)" />
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <svg width="56" height="56" className="-rotate-90">
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="5" />
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth="5"
+            strokeDasharray={`${filled} ${circumference - filled}`}
+            strokeLinecap="round"
+            style={{ transition: 'stroke-dasharray 0.5s ease' }}
+          />
+        </svg>
         <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white">{pct}%</span>
       </div>
-      <span className="text-[10px] text-surface-200/50 text-center">{category}</span>
+      <span className="text-[10px] text-surface-200/50 text-center whitespace-nowrap">{category}</span>
     </div>
   );
 }
@@ -51,25 +56,28 @@ function Heatmap() {
   const max = Math.max(1, ...days.map(d => d.count));
 
   return (
-    <div className="dash-card p-4">
+    <div className="dash-card p-4 overflow-hidden">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-xs font-semibold text-white">Activity Heatmap (90 days)</h3>
         {streak > 0 && (
-          <span className="flex items-center gap-1 text-xs font-bold text-amber-400">
+          <span className="flex items-center gap-1 text-xs font-bold text-amber-400 shrink-0">
             <Flame size={13} /> {streak}-day streak
           </span>
         )}
       </div>
-      <div className="flex flex-wrap gap-[3px]">
-        {days.map(d => {
-          const intensity = d.count / max;
-          const bg = d.count === 0 ? "bg-white/[0.03]" :
-            intensity < 0.33 ? "bg-emerald-500/20" :
-            intensity < 0.66 ? "bg-emerald-500/40" : "bg-emerald-500/70";
-          return (
-            <div key={d.date} className={`w-3 h-3 rounded-sm ${bg}`} title={`${d.date}: ${d.count} activities`} />
-          );
-        })}
+      {/* overflow-x-auto so heatmap cells never burst the card on narrow viewports */}
+      <div className="overflow-x-auto">
+        <div className="flex flex-wrap gap-[3px]" style={{ minWidth: '280px' }}>
+          {days.map(d => {
+            const intensity = d.count / max;
+            const bg = d.count === 0 ? "bg-white/[0.03]" :
+              intensity < 0.33 ? "bg-emerald-500/20" :
+              intensity < 0.66 ? "bg-emerald-500/40" : "bg-emerald-500/70";
+            return (
+              <div key={d.date} className={`w-3 h-3 rounded-sm shrink-0 ${bg}`} title={`${d.date}: ${d.count} activities`} />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

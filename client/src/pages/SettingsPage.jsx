@@ -66,7 +66,7 @@ export default function SettingsPage({ user, settings, onUpdateUser, onUpdateSet
   };
 
   return (
-    <div className="animate-fade-in-up max-w-2xl">
+    <div className="animate-fade-in-up max-w-2xl mx-auto px-0">
       <h2 className="text-2xl font-bold text-white flex items-center gap-2 mb-6">
         <Settings size={22} className="text-primary-400" /> Settings
       </h2>
@@ -145,10 +145,11 @@ export default function SettingsPage({ user, settings, onUpdateUser, onUpdateSet
         <div className="space-y-4">
           <div>
             <p className="text-xs text-surface-200/50 mb-2">Accent Color</p>
-            <div className="flex gap-2">
+            {/* flex-wrap so swatches never overflow on narrow viewports */}
+            <div className="flex gap-2 flex-wrap">
               {ACCENT_COLORS.map(c => (
                 <button key={c.value} onClick={() => onUpdateSettings({ accentColor: c.value })}
-                  className={`w-8 h-8 rounded-lg border-2 transition-all ${settings.accentColor === c.value ? "border-white scale-110" : "border-transparent"}`}
+                  className={`w-8 h-8 rounded-lg border-2 transition-all shrink-0 ${settings.accentColor === c.value ? "border-white scale-110" : "border-transparent"}`}
                   style={{ background: c.color }} title={c.name} />
               ))}
             </div>

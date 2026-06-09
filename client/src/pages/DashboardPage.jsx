@@ -249,7 +249,8 @@ function ActivityTimeline() {
       {log.length === 0 ? (
         <p className="text-sm text-surface-200/40 text-center py-6">No activity yet. Start an analysis!</p>
       ) : (
-        <div className="space-y-2.5 max-h-[300px] overflow-y-auto scrollbar-hide">
+        /* max-height + overflow-y auto keeps the timeline contained — never pushes sibling panels */
+        <div className="space-y-2.5 overflow-y-auto scrollbar-hide" style={{ maxHeight: '320px' }}>
           {log.map((entry) => {
             const Icon = iconMap[entry.type] || iconMap.default;
             const color = colorMap[entry.type] || colorMap.default;
@@ -261,7 +262,7 @@ function ActivityTimeline() {
                   <Icon size={13} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-white leading-snug">{entry.message}</p>
+                  <p className="text-xs text-white leading-snug truncate">{entry.message}</p>
                   <p className="text-[10px] text-surface-200/40 mt-0.5">{relative}</p>
                 </div>
               </div>
@@ -287,10 +288,10 @@ function QuickActions({ onNavigate }) {
         <button
           key={a.label}
           onClick={() => onNavigate(a.view)}
-          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all hover:scale-[1.02] ${a.color}`}
+          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all hover:scale-[1.02] min-w-0 overflow-hidden ${a.color}`}
         >
-          <a.icon size={20} />
-          <span className="text-xs font-medium">{a.label}</span>
+          <a.icon size={20} className="shrink-0" />
+          <span className="text-xs font-medium text-center">{a.label}</span>
         </button>
       ))}
     </div>
@@ -320,29 +321,35 @@ export default function DashboardPage({ activeAnalysis, settings, onNavigate }) 
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      {/* Hero Stats */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-        <StatCard icon={Target}      label="Skill Match"         value={`${matchPct}%`}          sub="Latest" color={matchColor} pulse={matchPct > 80} />
-        <StatCard icon={CheckCircle2} label="Skills Acquired"    value={skillsAcquired}          sub="All time" color="green" />
-        <StatCard icon={Clock}        label="Roadmap Week"       value={`${roadmapWeek}/12`}     sub="Active"   color="purple" />
-        <StatCard icon={Brain}        label="Interviews Practiced" value={interviewCount}       sub="Total"    color="blue" />
+      {/* Hero Stats — always 2 cols on mobile, 4 on desktop */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard icon={Target}       label="Skill Match"          value={`${matchPct}%`}      sub="Latest"  color={matchColor} pulse={matchPct > 80} />
+        <StatCard icon={CheckCircle2} label="Skills Acquired"      value={skillsAcquired}      sub="All time" color="green" />
+        <StatCard icon={Clock}        label="Roadmap Week"         value={`${roadmapWeek}/12`} sub="Active"   color="purple" />
+        <StatCard icon={Brain}        label="Interviews Practiced" value={interviewCount}       sub="Total"   color="blue" />
       </div>
 
-      {/* Radar + Weekly Focus */}
+      {/* Radar + Right panel (Weekly Focus + AI Brief) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <SkillRadar activeAnalysis={activeAnalysis} onNavigate={onNavigate} />
-        <div className="space-y-4">
+        {/* Left — Skill Gap Radar */}
+        <div className="min-w-0 overflow-hidden">
+          <SkillRadar activeAnalysis={activeAnalysis} onNavigate={onNavigate} />
+        </div>
+        {/* Right — stacked panels; flex-col so they stack cleanly */}
+        <div className="flex flex-col gap-4 min-w-0 overflow-hidden">
           <WeeklyFocus activeAnalysis={activeAnalysis} onNavigate={onNavigate} />
           <AiDailyBrief activeAnalysis={activeAnalysis} settings={settings} />
         </div>
       </div>
 
-      {/* Quick Actions + Activity */}
+      {/* Quick Actions (2/3) + Activity Timeline (1/3) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 min-w-0">
           <QuickActions onNavigate={onNavigate} />
         </div>
-        <ActivityTimeline />
+        <div className="min-w-0 overflow-hidden">
+          <ActivityTimeline />
+        </div>
       </div>
     </div>
   );

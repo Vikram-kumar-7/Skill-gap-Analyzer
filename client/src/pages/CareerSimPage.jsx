@@ -117,18 +117,18 @@ export default function CareerSimPage({ activeAnalysis, toast }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Skill Toggle Panel */}
-        <div className="dash-card p-4">
+        <div className="dash-card p-4 overflow-hidden">
           <h3 className="text-sm font-semibold text-white mb-1">Toggle Skills to Learn</h3>
           <p className="text-[11px] text-surface-200/50 mb-3">{totalToggled} selected • {totalHours} total hours</p>
-          <div className="space-y-1.5 max-h-[400px] overflow-y-auto scrollbar-hide">
+          <div className="space-y-1.5 overflow-y-auto scrollbar-hide" style={{ maxHeight: '400px' }}>
             {missing.map(sk => (
               <button key={sk} onClick={() => setToggled(p => ({ ...p, [sk]: !p[sk] }))}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-colors text-xs ${
                   toggled[sk] ? "bg-primary-500/15 text-primary-400 border border-primary-500/20" : "bg-white/[0.02] text-surface-200/60 border border-white/[0.04] hover:bg-white/[0.04]"
                 }`}>
-                {toggled[sk] ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
-                <span className="flex-1">{sk}</span>
-                {toggled[sk] && <Zap size={10} />}
+                {toggled[sk] ? <ToggleRight size={14} className="shrink-0" /> : <ToggleLeft size={14} className="shrink-0" />}
+                <span className="flex-1 truncate">{sk}</span>
+                {toggled[sk] && <Zap size={10} className="shrink-0" />}
               </button>
             ))}
             {missing.length === 0 && <p className="text-xs text-surface-200/40 text-center py-4">No missing skills. Run an analysis first.</p>}
@@ -136,25 +136,25 @@ export default function CareerSimPage({ activeAnalysis, toast }) {
         </div>
 
         {/* Outcome Dashboard */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4 min-w-0 overflow-hidden">
           {/* Metric Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="dash-card p-4 text-center">
+            <div className="dash-card p-4 text-center min-w-0 overflow-hidden">
               <Target size={16} className="text-blue-400 mx-auto mb-2" />
               <p className="text-base font-bold text-white leading-tight">{currentPct}%<ArrowRight size={11} className="inline text-surface-200/30 mx-1" /><span className="text-emerald-400">{projectedPct}%</span></p>
               <p className="text-[10px] text-surface-200/50 mt-1">Match Score</p>
             </div>
-            <div className="dash-card p-4 text-center">
+            <div className="dash-card p-4 text-center min-w-0 overflow-hidden">
               <DollarSign size={16} className="text-emerald-400 mx-auto mb-2" />
               <p className="text-base font-bold text-white">${Math.round(projectedSalary / 1000)}k</p>
               <p className="text-[10px] text-surface-200/50 mt-1">Projected Salary</p>
             </div>
-            <div className="dash-card p-4 text-center">
+            <div className="dash-card p-4 text-center min-w-0 overflow-hidden">
               <TrendingUp size={16} className="text-violet-400 mx-auto mb-2" />
               <p className="text-base font-bold text-white">{hireability}</p>
               <p className="text-[10px] text-surface-200/50 mt-1">Hireability Score</p>
             </div>
-            <div className="dash-card p-4 text-center">
+            <div className="dash-card p-4 text-center min-w-0 overflow-hidden">
               <Clock size={16} className="text-amber-400 mx-auto mb-2" />
               <p className="text-base font-bold text-white">{weeksToReady} wks</p>
               <p className="text-[10px] text-surface-200/50 mt-1">Time to Ready</p>
@@ -163,34 +163,37 @@ export default function CareerSimPage({ activeAnalysis, toast }) {
 
           {/* Effort vs Reward Scatter */}
           {scatterData.length > 0 && (
-            <div className="dash-card p-4">
+            <div className="dash-card p-4 overflow-hidden">
               <h3 className="text-sm font-semibold text-white mb-3">Effort vs Reward</h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <ScatterChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
-                  <CartesianGrid stroke="rgba(255,255,255,0.04)" />
-                  <XAxis type="number" dataKey="difficulty" name="Difficulty" domain={[0, 6]} tick={{ fill: "#94a3b8", fontSize: 10 }} label={{ value: "Learning Difficulty →", position: "bottom", fill: "#94a3b8", fontSize: 10 }} />
-                  <YAxis type="number" dataKey="salaryImpact" name="Salary (K)" tick={{ fill: "#94a3b8", fontSize: 10 }} label={{ value: "Salary Impact →", angle: -90, position: "left", fill: "#94a3b8", fontSize: 10 }} />
-                  <ZAxis type="number" dataKey="demand" range={[40, 400]} />
-                  <Tooltip
-                    cursor={{ strokeDasharray: "3 3" }}
-                    content={({ payload }) => {
-                      if (!payload?.[0]) return null;
-                      const d = payload[0].payload;
-                      return (
-                        <div className="bg-[#1e293b] border border-white/10 rounded-lg p-2.5 text-xs">
-                          <p className="text-white font-semibold">{d.name}</p>
-                          <p className="text-surface-200/60">Difficulty: {d.difficulty}/5 • Demand: {d.demand}%</p>
-                          <p className="text-surface-200/60">Avg Salary: ${d.salaryImpact}K</p>
-                          <p className={`font-medium mt-1`} style={{ color: quadrantColors[d.quadrant] }}>{d.quadrant}</p>
-                        </div>
-                      );
-                    }}
-                  />
-                  <Scatter data={scatterData}>
-                    {scatterData.map((d, i) => <Cell key={i} fill={quadrantColors[d.quadrant]} fillOpacity={0.7} />)}
-                  </Scatter>
-                </ScatterChart>
-              </ResponsiveContainer>
+              {/* Explicit height on container — required for Recharts ResponsiveContainer */}
+              <div style={{ width: '100%', height: 280 }}>
+                <ResponsiveContainer width="100%" height={280}>
+                  <ScatterChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
+                    <CartesianGrid stroke="rgba(255,255,255,0.04)" />
+                    <XAxis type="number" dataKey="difficulty" name="Difficulty" domain={[0, 6]} tick={{ fill: "#94a3b8", fontSize: 10 }} label={{ value: "Learning Difficulty →", position: "bottom", fill: "#94a3b8", fontSize: 10 }} />
+                    <YAxis type="number" dataKey="salaryImpact" name="Salary (K)" tick={{ fill: "#94a3b8", fontSize: 10 }} label={{ value: "Salary Impact →", angle: -90, position: "left", fill: "#94a3b8", fontSize: 10 }} />
+                    <ZAxis type="number" dataKey="demand" range={[40, 400]} />
+                    <Tooltip
+                      cursor={{ strokeDasharray: "3 3" }}
+                      content={({ payload }) => {
+                        if (!payload?.[0]) return null;
+                        const d = payload[0].payload;
+                        return (
+                          <div className="bg-[#1e293b] border border-white/10 rounded-lg p-2.5 text-xs">
+                            <p className="text-white font-semibold">{d.name}</p>
+                            <p className="text-surface-200/60">Difficulty: {d.difficulty}/5 • Demand: {d.demand}%</p>
+                            <p className="text-surface-200/60">Avg Salary: ${d.salaryImpact}K</p>
+                            <p className={`font-medium mt-1`} style={{ color: quadrantColors[d.quadrant] }}>{d.quadrant}</p>
+                          </div>
+                        );
+                      }}
+                    />
+                    <Scatter data={scatterData}>
+                      {scatterData.map((d, i) => <Cell key={i} fill={quadrantColors[d.quadrant]} fillOpacity={0.7} />)}
+                    </Scatter>
+                  </ScatterChart>
+                </ResponsiveContainer>
+              </div>
               <div className="flex flex-wrap justify-center gap-4 mt-2">
                 {Object.entries(quadrantColors).map(([label, color]) => (
                   <span key={label} className="flex items-center gap-1.5 text-[10px] text-surface-200/50">

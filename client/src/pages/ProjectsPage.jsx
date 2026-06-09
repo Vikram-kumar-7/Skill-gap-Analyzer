@@ -16,17 +16,19 @@ function ProjectCard({ project, userProject, onStart, onComplete, onToggleMilest
   const isDone = userProject?.status === "done";
 
   return (
-    <div className={`dash-card p-4 ${isDone ? "ring-1 ring-emerald-500/20" : ""}`}>
-      <div className="flex items-start justify-between mb-2">
-        <h3 className="text-sm font-semibold text-white">{project.title}</h3>
-        <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${project.difficulty === "Hard" ? "bg-red-500/15 text-red-400" : project.difficulty === "Medium" ? "bg-amber-500/15 text-amber-400" : "bg-emerald-500/15 text-emerald-400"}`}>
+    <div className={`dash-card p-4 overflow-hidden flex flex-col ${isDone ? "ring-1 ring-emerald-500/20" : ""}`}>
+      {/* Header: title + difficulty badge */}
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <h3 className="text-sm font-semibold text-white truncate flex-1 min-w-0">{project.title}</h3>
+        <span className={`px-2 py-0.5 rounded text-[10px] font-medium shrink-0 whitespace-nowrap ${project.difficulty === "Hard" ? "bg-red-500/15 text-red-400" : project.difficulty === "Medium" ? "bg-amber-500/15 text-amber-400" : "bg-emerald-500/15 text-emerald-400"}`}>
           {project.difficulty || "Medium"}
         </span>
       </div>
 
-      <p className="text-xs text-surface-200/60 mb-3 leading-relaxed">{project.description || project.desc}</p>
+      {/* Description: 3-line clamp */}
+      <p className="text-xs text-surface-200/60 mb-3 leading-relaxed overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{project.description || project.desc}</p>
 
-      {/* Tech stack / skills badges */}
+      {/* Tech stack / skills badges — wrap gracefully */}
       <div className="flex flex-wrap gap-1.5 mb-3">
         {coverSkills.slice(0, 5).map(s => (
           <span key={s} className="px-2 py-0.5 rounded-full bg-primary-500/10 text-primary-400 text-[10px] font-medium">{s}</span>
@@ -47,16 +49,15 @@ function ProjectCard({ project, userProject, onStart, onComplete, onToggleMilest
           {project.milestones.map((m, i) => (
             <label key={i} className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={!!userProject?.milestones?.[i]} onChange={() => onToggleMilestone(project.title, i)}
-                className="w-3.5 h-3.5 rounded border border-white/20 bg-transparent checked:bg-primary-500 checked:border-primary-500 appearance-none cursor-pointer relative
-                  after:content-['✓'] after:text-white after:text-[9px] after:absolute after:inset-0 after:flex after:items-center after:justify-center after:opacity-0 checked:after:opacity-100" />
+                className="w-3.5 h-3.5 rounded border border-white/20 bg-transparent checked:bg-primary-500 checked:border-primary-500 appearance-none cursor-pointer relative after:content-['✓'] after:text-white after:text-[9px] after:absolute after:inset-0 after:flex after:items-center after:justify-center after:opacity-0 checked:after:opacity-100" />
               <span className={`text-xs ${userProject?.milestones?.[i] ? "text-surface-200/40 line-through" : "text-surface-200/70"}`}>{m}</span>
             </label>
           ))}
         </div>
       )}
 
-      {/* Actions */}
-      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/[0.04]">
+      {/* Actions — pushed to bottom with mt-auto */}
+      <div className="flex items-center gap-2 mt-auto pt-3 border-t border-white/[0.04]">
         {project.milestones && (
           <button onClick={() => setExpanded(!expanded)} className="text-[11px] text-primary-400 hover:text-primary-300 flex items-center gap-1">
             {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}

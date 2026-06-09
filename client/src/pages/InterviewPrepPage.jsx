@@ -177,16 +177,17 @@ export default function InterviewPrepPage({ activeAnalysis, settings, toast }) {
       {/* Question + Answer UI */}
       {tab !== "analytics" && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          {/* Question List */}
-          <div className="dash-card p-4">
-            <div className="flex items-center gap-2 mb-3">
+          {/* Question List — left panel */}
+          <div className="dash-card p-4 overflow-hidden flex flex-col min-w-0">
+            <div className="flex items-center gap-2 mb-3 shrink-0">
               <h3 className="text-xs font-semibold text-white flex-1">Questions ({questionList.length})</h3>
               {tab === "technical" && (
                 <input value={filterSkill} onChange={e => setFilterSkill(e.target.value)} placeholder="Filter skill..."
                   className="w-24 px-2 py-1 rounded bg-white/[0.03] border border-white/[0.06] text-[10px] text-white placeholder-surface-200/30 focus:outline-none" />
               )}
             </div>
-            <div className="space-y-1.5 max-h-[500px] overflow-y-auto scrollbar-hide">
+            {/* Scrollable question list — bounded height prevents it from expanding infinitely */}
+            <div className="flex-1 space-y-1.5 overflow-y-auto scrollbar-hide" style={{ maxHeight: '500px', minHeight: '120px' }}>
               {questionList.map((q, i) => {
                 const isSelected = selectedQ === q;
                 const practiced = answers.find(a => a.question === (q.question || q.prompt));
@@ -196,10 +197,10 @@ export default function InterviewPrepPage({ activeAnalysis, settings, toast }) {
                       isSelected ? "bg-primary-500/15 border border-primary-500/20" : "hover:bg-white/[0.03] border border-transparent"
                     }`}>
                     <p className={`leading-snug ${isSelected ? "text-primary-400" : "text-surface-200/70"}`}>{(q.question || q.title || q.prompt)?.substring(0, 80)}...</p>
-                    <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
                       {q.difficulty && <span className={`text-[9px] font-medium ${q.difficulty === "Hard" ? "text-red-400" : q.difficulty === "Medium" ? "text-amber-400" : "text-emerald-400"}`}>{q.difficulty}</span>}
-                      {q.skill && <span className="text-[9px] text-surface-200/40">{q.skill}</span>}
-                      {practiced && <span className="text-[9px] text-emerald-400 flex items-center gap-0.5"><CheckCircle2 size={8} />{practiced.score}</span>}
+                      {q.skill && <span className="text-[9px] text-surface-200/40 truncate max-w-[80px]">{q.skill}</span>}
+                      {practiced && <span className="text-[9px] text-emerald-400 flex items-center gap-0.5 shrink-0"><CheckCircle2 size={8} />{practiced.score}</span>}
                     </div>
                   </button>
                 );
@@ -208,10 +209,10 @@ export default function InterviewPrepPage({ activeAnalysis, settings, toast }) {
           </div>
 
           {/* Answer Area */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-4 min-w-0 overflow-hidden">
             {selectedQ ? (
               <>
-                <div className="dash-card p-4">
+                <div className="dash-card p-4 overflow-hidden">
                   <p className="text-sm text-white font-medium leading-relaxed mb-3">{selectedQ.question || selectedQ.prompt}</p>
                   {selectedQ.starPrompt && (
                     <p className="text-xs text-surface-200/40 italic mb-3">{selectedQ.starPrompt}</p>
