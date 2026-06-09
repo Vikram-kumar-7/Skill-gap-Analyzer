@@ -249,8 +249,8 @@ function ActivityTimeline() {
       {log.length === 0 ? (
         <p className="text-sm text-surface-200/40 text-center py-6">No activity yet. Start an analysis!</p>
       ) : (
-        /* max-height + overflow-y auto keeps the timeline contained — never pushes sibling panels */
-        <div className="space-y-2.5 overflow-y-auto scrollbar-hide" style={{ maxHeight: '320px' }}>
+        /* max-h-72 overflow-y-auto keeps the timeline from pushing sibling panels */
+        <div className="space-y-2.5 overflow-y-auto scrollbar-hide max-h-72">
           {log.map((entry) => {
             const Icon = iconMap[entry.type] || iconMap.default;
             const color = colorMap[entry.type] || colorMap.default;
@@ -311,17 +311,41 @@ function getRelativeTime(date) {
 }
 
 // ── Main Dashboard ──
-export default function DashboardPage({ activeAnalysis, settings, onNavigate }) {
-  const matchPct = activeAnalysis?.matchPercentage || activeAnalysis?.summary?.matchPercentage || 0;
+export default function DashboardPage({ user, activeAnalysis, settings, onNavigate }) {
+  const name      = user?.name   || "User";
+  const course    = user?.course || "";
+  const matchPct  = activeAnalysis?.matchPercentage || activeAnalysis?.summary?.matchPercentage || 0;
   const skillsAcquired = getCompletedSkillsCount();
-  const roadmapWeek = getCurrentRoadmapWeek();
+  const roadmapWeek    = getCurrentRoadmapWeek();
   const interviewCount = getInterviewCount();
 
   const matchColor = matchPct >= 70 ? "green" : matchPct >= 40 ? "amber" : "red";
 
   return (
     <div className="space-y-6 animate-fade-in-up">
-      {/* Hero Stats — always 2 cols on mobile, 4 on desktop */}
+      {/* ── Personalised welcome hero ── */}
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="min-w-0">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight truncate">
+            Welcome back, {name}! 👋
+          </h2>
+          <p className="text-sm text-surface-200/50 mt-1 truncate">
+            {course
+              ? `${course} Student · Track your progress and close the gap to land your dream role.`
+              : "Track your progress and close the gap to land your dream role."}
+          </p>
+        </div>
+        {matchPct > 0 && (
+          <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-primary-500/10 border border-primary-500/20 shrink-0">
+            <span className="text-xs text-surface-200/50">Current Match</span>
+            <span className={`text-lg font-bold ${
+              matchPct >= 70 ? "text-emerald-400" : matchPct >= 40 ? "text-amber-400" : "text-red-400"
+            }`}>{matchPct}%</span>
+          </div>
+        )}
+      </div>
+
+      {/* Hero Stats — 2 cols mobile, 4 cols desktop */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard icon={Target}       label="Skill Match"          value={`${matchPct}%`}      sub="Latest"  color={matchColor} pulse={matchPct > 80} />
         <StatCard icon={CheckCircle2} label="Skills Acquired"      value={skillsAcquired}      sub="All time" color="green" />
@@ -329,14 +353,12 @@ export default function DashboardPage({ activeAnalysis, settings, onNavigate }) 
         <StatCard icon={Brain}        label="Interviews Practiced" value={interviewCount}       sub="Total"   color="blue" />
       </div>
 
-      {/* Radar + Right panel (Weekly Focus + AI Brief) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Left — Skill Gap Radar */}
-        <div className="min-w-0 overflow-hidden">
+      {/* Radar (col-span-3) + Right panel (col-span-2) */}
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        <div className="lg:col-span-3 min-w-0 overflow-hidden">
           <SkillRadar activeAnalysis={activeAnalysis} onNavigate={onNavigate} />
         </div>
-        {/* Right — stacked panels; flex-col so they stack cleanly */}
-        <div className="flex flex-col gap-4 min-w-0 overflow-hidden">
+        <div className="lg:col-span-2 flex flex-col gap-4 min-w-0 overflow-hidden">
           <WeeklyFocus activeAnalysis={activeAnalysis} onNavigate={onNavigate} />
           <AiDailyBrief activeAnalysis={activeAnalysis} settings={settings} />
         </div>

@@ -1,23 +1,30 @@
-import { Moon, Bell, Plus, BrainCircuit, Menu } from "lucide-react";
+import { BrainCircuit, Menu, Plus } from "lucide-react";
 
 export default function TopBar({ user, settings, onToggleAi, onNewAnalysis, onMenuToggle }) {
+  const name    = user?.name   || "User";
+  const course  = user?.course || "";
+  const initials = user?.initials || name.slice(0, 2).toUpperCase();
+
   return (
     <header className="topbar">
-      {/* Left — hamburger + welcome */}
+      {/* Left — hamburger + personalised welcome */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={onMenuToggle}
-          className="btn-icon lg:hidden"
+          className="btn-icon lg:hidden shrink-0"
           aria-label="Toggle sidebar"
         >
           <Menu size={20} />
         </button>
+
         <div className="min-w-0">
           <h2 className="text-base sm:text-[17px] font-semibold text-white leading-snug truncate">
-            Welcome back, {user?.name || "User"}! 👋
+            Welcome back, {name}! 👋
           </h2>
           <p className="text-[11px] text-surface-200/50 hidden sm:block truncate">
-            Track your progress and close the gap to land your dream role.
+            {course
+              ? `${course} Student · Track your progress and close the gap to land your dream role.`
+              : "Track your progress and close the gap to land your dream role."}
           </p>
         </div>
       </div>
@@ -37,9 +44,9 @@ export default function TopBar({ user, settings, onToggleAi, onNewAnalysis, onMe
           <span className="hidden sm:inline">AI {settings?.aiEnabled ? "ON" : "OFF"}</span>
         </button>
 
-        {/* Avatar */}
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-500 flex items-center justify-center text-white text-[11px] font-bold cursor-pointer shrink-0">
-          {user?.initials || "U"}
+        {/* Dynamic avatar */}
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-500 flex items-center justify-center text-white text-[11px] font-bold cursor-pointer shrink-0 select-none">
+          {initials}
         </div>
 
         {/* New Analysis */}

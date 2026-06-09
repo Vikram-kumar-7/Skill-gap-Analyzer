@@ -80,6 +80,12 @@ export default function SettingsPage({ user, settings, onUpdateUser, onUpdateSet
               className="w-full px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06] text-sm text-white focus:outline-none focus:border-primary-500/40" />
           </div>
           <div>
+            <label className="text-[10px] text-surface-200/50 uppercase mb-1 block">Course / Programme</label>
+            <input value={user.course || ""} onChange={e => onUpdateUser({ course: e.target.value })}
+              placeholder="e.g. B.Tech CSE, MBA, BCA"
+              className="w-full px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06] text-sm text-white placeholder-surface-200/30 focus:outline-none focus:border-primary-500/40" />
+          </div>
+          <div>
             <label className="text-[10px] text-surface-200/50 uppercase mb-1 block">Email</label>
             <input value={user.email || ""} onChange={e => onUpdateUser({ email: e.target.value })}
               className="w-full px-3 py-2 rounded-lg bg-white/[0.03] border border-white/[0.06] text-sm text-white focus:outline-none focus:border-primary-500/40" />

@@ -115,7 +115,7 @@ export default function CareerSimPage({ activeAnalysis, toast }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Skill Toggle Panel */}
         <div className="dash-card p-4 overflow-hidden">
           <h3 className="text-sm font-semibold text-white mb-1">Toggle Skills to Learn</h3>
@@ -136,7 +136,7 @@ export default function CareerSimPage({ activeAnalysis, toast }) {
         </div>
 
         {/* Outcome Dashboard */}
-        <div className="lg:col-span-2 space-y-4 min-w-0 overflow-hidden">
+        <div className="space-y-4 min-w-0 overflow-hidden">
           {/* Metric Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="dash-card p-4 text-center min-w-0 overflow-hidden">

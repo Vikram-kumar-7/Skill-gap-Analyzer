@@ -8,7 +8,7 @@ import {
   MessageSquare,
   Settings,
   Zap,
-  ChevronDown,
+  ChevronRight,
   Plus,
   X,
 } from "lucide-react";
@@ -25,7 +25,12 @@ const NAV_ITEMS = [
   { id: "settings",  label: "Settings",         icon: Settings },
 ];
 
-export default function Sidebar({ activeView, onNavigate, mobileOpen, onMobileClose }) {
+export default function Sidebar({ activeView, onNavigate, mobileOpen, onMobileClose, user }) {
+  // Derive initials and display name from user prop (falls back gracefully)
+  const displayName = user?.name || "User";
+  const displayCourse = user?.course || "";
+  const initials = user?.initials || displayName.slice(0, 2).toUpperCase();
+
   return (
     <>
       {/* Mobile backdrop */}
@@ -41,7 +46,7 @@ export default function Sidebar({ activeView, onNavigate, mobileOpen, onMobileCl
           mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        {/* Logo */}
+        {/* ── Logo ── */}
         <div className="flex items-center justify-between px-5 h-16 shrink-0 border-b border-white/[0.04]">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shrink-0">
@@ -53,14 +58,14 @@ export default function Sidebar({ activeView, onNavigate, mobileOpen, onMobileCl
             </div>
           </div>
           <button
-            className="lg:hidden p-1.5 rounded-lg text-surface-200/50 hover:text-white hover:bg-white/[0.06] transition-colors"
+            className="lg:hidden p-1.5 rounded-lg text-surface-200/50 hover:text-white hover:bg-white/[0.06] transition-colors shrink-0"
             onClick={onMobileClose}
           >
             <X size={16} />
           </button>
         </div>
 
-        {/* Navigation */}
+        {/* ── Navigation ── */}
         <nav className="flex-1 px-3 pt-4 space-y-0.5 overflow-y-auto scrollbar-hide">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -71,37 +76,43 @@ export default function Sidebar({ activeView, onNavigate, mobileOpen, onMobileCl
                 onClick={() => onNavigate(item.id)}
                 className={`sidebar-link ${isActive ? "active" : ""}`}
               >
-                <Icon size={16} className="shrink-0" />
-                <span className="truncate">{item.label}</span>
+                {/* Icon: fixed size, never shrinks */}
+                <Icon size={16} className="shrink-0 w-4 h-4" />
+                {/* Label: takes remaining space, truncates on overflow */}
+                <span className="flex-1 min-w-0 truncate text-left">{item.label}</span>
               </button>
             );
           })}
         </nav>
 
-        {/* Keyboard shortcuts */}
-        <div className="px-3 pb-3">
+        {/* ── Keyboard shortcuts hint ── */}
+        <div className="px-3 pb-3 shrink-0">
           <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-3">
             <p className="text-[10px] text-surface-200/40 leading-relaxed">
               <span className="text-surface-200/60 font-medium">Shortcuts: </span>
-              N = New&nbsp;&nbsp;R = Roadmap&nbsp;&nbsp;T = Tracker&nbsp;&nbsp;I = Interview
+              N&nbsp;New&nbsp;&nbsp;R&nbsp;Roadmap&nbsp;&nbsp;T&nbsp;Tracker&nbsp;&nbsp;I&nbsp;Interview
             </p>
           </div>
         </div>
 
-        {/* User Profile */}
-        <div className="px-3 pb-4">
+        {/* ── User Profile (dynamic from login) ── */}
+        <div className="px-3 pb-4 shrink-0">
           <button
             onClick={() => onNavigate("settings")}
             className="flex items-center gap-3 px-2.5 py-2 w-full rounded-xl hover:bg-white/[0.04] transition-colors min-w-0"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
-              AK
+            {/* Avatar with dynamic initials */}
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-500 flex items-center justify-center text-white text-xs font-bold shrink-0 select-none">
+              {initials}
             </div>
+            {/* Name + course */}
             <div className="flex-1 min-w-0 text-left">
-              <p className="text-xs font-semibold text-white truncate">Aryan Kumar</p>
-              <p className="text-[10px] text-surface-200/50 truncate">aryan@example.com</p>
+              <p className="text-xs font-semibold text-white truncate">{displayName}</p>
+              <p className="text-[10px] text-surface-200/50 truncate">
+                {displayCourse || "Settings"}
+              </p>
             </div>
-            <ChevronDown size={13} className="text-surface-200/40 shrink-0" />
+            <ChevronRight size={13} className="text-surface-200/40 shrink-0" />
           </button>
         </div>
       </aside>

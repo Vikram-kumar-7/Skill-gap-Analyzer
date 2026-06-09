@@ -238,7 +238,7 @@ export default function ProjectsPage({ activeAnalysis, settings, toast }) {
           <p className="text-sm text-surface-200/40 text-center max-w-xs">Run an analysis to get project recommendations, or generate one with AI.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projectList.slice(0, 12).map((p, i) => (
             <ProjectCard
               key={p.title + i}
