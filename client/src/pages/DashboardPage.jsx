@@ -1,377 +1,188 @@
-import { useState, useEffect } from "react";
-import {
-  Target, TrendingUp, BookOpen, Brain, Rocket, Sparkles,
-  Clock, CheckCircle2, BarChart3, ChevronRight, Activity,
-  FileSearch, MessageSquare, FolderCode, ExternalLink,
-  ChevronDown, ChevronUp, Zap, Map as MapIcon
-} from "lucide-react";
-import {
-  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
-  ResponsiveContainer, Tooltip
-} from "recharts";
-import {
-  getCompletedSkillsCount, getCurrentRoadmapWeek, getInterviewCount,
-  getActivityLog, getDailyTip, setDailyTip, isTipFresh, getSettings
-} from "../utils/store";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { Activity, Target, TrendingUp } from 'lucide-react';
+import { getUser, getAnalyses, getActivity, formatTime } from '../utils/storage.js';
 
-// ── Hero Stat Card ──
-function StatCard({ icon: Icon, label, value, sub, color, pulse }) {
-  const colorMap = {
-    blue: "from-blue-500/20 to-blue-600/10 border-blue-500/20 text-blue-400",
-    green: "from-emerald-500/20 to-emerald-600/10 border-emerald-500/20 text-emerald-400",
-    purple: "from-violet-500/20 to-violet-600/10 border-violet-500/20 text-violet-400",
-    amber: "from-amber-500/20 to-amber-600/10 border-amber-500/20 text-amber-400",
-    red: "from-red-500/20 to-red-600/10 border-red-500/20 text-red-400",
-  };
-
-  return (
-    <div className={`stat-card bg-gradient-to-br ${colorMap[color]} border ${pulse ? "animate-pulse-subtle" : ""}`}>
-      <div className="flex items-center justify-between mb-3">
-        <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${colorMap[color]} flex items-center justify-center`}>
-          <Icon size={18} />
-        </div>
-        {sub && <span className="text-[11px] text-surface-200/50">{sub}</span>}
-      </div>
-      <p className="text-2xl sm:text-3xl font-bold text-white mb-1 animate-count-up">{value}</p>
-      <p className="text-xs text-surface-200/50">{label}</p>
-    </div>
-  );
-}
-
-// ── Radar Chart Widget ──
-function SkillRadar({ activeAnalysis, onNavigate }) {
-  const radarData = [
-    { axis: "Technical Skills", you: 0, benchmark: 85 },
-    { axis: "Tools & DevOps", you: 0, benchmark: 70 },
-    { axis: "Soft Skills", you: 0, benchmark: 60 },
-    { axis: "Domain Knowledge", you: 0, benchmark: 75 },
-    { axis: "Project Experience", you: 0, benchmark: 80 },
-    { axis: "Certifications", you: 0, benchmark: 50 },
-  ];
-
-  if (activeAnalysis) {
-    const matched = activeAnalysis.matched || [];
-    const total = (activeAnalysis.matched?.length || 0) + (activeAnalysis.missing?.length || 0);
-    const pct = total > 0 ? Math.round((matched.length / total) * 100) : 0;
-    radarData[0].you = Math.min(100, pct + 10);
-    radarData[1].you = Math.min(100, pct - 5);
-    radarData[2].you = Math.min(100, 50 + Math.random() * 30);
-    radarData[3].you = Math.min(100, pct);
-    radarData[4].you = Math.min(100, pct - 10);
-    radarData[5].you = Math.min(100, 30 + Math.random() * 20);
-  }
-
-  return (
-    <div className="dash-card p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Target size={15} className="text-blue-400" />
-          Skill Gap Radar
-        </h3>
-        <button onClick={() => onNavigate("tracker")} className="text-[11px] text-primary-400 hover:text-primary-300 flex items-center gap-1">
-          View Tracker <ChevronRight size={12} />
-        </button>
-      </div>
-      <ResponsiveContainer width="100%" height={260}>
-        <RadarChart data={radarData}>
-          <PolarGrid stroke="rgba(255,255,255,0.06)" />
-          <PolarAngleAxis dataKey="axis" tick={{ fill: "#94a3b8", fontSize: 10 }} />
-          <PolarRadiusAxis tick={false} domain={[0, 100]} axisLine={false} />
-          <Radar name="Your Profile" dataKey="you" stroke="#60a5fa" fill="#60a5fa" fillOpacity={0.15} strokeWidth={2} />
-          <Radar name="Benchmark" dataKey="benchmark" stroke="#a78bfa" fill="#a78bfa" fillOpacity={0.1} strokeWidth={2} strokeDasharray="4 4" />
-          <Tooltip
-            contentStyle={{ background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", fontSize: "12px" }}
-            itemStyle={{ color: "#e2e8f0" }}
-          />
-        </RadarChart>
-      </ResponsiveContainer>
-      <div className="flex justify-center gap-6 mt-2">
-        <span className="flex items-center gap-1.5 text-[11px] text-surface-200/60">
-          <span className="w-2.5 h-2.5 rounded-full bg-blue-400" /> Your Profile
-        </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-surface-200/60">
-          <span className="w-2.5 h-2.5 rounded-full bg-violet-400" /> Target Benchmark
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// ── Weekly Focus Panel ──
-function WeeklyFocus({ activeAnalysis, onNavigate }) {
-  const skills = activeAnalysis?.roadmap?.[0]?.skills?.slice(0, 3) || [];
-
-  if (!skills.length) {
-    return (
-      <div className="dash-card p-5">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-4">
-          <Zap size={15} className="text-amber-400" />
-          Weekly Focus
-        </h3>
-        <div className="text-center py-8">
-          <p className="text-sm text-surface-200/50 mb-3">Run an analysis to get weekly focus skills</p>
-          <button onClick={() => onNavigate("upload")} className="px-4 py-2 rounded-lg bg-primary-500/20 text-primary-400 text-xs font-medium hover:bg-primary-500/30 transition-colors">
-            New Analysis
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="dash-card p-5">
-      <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-4">
-        <Zap size={15} className="text-amber-400" />
-        Weekly Focus — Phase 1 Priority
-      </h3>
-      <div className="space-y-3">
-        {skills.map((s, i) => (
-          <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-            <div className="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 text-xs font-bold">
-              {i + 1}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{s.skill}</p>
-              <p className="text-[11px] text-surface-200/50">
-                {s.estimatedWeeks} • Difficulty {s.difficulty}/5 • ROI {s.roi}
-              </p>
-            </div>
-            {s.courses?.[0]?.url && (
-              <a href={s.courses[0].url} target="_blank" rel="noopener noreferrer"
-                className="px-2.5 py-1.5 rounded-lg bg-primary-500/15 text-primary-400 text-[11px] font-medium hover:bg-primary-500/25 transition-colors flex items-center gap-1">
-                Learn <ExternalLink size={10} />
-              </a>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ── AI Daily Brief ──
-function AiDailyBrief({ activeAnalysis, settings }) {
-  const [tip, setTip] = useState(getDailyTip()?.tip || "");
-  const [collapsed, setCollapsed] = useState(false);
-  const [loading, setLoading] = useState(false);
+export default function DashboardPage() {
+  const navigate = useNavigate();
+  const [u,        setU]        = useState(() => getUser() || {});
+  const [analyses, setAnalyses] = useState(() => getAnalyses());
+  const [activity, setActivity] = useState(() => getActivity());
 
   useEffect(() => {
-    if (isTipFresh() && getDailyTip()?.tip) {
-      setTip(getDailyTip().tip);
-      return;
-    }
-    fetchTip();
+    const refresh = () => {
+      setU(getUser() || {});
+      setAnalyses(getAnalyses());
+      setActivity(getActivity());
+    };
+    window.addEventListener('storage', refresh);
+    return () => window.removeEventListener('storage', refresh);
   }, []);
 
-  async function fetchTip() {
-    setLoading(true);
-    const week = getCurrentRoadmapWeek();
-    try {
-      if (settings?.aiEnabled) {
-        const { data } = await axios.post("/api/ai/daily-tip", {
-          week,
-          topMissingCategory: "Technical",
-          targetRole: activeAnalysis?.targetRole || "Full Stack Engineer",
-          matchPercentage: activeAnalysis?.matchPercentage || 50,
-          apiKey: settings?.apiKey || "",
-        });
-        if (data.tip) {
-          setTip(data.tip);
-          setDailyTip({ tip: data.tip });
-          setLoading(false);
-          return;
-        }
-      }
-    } catch {}
-    // Fallback
-    const fallbacks = [
-      "Focus on one high-ROI skill today. Depth beats breadth in the early weeks.",
-      "Review your skill gaps and pick the one that appears most in job postings.",
-      "Build something small today — even 30 minutes of coding compounds over time.",
-      "Check your roadmap progress. Are you on track for this week's goals?",
-      "Practice one interview question today. Consistency builds confidence.",
-    ];
-    const fb = fallbacks[week % fallbacks.length];
-    setTip(fb);
-    setDailyTip({ tip: fb });
-    setLoading(false);
-  }
+  const latest = analyses.find(a => a.isActive) || analyses[0] || null;
+  const matchPct = latest?.matchPct ?? null;
+
+  // Skills acquired (from sga_skills "Learned")
+  const learned = JSON.parse(localStorage.getItem('sga_skills') || '[]').filter(s => s.status === 'Learned').length;
 
   return (
-    <div className="dash-card p-5">
-      <button onClick={() => setCollapsed(!collapsed)} className="flex items-center justify-between w-full mb-3">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Sparkles size={15} className="text-violet-400" />
-          AI Daily Brief
-        </h3>
-        {collapsed ? <ChevronDown size={14} className="text-surface-200/40" /> : <ChevronUp size={14} className="text-surface-200/40" />}
-      </button>
-      {!collapsed && (
-        <div className="p-3 rounded-xl bg-violet-500/5 border border-violet-500/10">
-          {loading ? (
-            <div className="skeleton h-12 w-full" />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
+      {/* Welcome banner */}
+      <div style={{
+        background: 'var(--bg-card)', border: '1px solid var(--border)',
+        borderRadius: '14px', padding: '20px 24px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
+      }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: '20px', fontWeight: 700, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            Welcome back, {u.name || 'there'}! 👋
+          </div>
+          <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.45)', marginTop: '4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {u.course} · {u.targetRole}
+          </div>
+        </div>
+        <div style={{ flexShrink: 0 }}>
+          {latest ? (
+            <div className="pill pill-indigo" style={{ fontSize: '13px', padding: '6px 14px' }}>
+              {matchPct}% Match
+            </div>
           ) : (
-            <p className="text-sm text-surface-200/80 leading-relaxed">{tip}</p>
+            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.25)' }}>No analysis yet</span>
           )}
         </div>
-      )}
-    </div>
-  );
-}
+      </div>
 
-// ── Activity Timeline ──
-function ActivityTimeline() {
-  const log = getActivityLog().slice(0, 8);
-  const iconMap = {
-    analysis: FileSearch,
-    skill: BarChart3,
-    skill_complete: CheckCircle2,
-    interview: MessageSquare,
-    project: FolderCode,
-    default: Activity,
-  };
-  const colorMap = {
-    analysis: "text-blue-400 bg-blue-500/10",
-    skill: "text-cyan-400 bg-cyan-500/10",
-    skill_complete: "text-emerald-400 bg-emerald-500/10",
-    interview: "text-amber-400 bg-amber-500/10",
-    project: "text-violet-400 bg-violet-500/10",
-    default: "text-surface-200/50 bg-white/5",
-  };
+      {/* Stat cards */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: '16px',
+      }} className="grid-2col">
+        <StatCard
+          label="Skill Match"
+          value={matchPct !== null ? `${matchPct}%` : '--'}
+          sub="Latest analysis"
+          icon={<Target size={20} color={matchPct >= 60 ? '#10b981' : '#f87171'} />}
+          color={matchPct >= 60 ? '#10b981' : '#f87171'}
+        />
+        <StatCard
+          label="Skills Acquired"
+          value={learned}
+          sub="All time"
+          icon={<TrendingUp size={20} color="#10b981" />}
+          color="#10b981"
+        />
+      </div>
 
-  return (
-    <div className="dash-card p-5">
-      <h3 className="text-sm font-semibold text-white flex items-center gap-2 mb-4">
-        <Activity size={15} className="text-cyan-400" />
-        Activity Timeline
-      </h3>
-      {log.length === 0 ? (
-        <p className="text-sm text-surface-200/40 text-center py-6">No activity yet. Start an analysis!</p>
-      ) : (
-        /* max-h-72 overflow-y-auto keeps the timeline from pushing sibling panels */
-        <div className="space-y-2.5 overflow-y-auto scrollbar-hide max-h-72">
-          {log.map((entry) => {
-            const Icon = iconMap[entry.type] || iconMap.default;
-            const color = colorMap[entry.type] || colorMap.default;
-            const time = new Date(entry.timestamp);
-            const relative = getRelativeTime(time);
-            return (
-              <div key={entry.id} className="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white/[0.02] transition-colors">
-                <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${color}`}>
-                  <Icon size={13} />
+      {/* Radar + Activity */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: '16px',
+      }} className="grid-2col">
+
+        {/* Radar */}
+        <div style={{
+          background: 'var(--bg-card)', border: '1px solid var(--border)',
+          borderRadius: '14px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.4)', overflow: 'hidden',
+        }}>
+          <div style={{ fontSize: '14px', fontWeight: 600, color: 'white', marginBottom: '16px' }}>Skill Gap Radar</div>
+          {latest?.radarData ? (
+            <ResponsiveContainer width="100%" height={240}>
+              <RadarChart data={latest.radarData} cx="50%" cy="50%" outerRadius="70%">
+                <PolarGrid stroke="rgba(255,255,255,0.08)" />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 11 }} />
+                <Radar name="Your Profile" dataKey="user"   stroke="#6366f1" fill="#6366f1" fillOpacity={0.2} strokeWidth={2} />
+                <Radar name="Target"       dataKey="target" stroke="#8b5cf6" fill="none"    strokeWidth={2} strokeDasharray="4 2" />
+                <Tooltip
+                  contentStyle={{ background: '#0e1525', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', fontSize: '12px' }}
+                  labelStyle={{ color: 'white' }}
+                  itemStyle={{ color: 'rgba(255,255,255,0.6)' }}
+                />
+              </RadarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div style={{ height: '240px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ textAlign: 'center' }}>
+                <Activity size={32} color="rgba(255,255,255,0.1)" style={{ margin: '0 auto 8px' }} />
+                <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}>
+                  Run an analysis to see your radar
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs text-white leading-snug truncate">{entry.message}</p>
-                  <p className="text-[10px] text-surface-200/40 mt-0.5">{relative}</p>
-                </div>
+                <button
+                  onClick={() => navigate('/new-analysis')}
+                  className="btn-primary"
+                  style={{ marginTop: '12px', padding: '7px 16px', fontSize: '12px' }}
+                >
+                  Start Analysis
+                </button>
               </div>
-            );
-          })}
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Activity */}
+        <div style={{
+          background: 'var(--bg-card)', border: '1px solid var(--border)',
+          borderRadius: '14px', padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.4)', overflow: 'hidden',
+        }}>
+          <div style={{ fontSize: '14px', fontWeight: 600, color: 'white', marginBottom: '16px' }}>Recent Activity</div>
+          {activity.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {activity.slice(0, 8).map((item, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'flex-start', gap: '10px',
+                  padding: '8px 0',
+                  borderBottom: i < Math.min(activity.length, 8) - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                }}>
+                  <div style={{
+                    width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0,
+                    background: '#6366f1', marginTop: '3px',
+                  }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {item.text}
+                    </div>
+                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.25)', marginTop: '2px' }}>
+                      {formatTime(item.time)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ textAlign: 'center', fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}>
+                No activity yet. Start with a new analysis.
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
-// ── Quick Actions ──
-function QuickActions({ onNavigate }) {
-  const actions = [
-    { label: "New Analysis", icon: FileSearch, view: "upload", color: "bg-blue-500/10 text-blue-400 border-blue-500/15" },
-    { label: "Continue Roadmap", icon: MapIcon, view: "roadmap", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/15" },
-    { label: "Practice Interview", icon: MessageSquare, view: "interview", color: "bg-amber-500/10 text-amber-400 border-amber-500/15" },
-    { label: "Build Project", icon: FolderCode, view: "projects", color: "bg-violet-500/10 text-violet-400 border-violet-500/15" },
-  ];
+function StatCard({ label, value, sub, icon, color }) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      {actions.map(a => (
-        <button
-          key={a.label}
-          onClick={() => onNavigate(a.view)}
-          className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all hover:scale-[1.02] min-w-0 overflow-hidden ${a.color}`}
-        >
-          <a.icon size={20} className="shrink-0" />
-          <span className="text-xs font-medium text-center">{a.label}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ── Helpers ──
-function getRelativeTime(date) {
-  const diff = Date.now() - date.getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  return `${days}d ago`;
-}
-
-// ── Main Dashboard ──
-export default function DashboardPage({ user, activeAnalysis, settings, onNavigate }) {
-  const name      = user?.name   || "User";
-  const course    = user?.course || "";
-  const matchPct  = activeAnalysis?.matchPercentage || activeAnalysis?.summary?.matchPercentage || 0;
-  const skillsAcquired = getCompletedSkillsCount();
-  const roadmapWeek    = getCurrentRoadmapWeek();
-  const interviewCount = getInterviewCount();
-
-  const matchColor = matchPct >= 70 ? "green" : matchPct >= 40 ? "amber" : "red";
-
-  return (
-    <div className="space-y-6 animate-fade-in-up">
-      {/* ── Personalised welcome hero ── */}
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div className="min-w-0">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight truncate">
-            Welcome back, {name}! 👋
-          </h2>
-          <p className="text-sm text-surface-200/50 mt-1 truncate">
-            {course
-              ? `${course} Student · Track your progress and close the gap to land your dream role.`
-              : "Track your progress and close the gap to land your dream role."}
-          </p>
-        </div>
-        {matchPct > 0 && (
-          <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-primary-500/10 border border-primary-500/20 shrink-0">
-            <span className="text-xs text-surface-200/50">Current Match</span>
-            <span className={`text-lg font-bold ${
-              matchPct >= 70 ? "text-emerald-400" : matchPct >= 40 ? "text-amber-400" : "text-red-400"
-            }`}>{matchPct}%</span>
-          </div>
-        )}
+    <div style={{
+      background: 'var(--bg-card)', border: '1px solid var(--border)',
+      borderRadius: '14px', padding: '20px',
+      display: 'flex', alignItems: 'center', gap: '16px',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.4)', overflow: 'hidden',
+    }}>
+      <div style={{
+        width: '44px', height: '44px', borderRadius: '50%', flexShrink: 0,
+        background: `${color}1a`, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}>
+        {icon}
       </div>
-
-      {/* Hero Stats — 2 cols mobile, 4 cols desktop */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard icon={Target}       label="Skill Match"          value={`${matchPct}%`}      sub="Latest"  color={matchColor} pulse={matchPct > 80} />
-        <StatCard icon={CheckCircle2} label="Skills Acquired"      value={skillsAcquired}      sub="All time" color="green" />
-        <StatCard icon={Clock}        label="Roadmap Week"         value={`${roadmapWeek}/12`} sub="Active"   color="purple" />
-        <StatCard icon={Brain}        label="Interviews Practiced" value={interviewCount}       sub="Total"   color="blue" />
-      </div>
-
-      {/* Radar (col-span-3) + Right panel (col-span-2) */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-        <div className="lg:col-span-3 min-w-0 overflow-hidden">
-          <SkillRadar activeAnalysis={activeAnalysis} onNavigate={onNavigate} />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: '11px', fontWeight: 500, color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          {label}
         </div>
-        <div className="lg:col-span-2 flex flex-col gap-4 min-w-0 overflow-hidden">
-          <WeeklyFocus activeAnalysis={activeAnalysis} onNavigate={onNavigate} />
-          <AiDailyBrief activeAnalysis={activeAnalysis} settings={settings} />
+        <div style={{ fontSize: '28px', fontWeight: 700, color: 'white', lineHeight: 1.2, marginTop: '2px' }}>
+          {value}
         </div>
-      </div>
-
-      {/* Quick Actions (2/3) + Activity Timeline (1/3) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2 min-w-0">
-          <QuickActions onNavigate={onNavigate} />
-        </div>
-        <div className="min-w-0 overflow-hidden">
-          <ActivityTimeline />
-        </div>
+        <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)', marginTop: '2px' }}>{sub}</div>
       </div>
     </div>
   );

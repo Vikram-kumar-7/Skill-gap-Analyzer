@@ -1,121 +1,114 @@
+import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  FileSearch,
-  Map as MapIcon,
-  BarChart3,
-  Rocket,
-  FolderCode,
-  MessageSquare,
-  Settings,
-  Zap,
-  ChevronRight,
-  Plus,
-  X,
-} from "lucide-react";
+  LayoutDashboard, PlusCircle, FileText, Map,
+  BarChart2, TrendingUp, FolderOpen, MessageSquare, Settings, Zap,
+} from 'lucide-react';
+import { getUser } from '../utils/storage.js';
 
-const NAV_ITEMS = [
-  { id: "dashboard", label: "Dashboard",       icon: LayoutDashboard },
-  { id: "upload",    label: "New Analysis",     icon: Plus },
-  { id: "analyses",  label: "My Analyses",      icon: FileSearch },
-  { id: "roadmap",   label: "Roadmap",          icon: MapIcon },
-  { id: "tracker",   label: "Skill Tracker",    icon: BarChart3 },
-  { id: "simulator", label: "Career Simulator", icon: Rocket },
-  { id: "projects",  label: "Projects",         icon: FolderCode },
-  { id: "interview", label: "Interview Prep",   icon: MessageSquare },
-  { id: "settings",  label: "Settings",         icon: Settings },
+const NAV = [
+  { icon: LayoutDashboard, label: 'Dashboard',       to: '/',              end: true },
+  { icon: PlusCircle,      label: 'New Analysis',    to: '/new-analysis' },
+  { icon: FileText,        label: 'My Analyses',     to: '/analyses' },
+  { icon: Map,             label: 'Roadmap',         to: '/roadmap' },
+  { icon: BarChart2,       label: 'Skill Tracker',   to: '/skill-tracker' },
+  { icon: TrendingUp,      label: 'Career Simulator',to: '/career-sim' },
+  { icon: FolderOpen,      label: 'Projects',        to: '/projects' },
+  { icon: MessageSquare,   label: 'Interview Prep',  to: '/interview' },
+  { icon: Settings,        label: 'Settings',        to: '/settings' },
 ];
 
-export default function Sidebar({ activeView, onNavigate, mobileOpen, onMobileClose, user }) {
-  // Derive initials and display name from user prop (falls back gracefully)
-  const displayName = user?.name || "User";
-  const displayCourse = user?.course || "";
-  const initials = user?.initials || displayName.slice(0, 2).toUpperCase();
+export default function Sidebar() {
+  const u = getUser() || {};
+  const initials = u.name
+    ? u.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+    : '??';
 
   return (
-    <>
-      {/* Mobile backdrop */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-          onClick={onMobileClose}
-        />
-      )}
+    <div style={{
+      display: 'flex', flexDirection: 'column',
+      width: '200px', height: '100vh', flexShrink: 0,
+      background: '#0a1020',
+      borderRight: '1px solid rgba(255,255,255,0.06)',
+      overflow: 'hidden',
+    }}>
+      {/* Logo */}
+      <div style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+        <div style={{
+          width: '32px', height: '32px', borderRadius: '10px',
+          background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+        }}>
+          <Zap size={16} color="white" fill="white" />
+        </div>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: '14px', fontWeight: 700, color: 'white', lineHeight: 1.2 }}>SkillGap</div>
+          <div style={{ fontSize: '9px', fontWeight: 500, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>ANALYZER</div>
+        </div>
+      </div>
 
-      <aside
-        className={`sidebar transition-transform duration-300 ${
-          mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-        }`}
-      >
-        {/* ── Logo ── */}
-        <div className="flex items-center justify-between px-5 h-16 shrink-0 border-b border-white/[0.04]">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center shrink-0">
-              <Zap size={15} className="text-white" />
+      {/* Nav */}
+      <nav style={{ flex: 1, padding: '8px', overflowY: 'auto', overflowX: 'hidden' }}>
+        {NAV.map(({ icon: Icon, label, to, end }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={end}
+            style={({ isActive }) => ({
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '9px 12px', borderRadius: '9px',
+              width: '100%', marginBottom: '2px',
+              textDecoration: 'none',
+              color: isActive ? '#a5b4fc' : 'rgba(255,255,255,0.5)',
+              background: isActive ? 'rgba(99,102,241,0.15)' : 'transparent',
+              fontWeight: isActive ? 600 : 400,
+              transition: 'background 0.15s, color 0.15s',
+              minWidth: 0,
+            })}
+            onMouseEnter={e => {
+              if (!e.currentTarget.style.background.includes('99,102,241,0.15')) {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.05)';
+                e.currentTarget.style.color = 'white';
+              }
+            }}
+            onMouseLeave={e => {
+              if (!e.currentTarget.style.background.includes('99,102,241,0.15')) {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'rgba(255,255,255,0.5)';
+              }
+            }}
+          >
+            <Icon size={17} style={{ flexShrink: 0 }} />
+            <span style={{ fontSize: '13px', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {label}
+            </span>
+          </NavLink>
+        ))}
+      </nav>
+
+      {/* User section */}
+      <div style={{
+        flexShrink: 0, padding: '12px',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
+          <div style={{
+            width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0,
+            background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '12px', fontWeight: 700, color: 'white',
+          }}>
+            {initials}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {u.name || 'User'}
             </div>
-            <div className="min-w-0">
-              <h1 className="text-[13px] font-bold text-white tracking-tight leading-none truncate">SkillGap</h1>
-              <p className="text-[9px] text-surface-200/50 tracking-widest uppercase">Analyzer</p>
+            <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {u.course || 'No course set'}
             </div>
           </div>
-          <button
-            className="lg:hidden p-1.5 rounded-lg text-surface-200/50 hover:text-white hover:bg-white/[0.06] transition-colors shrink-0"
-            onClick={onMobileClose}
-          >
-            <X size={16} />
-          </button>
         </div>
-
-        {/* ── Navigation ── */}
-        <nav className="flex-1 px-3 pt-4 space-y-0.5 overflow-y-auto scrollbar-hide">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeView === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => onNavigate(item.id)}
-                className={`sidebar-link ${isActive ? "active" : ""}`}
-              >
-                {/* Icon: fixed size, never shrinks */}
-                <Icon size={16} className="shrink-0 w-4 h-4" />
-                {/* Label: takes remaining space, truncates on overflow */}
-                <span className="flex-1 min-w-0 truncate text-left">{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* ── Keyboard shortcuts hint ── */}
-        <div className="px-3 pb-3 shrink-0">
-          <div className="rounded-xl bg-white/[0.02] border border-white/[0.04] p-3">
-            <p className="text-[10px] text-surface-200/40 leading-relaxed">
-              <span className="text-surface-200/60 font-medium">Shortcuts: </span>
-              N&nbsp;New&nbsp;&nbsp;R&nbsp;Roadmap&nbsp;&nbsp;T&nbsp;Tracker&nbsp;&nbsp;I&nbsp;Interview
-            </p>
-          </div>
-        </div>
-
-        {/* ── User Profile (dynamic from login) ── */}
-        <div className="px-3 pb-4 shrink-0">
-          <button
-            onClick={() => onNavigate("settings")}
-            className="flex items-center gap-3 px-2.5 py-2 w-full rounded-xl hover:bg-white/[0.04] transition-colors min-w-0"
-          >
-            {/* Avatar with dynamic initials */}
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-accent-500 flex items-center justify-center text-white text-xs font-bold shrink-0 select-none">
-              {initials}
-            </div>
-            {/* Name + course */}
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-xs font-semibold text-white truncate">{displayName}</p>
-              <p className="text-[10px] text-surface-200/50 truncate">
-                {displayCourse || "Settings"}
-              </p>
-            </div>
-            <ChevronRight size={13} className="text-surface-200/40 shrink-0" />
-          </button>
-        </div>
-      </aside>
-    </>
+      </div>
+    </div>
   );
 }

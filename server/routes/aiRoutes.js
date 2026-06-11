@@ -3,6 +3,68 @@ import axios from "axios";
 
 const router = Router();
 
+router.post("/chat", async (req, res) => {
+  const { model, prompt, jsonOutput, enableReasoning, timeoutMs } = req.body;
+  const key = process.env.OPENAI_API_KEY;
+
+  if (!key || key === "your_openai_api_key_here") {
+    return res.status(500).json({ error: "Missing OPENAI_API_KEY in server .env" });
+  }
+
+  const system = jsonOutput
+    ? 'Respond ONLY with valid JSON. No markdown fences, no explanation, no preamble.'
+    : 'You are a helpful technical mentor and senior software engineer.';
+
+  const body = {
+    model: model || 'google/gemma-4-31b-it:free',
+    messages: [
+      { role: 'system', content: system },
+      { role: 'user', content: prompt },
+    ],
+    temperature: 0.7,
+    max_tokens: enableReasoning ? 8192 : 2048,
+  };
+
+  if (enableReasoning) {
+    body.reasoning = { effort: 'high' };
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs || 30000);
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${key}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'http://localhost:5000',
+        'X-Title': 'SkillGapAnalyzer',
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (response.status === 429) {
+      return res.status(429).json({ error: "RATE_LIMITED" });
+    }
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: await response.text() });
+    }
+
+    const data = await response.json();
+    return res.json(data);
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      return res.status(408).json({ error: "TIMEOUT" });
+    }
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 /**
  * POST /api/ai/daily-tip — Generate daily personalized tip
  * Body: { week, topMissingCategory, targetRole, matchPercentage, apiKey }
