@@ -6,6 +6,13 @@ DashBoard :- <img width="1280" height="625" alt="image" src="https://github.com/
 projects page :- <img width="1578" height="888" alt="{3E4727EA-51AC-4EF0-9A19-2C1DD0F594BE}" src="https://github.com/user-attachments/assets/064bd1cb-6969-4e0d-a66a-f07544287377" />
 new analysis page :- <img width="1568" height="876" alt="{DC14C11A-4429-47CE-8876-BFE43029B733}" src="https://github.com/user-attachments/assets/a598e7f1-2745-4ceb-aeae-293a3acb7795" />
 learning roadmap page :- <img width="1553" height="890" alt="{11C15B9D-5501-413A-9029-B05AB4505F09}" src="https://github.com/user-attachments/assets/74f9907f-ac50-404b-a4b5-8a93b318b411" />
+# SkillGap Analyzer
+
+<div align="center">
+
+![SkillGap Analyzer Banner](https://img.shields.io/badge/SkillGap-Analyzer-6366f1?style=for-the-badge&logo=lightning&logoColor=white)
+
+**The career intelligence platform that tells you exactly what to learn next — and why.**
 
 [![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev)
@@ -14,11 +21,14 @@ learning roadmap page :- <img width="1553" height="890" alt="{11C15B9D-5501-413A
 [![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com)
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
 [![OpenRouter](https://img.shields.io/badge/OpenRouter-6366f1?style=flat-square&logo=openai&logoColor=white)](https://openrouter.ai)
- 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6366f1?style=for-the-badge)](skill-gap-analyzer-henna.vercel.app)
+
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6366f1?style=for-the-badge)](https://skillgap-analyzer.vercel.app)
 [![GitHub Stars](https://img.shields.io/github/stars/Vikram-kumar-7/Skill-gap-Analyzer?style=for-the-badge&color=fbbf24)](https://github.com/Vikram-kumar-7/Skill-gap-Analyzer/stargazers)
 
+</div>
+
 ---
+
 ## What is this?
 
 SkillGap Analyzer is a **full-stack career intelligence platform** for developers and CS students. Upload your resume, paste a job description, and instantly get:
@@ -389,8 +399,8 @@ git push origin feature/your-feature-name
 - Targeting backend engineering roles at Microsoft and top product companies
 - Building in public from a tier-3 college
 
-LinkedIn :- https://linkedin.com/in/kumar-vikram-aditya-225031309
-GitHub :- https://github.com/Vikram-kumar-7
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/kumar-vikram-aditya-225031309)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white)](https://github.com/Vikram-kumar-7)
 
 ---
 
@@ -398,6 +408,6 @@ GitHub :- https://github.com/Vikram-kumar-7
 
 MIT License — free to use, modify, and distribute.
 
-**If this helped you, give it a ⭐ — it means a lot from a tier-2 college student building in public.**
+---
 
-EOF
+**If this helped you, give it a ⭐ — it means a lot from a tier-2 college student building in public.**
