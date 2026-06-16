@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API_BASE = "/api";
+const API_BASE = (import.meta.env.VITE_API_URL || import.meta.env.VITE_APP_URL || '') + '/api';
 
 /**
  * Send resume + job description to the backend for analysis.
@@ -9,7 +9,7 @@ const API_BASE = "/api";
  */
 export const analyzeResume = async (formData) => {
   const response = await axios.post(`${API_BASE}/analyze`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { 'Content-Type': 'multipart/form-data' },
     timeout: 30000,
   });
   return response.data;

@@ -11,10 +11,18 @@ const BASE_URL = 'https://openrouter.ai/api/v1/chat/completions';
 const PRIMARY_MODEL = 'google/gemma-4-31b-it:free';
 const FALLBACK_MODEL = 'openrouter/free';
 
+const API_BASE = import.meta.env.VITE_API_URL || import.meta.env.VITE_APP_URL || '';
+
 /**
  * Core fetch wrapper around OpenRouter.
  */
-async function callModel(model, prompt, jsonOutput = false, enableReasoning = false, timeoutMs = 30000) {
+async function callModel(
+  model,
+  prompt,
+  jsonOutput = false,
+  enableReasoning = false,
+  timeoutMs = 30000
+) {
   // Try to read from localStorage first, then fallback to Vite environment variable
   let apiKey = localStorage.getItem('sga_api_key');
   if (apiKey) apiKey = apiKey.trim();
@@ -55,7 +63,7 @@ async function callModel(model, prompt, jsonOutput = false, enableReasoning = fa
 
     // 1. Try to query the backend proxy first to avoid CORS preflight latency
     try {
-      res = await fetch('/api/ai/chat', {
+      res = await fetch(`${API_BASE}/api/ai/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +73,7 @@ async function callModel(model, prompt, jsonOutput = false, enableReasoning = fa
           prompt,
           jsonOutput,
           enableReasoning,
-          timeoutMs
+          timeoutMs,
         }),
         signal: controller.signal,
       });
@@ -74,7 +82,10 @@ async function callModel(model, prompt, jsonOutput = false, enableReasoning = fa
       }
     } catch (e) {
       // Backend is likely not running, fallback to direct OpenRouter call
-      console.warn('[aiService] Backend proxy unavailable, falling back to direct OpenRouter call:', e.message);
+      console.warn(
+        '[aiService] Backend proxy unavailable, falling back to direct OpenRouter call:',
+        e.message
+      );
       fallbackToDirect = true;
     }
 
@@ -132,7 +143,9 @@ async function queryWithFailover(prompt, jsonOutput) {
   try {
     return await callModel(PRIMARY_MODEL, prompt, jsonOutput, false, 12000);
   } catch (e) {
-    console.warn(`[aiService] Primary model ${PRIMARY_MODEL} failed or timed out: ${e.message} — trying fallback...`);
+    console.warn(
+      `[aiService] Primary model ${PRIMARY_MODEL} failed or timed out: ${e.message} — trying fallback...`
+    );
     // Stage 2: Fallback to the auto-balanced router with a 25-second timeout
     return await callModel(FALLBACK_MODEL, prompt, jsonOutput, false, 25000);
   }

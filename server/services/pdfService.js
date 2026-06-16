@@ -1,4 +1,4 @@
-import pdf from "pdf-parse";
+import pdf from 'pdf-parse';
 
 /**
  * Extract raw text content from a PDF file buffer.
@@ -10,7 +10,7 @@ export const extractTextFromPDF = async (fileBuffer) => {
     const data = await pdf(fileBuffer);
     return data.text;
   } catch (error) {
-    console.error("PDF parsing error:", error.message);
+    console.error('PDF parsing error:', error.message);
     throw new Error("Failed to parse PDF file. Please ensure it's a valid PDF.");
   }
 };

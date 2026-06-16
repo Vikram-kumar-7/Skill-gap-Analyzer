@@ -45,7 +45,7 @@ export const HistoryService = {
     if (h.topics[topic].scores.length > 20) h.topics[topic].scores.shift();
 
     // Count repeated mistake keywords
-    missingPoints.forEach(p => {
+    missingPoints.forEach((p) => {
       h.mistakes[p] = (h.mistakes[p] || 0) + 1;
     });
 
@@ -96,10 +96,13 @@ export const HistoryService = {
           : 0;
         const trend = v.scores.slice(-3); // last 3 scores
         const direction =
-          trend.length < 2 ? 'stable'
-          : trend[trend.length - 1] > trend[0] ? 'improving'
-          : trend[trend.length - 1] < trend[0] ? 'declining'
-          : 'stable';
+          trend.length < 2
+            ? 'stable'
+            : trend[trend.length - 1] > trend[0]
+              ? 'improving'
+              : trend[trend.length - 1] < trend[0]
+                ? 'declining'
+                : 'stable';
         return { topic, avg, attempts: v.attempts, trend, direction };
       })
       .sort((a, b) => a.avg - b.avg);
@@ -146,15 +149,18 @@ export const HistoryService = {
 
     // Weak topics (avg score < 70%)
     const stats = this.getTopicStats();
-    const weak = stats.filter(t => t.avg < 70);
+    const weak = stats.filter((t) => t.avg < 70);
 
     if (weak.length) {
       lines.push(
-        `WEAK AREAS: ${weak.map(t =>
-          `${t.topic} (avg ${t.avg}%, ${t.attempts} attempt${t.attempts !== 1 ? 's' : ''}` +
-          (t.trend.length >= 2 ? `, trend: ${t.trend.join('→')}` : '') +
-          `)`
-        ).join(' | ')}`
+        `WEAK AREAS: ${weak
+          .map(
+            (t) =>
+              `${t.topic} (avg ${t.avg}%, ${t.attempts} attempt${t.attempts !== 1 ? 's' : ''}` +
+              (t.trend.length >= 2 ? `, trend: ${t.trend.join('→')}` : '') +
+              `)`
+          )
+          .join(' | ')}`
       );
     }
 
@@ -170,21 +176,22 @@ export const HistoryService = {
     const chronic = this.getChronicGaps();
     if (chronic.length) {
       lines.push(
-        `CHRONIC GAPS (mention explicitly if repeated): ${
-          chronic.map(({ phrase, count }) => `"${phrase}" (${count}x)`).join(', ')
-        }`
+        `CHRONIC GAPS (mention explicitly if repeated): ${chronic
+          .map(({ phrase, count }) => `"${phrase}" (${count}x)`)
+          .join(', ')}`
       );
     }
 
     // Projects built
     if (h.projects.length) {
       lines.push(
-        `BUILT: ${h.projects.slice(-3).map(p => p.name).join(', ')}`
+        `BUILT: ${h.projects
+          .slice(-3)
+          .map((p) => p.name)
+          .join(', ')}`
       );
     }
 
-    return lines.length
-      ? `[DEVELOPER HISTORY]\n${lines.join('\n')}\n[/DEVELOPER HISTORY]\n\n`
-      : '';
+    return lines.length ? `[DEVELOPER HISTORY]\n${lines.join('\n')}\n[/DEVELOPER HISTORY]\n\n` : '';
   },
 };

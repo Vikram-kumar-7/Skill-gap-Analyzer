@@ -27,7 +27,9 @@ app.use("/api/ai", aiRoutes);
 const dataDir = join(__dirname, "data");
 
 app.get("/api/data/skills-meta", (req, res) => {
-  const data = JSON.parse(readFileSync(join(dataDir, "skillsMeta.json"), "utf-8"));
+  const data = JSON.parse(
+    readFileSync(join(dataDir, "skillsMeta.json"), "utf-8"),
+  );
   res.json(data);
 });
 
@@ -37,17 +39,23 @@ app.get("/api/data/courses", (req, res) => {
 });
 
 app.get("/api/data/salaries", (req, res) => {
-  const data = JSON.parse(readFileSync(join(dataDir, "salaries.json"), "utf-8"));
+  const data = JSON.parse(
+    readFileSync(join(dataDir, "salaries.json"), "utf-8"),
+  );
   res.json(data);
 });
 
 app.get("/api/data/projects", (req, res) => {
-  const data = JSON.parse(readFileSync(join(dataDir, "projects.json"), "utf-8"));
+  const data = JSON.parse(
+    readFileSync(join(dataDir, "projects.json"), "utf-8"),
+  );
   res.json(data);
 });
 
 app.get("/api/data/questions", (req, res) => {
-  const data = JSON.parse(readFileSync(join(dataDir, "questions.json"), "utf-8"));
+  const data = JSON.parse(
+    readFileSync(join(dataDir, "questions.json"), "utf-8"),
+  );
   res.json(data);
 });
 
@@ -57,12 +65,16 @@ app.get("/api/data/tips", (req, res) => {
 });
 
 app.get("/api/data/benchmarks", (req, res) => {
-  const data = JSON.parse(readFileSync(join(dataDir, "benchmarks.json"), "utf-8"));
+  const data = JSON.parse(
+    readFileSync(join(dataDir, "benchmarks.json"), "utf-8"),
+  );
   res.json(data);
 });
 
 app.get("/api/data/dependencies", (req, res) => {
-  const data = JSON.parse(readFileSync(join(dataDir, "dependencies.json"), "utf-8"));
+  const data = JSON.parse(
+    readFileSync(join(dataDir, "dependencies.json"), "utf-8"),
+  );
   res.json(data);
 });
 

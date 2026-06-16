@@ -26,7 +26,9 @@ function get(key, fallback = null) {
   try {
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
-  } catch { return fallback; }
+  } catch {
+    return fallback;
+  }
 }
 
 function set(key, value) {
@@ -88,12 +90,14 @@ export function saveAnalysis(analysis) {
   };
   analyses.unshift(entry);
   set(KEYS.ANALYSES, analyses);
-  logActivity('analysis', `Completed analysis for "${analysis.targetRole || 'job'}"`, { matchPercentage: analysis.matchPercentage });
+  logActivity('analysis', `Completed analysis for "${analysis.targetRole || 'job'}"`, {
+    matchPercentage: analysis.matchPercentage,
+  });
   return entry;
 }
 
 export function deleteAnalysis(id) {
-  const analyses = getAnalyses().filter(a => a.id !== id);
+  const analyses = getAnalyses().filter((a) => a.id !== id);
   set(KEYS.ANALYSES, analyses);
   // If deleted the active one, clear active
   const active = getActiveAnalysis();
@@ -122,7 +126,7 @@ export function setSkillTracker(skills) {
 
 export function addSkill(skill) {
   const tracker = getSkillTracker();
-  if (tracker.find(s => s.name.toLowerCase() === skill.name.toLowerCase())) return false;
+  if (tracker.find((s) => s.name.toLowerCase() === skill.name.toLowerCase())) return false;
   tracker.push({
     name: skill.name,
     category: skill.category || 'Other',
@@ -139,7 +143,7 @@ export function addSkill(skill) {
 
 export function updateSkill(name, updates) {
   const tracker = getSkillTracker();
-  const idx = tracker.findIndex(s => s.name.toLowerCase() === name.toLowerCase());
+  const idx = tracker.findIndex((s) => s.name.toLowerCase() === name.toLowerCase());
   if (idx >= 0) {
     tracker[idx] = { ...tracker[idx], ...updates };
     set(KEYS.SKILL_TRACKER, tracker);
@@ -239,7 +243,9 @@ export function saveInterviewAnswer(answer) {
     ...answer,
   });
   set(KEYS.INTERVIEW_ANSWERS, answers);
-  logActivity('interview', `Practiced: "${answer.question?.substring(0, 50)}..."`, { score: answer.score });
+  logActivity('interview', `Practiced: "${answer.question?.substring(0, 50)}..."`, {
+    score: answer.score,
+  });
 }
 
 export function getInterviewCount() {
@@ -310,7 +316,10 @@ export function saveScenario(scenario) {
 }
 
 export function deleteScenario(id) {
-  set(KEYS.SCENARIOS, getScenarios().filter(s => s.id !== id));
+  set(
+    KEYS.SCENARIOS,
+    getScenarios().filter((s) => s.id !== id)
+  );
 }
 
 // === Heatmap ===
@@ -333,7 +342,9 @@ export function getStreak() {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
     const key = d.toISOString().slice(0, 10);
-    if (heatmap[key]) { streak++; } else if (i > 0) break;
+    if (heatmap[key]) {
+      streak++;
+    } else if (i > 0) break;
   }
   return streak;
 }
@@ -342,8 +353,8 @@ export function getStreak() {
 export function getCompletedSkillsCount() {
   const tracker = getSkillTracker();
   const roadmapProgress = getRoadmapProgress();
-  const fromTracker = tracker.filter(s => s.status === 'Completed').length;
-  const fromRoadmap = Object.values(roadmapProgress).filter(p => p.completed).length;
+  const fromTracker = tracker.filter((s) => s.status === 'Completed').length;
+  const fromRoadmap = Object.values(roadmapProgress).filter((p) => p.completed).length;
   return Math.max(fromTracker, fromRoadmap);
 }
 
@@ -373,12 +384,12 @@ export function clearSection(section) {
     projects: [KEYS.PROJECTS, KEYS.PORTFOLIO],
     all: Object.values(KEYS),
   };
-  (keyMap[section] || []).forEach(k => localStorage.removeItem(k));
+  (keyMap[section] || []).forEach((k) => localStorage.removeItem(k));
 }
 
 export function getStorageUsage() {
   let total = 0;
-  Object.values(KEYS).forEach(key => {
+  Object.values(KEYS).forEach((key) => {
     const val = localStorage.getItem(key);
     if (val) total += val.length * 2; // UTF-16
   });

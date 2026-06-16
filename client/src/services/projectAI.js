@@ -38,7 +38,7 @@ Return ONLY a JSON array containing exactly 3 project objects in this format (no
     try {
       const result = await ai.generate(prompt, true);
       if (Array.isArray(result)) return result;
-      throw new Error("Result is not an array");
+      throw new Error('Result is not an array');
     } catch (e) {
       console.error('[ProjectAI] suggestProjects failed:', e);
       // Fallback suggestions
@@ -48,22 +48,22 @@ Return ONLY a JSON array containing exactly 3 project objects in this format (no
           description: `A responsive dashboard application showcasing various advanced features and component patterns in ${topic}.`,
           difficulty: 'Intermediate',
           skillsCovered: [topic, 'CSS/Styling', 'State Management'],
-          whyItHelps: `Helps you practice structure, clean component lifecycle hooks, and modular UI patterns in ${topic}.`
+          whyItHelps: `Helps you practice structure, clean component lifecycle hooks, and modular UI patterns in ${topic}.`,
         },
         {
           name: `Interactive ${topic} Toolkit`,
           description: `A library of reusable utility components and functions built with ${topic}.`,
           difficulty: 'Advanced',
           skillsCovered: [topic, 'Performance Optimization', 'Unit Testing'],
-          whyItHelps: `Forces you to think about edge cases, performance bottlenecks, and best practices.`
+          whyItHelps: `Forces you to think about edge cases, performance bottlenecks, and best practices.`,
         },
         {
           name: `Mini ${topic} Application`,
           description: `A lightweight application featuring CRUD capabilities and external API consumption.`,
           difficulty: 'Beginner',
           skillsCovered: [topic, 'API Integration', 'Form Handling'],
-          whyItHelps: `Solidifies the foundational core concepts and state flow of ${topic}.`
-        }
+          whyItHelps: `Solidifies the foundational core concepts and state flow of ${topic}.`,
+        },
       ];
     }
   },
@@ -95,7 +95,7 @@ Return ONLY a JSON object in this format (no markdown, no explanation):
     try {
       const result = await ai.generate(prompt, true);
       if (result && result.phases) return result;
-      throw new Error("Invalid roadmap structure");
+      throw new Error('Invalid roadmap structure');
     } catch (e) {
       console.error('[ProjectAI] generateRoadmap failed:', e);
       // Fallback roadmap
@@ -106,17 +106,24 @@ Return ONLY a JSON object in this format (no markdown, no explanation):
             phaseNumber: 1,
             title: `Foundations of ${skill}`,
             duration: '1 week',
-            topics: [`Core syntax and principles of ${skill}`, 'Setup & standard project structure'],
+            topics: [
+              `Core syntax and principles of ${skill}`,
+              'Setup & standard project structure',
+            ],
             milestone: `Write a simple, clean hello-world or single-purpose script using ${skill}.`,
-            resources: [`Official ${skill} documentation`, `Introductory tutorials`]
+            resources: [`Official ${skill} documentation`, `Introductory tutorials`],
           },
           {
             phaseNumber: 2,
             title: `Intermediate concepts in ${skill}`,
             duration: '2 weeks',
-            topics: ['Asynchronous patterns / complex states', 'Structuring larger applications', 'API integration / library ecosystems'],
+            topics: [
+              'Asynchronous patterns / complex states',
+              'Structuring larger applications',
+              'API integration / library ecosystems',
+            ],
             milestone: `Build a small, multi-feature app using ${skill} that consumes external APIs.`,
-            resources: [`Advanced user guides`, `Community-recommended code repos`]
+            resources: [`Advanced user guides`, `Community-recommended code repos`],
           },
           {
             phaseNumber: 3,
@@ -124,9 +131,9 @@ Return ONLY a JSON object in this format (no markdown, no explanation):
             duration: '1 week',
             topics: ['Performance bottlenecks', 'Writing test suites', 'Deployment best practices'],
             milestone: `Write tests for your previous app and optimize its bundle size or execution speed.`,
-            resources: [`Testing frameworks docs`, `Performance guidelines`]
-          }
-        ]
+            resources: [`Testing frameworks docs`, `Performance guidelines`],
+          },
+        ],
       };
     }
   },
@@ -167,11 +174,12 @@ Return ONLY a JSON object in this format (no markdown, no explanation, no backti
     try {
       const result = await ai.generate(prompt, true);
       if (result && typeof result.score === 'number') return result;
-      throw new Error("Invalid review JSON response");
+      throw new Error('Invalid review JSON response');
     } catch (e) {
       console.error('[ProjectAI] reviewCode failed:', e);
       return {
-        overallFeedback: 'Review could not be fully generated by AI. Here is a baseline assessment.',
+        overallFeedback:
+          'Review could not be fully generated by AI. Here is a baseline assessment.',
         score: 70,
         strengths: ['Code executes and looks readable'],
         improvements: [
@@ -179,10 +187,10 @@ Return ONLY a JSON object in this format (no markdown, no explanation, no backti
             issue: 'AI Code Review temporary fallback',
             suggestion: 'Double-check imports, variable declarations, and syntax rules.',
             lineReference: 'General',
-            severity: 'Medium'
-          }
+            severity: 'Medium',
+          },
         ],
-        improvedCode: code
+        improvedCode: code,
       };
     }
   },
@@ -198,7 +206,9 @@ Return ONLY a JSON object in this format (no markdown, no explanation, no backti
     const appKey = import.meta.env.VITE_ADZUNA_APP_KEY;
 
     if (!appId || !appKey) {
-      console.warn('[ProjectAI] Missing VITE_ADZUNA_APP_ID or VITE_ADZUNA_APP_KEY. Using regional mock demand data.');
+      console.warn(
+        '[ProjectAI] Missing VITE_ADZUNA_APP_ID or VITE_ADZUNA_APP_KEY. Using regional mock demand data.'
+      );
       return getMockDemand(skill);
     }
 
@@ -210,12 +220,12 @@ Return ONLY a JSON object in this format (no markdown, no explanation, no backti
       const data = await response.json();
 
       const vacancyCount = data.count || 0;
-      
+
       // Calculate average salary from results
       let totalSalary = 0;
       let salaryCount = 0;
       if (Array.isArray(data.results)) {
-        data.results.forEach(job => {
+        data.results.forEach((job) => {
           if (job.salary_min || job.salary_max) {
             const min = job.salary_min || job.salary_max;
             const max = job.salary_max || job.salary_min;
@@ -226,22 +236,21 @@ Return ONLY a JSON object in this format (no markdown, no explanation, no backti
       }
 
       // Default average salary in India for tech if no salaries are listed in search
-      const avgSalary = salaryCount > 0 
-        ? Math.round(totalSalary / salaryCount) 
-        : getFallbackAvgSalary(skill);
+      const avgSalary =
+        salaryCount > 0 ? Math.round(totalSalary / salaryCount) : getFallbackAvgSalary(skill);
 
       return {
         vacancyCount,
         avgSalary,
         salaryCurrency: 'INR',
         lastUpdated: new Date().toLocaleDateString(),
-        isMock: false
+        isMock: false,
       };
     } catch (e) {
       console.error('[ProjectAI] fetchSkillDemand failed:', e);
       return getMockDemand(skill);
     }
-  }
+  },
 };
 
 // ── Helpers ──────────────────────────────────────────────────
@@ -249,7 +258,8 @@ Return ONLY a JSON object in this format (no markdown, no explanation, no backti
 function getFallbackAvgSalary(skill) {
   const s = skill.toLowerCase();
   if (s.includes('react') || s.includes('vue') || s.includes('frontend')) return 750000;
-  if (s.includes('node') || s.includes('python') || s.includes('backend') || s.includes('java')) return 900000;
+  if (s.includes('node') || s.includes('python') || s.includes('backend') || s.includes('java'))
+    return 900000;
   if (s.includes('cloud') || s.includes('aws') || s.includes('devops')) return 1100000;
   return 600000;
 }
@@ -278,6 +288,6 @@ function getMockDemand(skill) {
     avgSalary,
     salaryCurrency: 'INR',
     lastUpdated: new Date().toLocaleDateString(),
-    isMock: true
+    isMock: true,
   };
 }

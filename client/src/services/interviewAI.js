@@ -73,10 +73,10 @@ Return ONLY a valid JSON object:
       const result = await ai.reason(prompt, true);
       // Enforce weighted scoring calculation client-side for reliability: 40% accuracy + 25% completeness + 15% clarity + 20% depth
       result.overallScore = Math.round(
-        (result.technicalAccuracy || 0) * 0.40 +
-        (result.completeness || 0)      * 0.25 +
-        (result.clarity || 0)           * 0.15 +
-        (result.depth || 0)             * 0.20
+        (result.technicalAccuracy || 0) * 0.4 +
+          (result.completeness || 0) * 0.25 +
+          (result.clarity || 0) * 0.15 +
+          (result.depth || 0) * 0.2
       );
       // Feed result back into HistoryService so the next prompt gets smarter context
       HistoryService.recordAnswer(topic, result.overallScore, result.missingPoints || []);
@@ -99,9 +99,13 @@ Return ONLY a valid JSON object:
     const context = HistoryService.buildContext(topic);
 
     const stats = HistoryService.getTopicStats();
-    const topicStat = stats.find(s => s.topic === topic);
-    const userLevel = topicStat 
-      ? (topicStat.avg > 80 ? 'Advanced' : topicStat.avg > 50 ? 'Intermediate' : 'Beginner')
+    const topicStat = stats.find((s) => s.topic === topic);
+    const userLevel = topicStat
+      ? topicStat.avg > 80
+        ? 'Advanced'
+        : topicStat.avg > 50
+          ? 'Intermediate'
+          : 'Beginner'
       : 'Intermediate';
 
     const prompt = `${context}You are a senior technical interviewer at a top-tier tech company (Google, Amazon, Netflix). 
@@ -221,11 +225,15 @@ Return ONLY a valid JSON object:
       console.error('[InterviewAI] generateAnswerOutline failed:', e);
       return {
         opening: "Let's approach this topic from the foundational principles.",
-        coreConcepts: ["Basic concepts related to " + topic],
-        steps: ["Define the system context", "Address state management and logic flow", "Refactor and write tests"],
-        edgeCases: ["Empty input bounds", "Invalid states", "Network interruptions"],
-        closing: "That summarizes the core approach and trade-offs.",
-        complexityNote: "Ensure time and space trade-offs are fully analyzed."
+        coreConcepts: ['Basic concepts related to ' + topic],
+        steps: [
+          'Define the system context',
+          'Address state management and logic flow',
+          'Refactor and write tests',
+        ],
+        edgeCases: ['Empty input bounds', 'Invalid states', 'Network interruptions'],
+        closing: 'That summarizes the core approach and trade-offs.',
+        complexityNote: 'Ensure time and space trade-offs are fully analyzed.',
       };
     }
   },
@@ -243,7 +251,8 @@ function fallbackEval(reason = 'AI unavailable') {
     feedback: `AI evaluation unavailable (${reason}). Compare your answer to the expected solution manually and self-assess each criterion.`,
     missingPoints: [],
     strengths: [],
-    improvementPlan: 'Review documentation or course materials for the topics and concepts tested here.',
+    improvementPlan:
+      'Review documentation or course materials for the topics and concepts tested here.',
     chronicGapRepeated: false,
     chronicGapName: '',
   };
