@@ -997,8 +997,7 @@ export default function InterviewPage() {
         <div style={{ minWidth: 0 }}>
           <div style={{ color: '#f0f4ff', fontSize: 20, fontWeight: 700 }}>Interview Prep</div>
           <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginTop: 2 }}>
-            {practicedInFilter} / {filtered.length} practiced · {QUESTION_BANK.length} questions
-            total
+            {practicedInFilter} / {filtered.length} practiced
           </div>
         </div>
         <button
@@ -1079,10 +1078,11 @@ export default function InterviewPage() {
         <div
           style={{
             width: '100%',
-            height: 5,
-            background: 'rgba(255,255,255,0.06)',
+            height: 6,
+            background: 'rgba(255,255,255,0.1)',
             borderRadius: 9999,
             overflow: 'hidden',
+            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.3)',
           }}
         >
           <div
@@ -1092,6 +1092,7 @@ export default function InterviewPage() {
               background: 'linear-gradient(90deg,#6366f1,#8b5cf6)',
               borderRadius: 9999,
               transition: 'width 0.4s ease',
+              minWidth: progress > 0 ? '4px' : '0',
             }}
           />
         </div>
@@ -1159,17 +1160,6 @@ export default function InterviewPage() {
               }}
             >
               {current.skill}
-            </span>
-            <span
-              style={{
-                background: 'rgba(255,255,255,0.02)',
-                color: 'rgba(255,255,255,0.3)',
-                borderRadius: 9999,
-                padding: '3px 10px',
-                fontSize: 11,
-              }}
-            >
-              {current.id ? `tech_${current.id.toString().padStart(3, '0')}` : ''}
             </span>
           </div>
           <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, flexShrink: 0 }}>
@@ -1259,29 +1249,36 @@ export default function InterviewPage() {
               padding: '10px 18px',
               borderRadius: 10,
               fontSize: 13,
-              fontWeight: 600,
-              background: evaluation ? 'rgba(16,185,129,0.15)' : 'rgba(99,102,241,0.1)',
+              fontWeight: 700,
+              background: evaluation
+                ? 'rgba(16,185,129,0.15)'
+                : userAnswer.trim()
+                  ? 'linear-gradient(135deg, #8b5cf6, #6366f1)'
+                  : 'rgba(139,92,246,0.08)',
               border: evaluation
                 ? '1px solid rgba(16,185,129,0.35)'
-                : '1px solid rgba(99,102,241,0.25)',
+                : userAnswer.trim()
+                  ? 'none'
+                  : '1px solid rgba(139,92,246,0.2)',
               color: evaluation
                 ? '#6ee7b7'
                 : userAnswer.trim()
-                  ? '#a5b4fc'
-                  : 'rgba(255,255,255,0.3)',
+                  ? 'white'
+                  : 'rgba(139,92,246,0.4)',
               cursor: userAnswer.trim() ? 'pointer' : 'not-allowed',
               transition: 'all 0.15s',
               fontFamily: 'inherit',
-              minHeight: '44px', // ensure 44px tap target
+              minHeight: '44px',
               flex: '1 1 auto',
+              boxShadow: userAnswer.trim() && !evaluation ? '0 4px 14px rgba(99,102,241,0.25)' : 'none',
             }}
           >
-            <Bot size={14} style={{ color: evaluation ? '#34d399' : 'rgba(99,102,241,0.6)' }} />
+            <Bot size={14} />
             {loadingStates.evaluateAnswer
               ? 'Evaluating...'
               : evaluation
-                ? 'Evaluation Complete'
-                : 'AI Evaluate'}
+                ? '✓ Evaluation Done'
+                : '✦ AI Evaluate'}
           </button>
         </div>
 
@@ -1767,18 +1764,30 @@ export default function InterviewPage() {
         <div>
           <div
             style={{
-              color: 'rgba(255,255,255,0.45)',
-              fontSize: 13,
-              fontWeight: 600,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
               marginBottom: 8,
             }}
           >
-            Your Answer
+            <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, fontWeight: 600 }}>
+              Your Answer
+            </span>
+            <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.2)' }}>
+              {userAnswer.length > 0 && (
+                <>
+                  {userAnswer.length} chars
+                  {' · '}
+                  ~{Math.max(1, Math.round(userAnswer.split(/\s+/).filter(Boolean).length / 130))} min
+                </>
+              )}
+              {userAnswer.length === 0 && 'Start typing your answer'}
+            </span>
           </div>
           <textarea
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
-            placeholder="Type your answer here..."
+            placeholder="Type your answer here. Use the AI Evaluate button for instant scoring across 4 axes."
             disabled={loadingStates.evaluateAnswer}
             style={{
               width: '100%',
@@ -1808,29 +1817,32 @@ export default function InterviewPage() {
       {/* ── Navigation ── */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
         <div className="flex gap-2 w-full sm:w-auto flex-1">
+          {/* Skip — ghost/text style so users aren't trained to skip */}
           <button
             onClick={handleNext}
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 6,
-              padding: '10px 18px',
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              gap: 5,
+              padding: '10px 14px',
+              background: 'transparent',
+              border: 'none',
               borderRadius: 9,
-              color: 'rgba(255,255,255,0.7)',
-              fontSize: 13,
-              fontWeight: 600,
+              color: 'rgba(255,255,255,0.3)',
+              fontSize: 12,
+              fontWeight: 500,
               cursor: 'pointer',
               fontFamily: 'inherit',
               minHeight: '44px',
-              flex: 1,
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.55)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
           >
-            <ChevronsRight size={15} /> Skip
+            <ChevronsRight size={13} /> Skip
           </button>
 
+          {/* Mark Complete — green, rewarding checkmark animation */}
           <button
             onClick={handleMark}
             style={{
@@ -1839,7 +1851,9 @@ export default function InterviewPage() {
               justifyContent: 'center',
               gap: 6,
               padding: '10px 18px',
-              background: isPracticed ? 'rgba(16,185,129,0.1)' : '#10b981',
+              background: isPracticed
+                ? 'rgba(16,185,129,0.1)'
+                : 'linear-gradient(135deg,#10b981,#059669)',
               border: isPracticed ? '1px solid rgba(16,185,129,0.25)' : 'none',
               borderRadius: 9,
               color: isPracticed ? '#10b981' : 'white',
@@ -1849,9 +1863,17 @@ export default function InterviewPage() {
               fontFamily: 'inherit',
               minHeight: '44px',
               flex: 1,
+              boxShadow: isPracticed ? 'none' : '0 4px 12px rgba(16,185,129,0.2)',
+              transition: 'all 0.2s',
             }}
           >
-            <CheckCircle2 size={15} />
+            <CheckCircle2
+              size={15}
+              style={{
+                transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1)',
+                transform: isPracticed ? 'scale(1.25)' : 'scale(1)',
+              }}
+            />
             {isPracticed ? 'Completed ✓' : 'Mark Complete'}
           </button>
         </div>
