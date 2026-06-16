@@ -15,26 +15,10 @@ learning roadmap page :- <img width="1553" height="890" alt="{11C15B9D-5501-413A
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
 [![OpenRouter](https://img.shields.io/badge/OpenRouter-6366f1?style=flat-square&logo=openai&logoColor=white)](https://openrouter.ai)
  
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6366f1?style=for-the-badge)](https://skillgap-analyzer.vercel.app)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-6366f1?style=for-the-badge)](skill-gap-analyzer-henna.vercel.app)
 [![GitHub Stars](https://img.shields.io/github/stars/Vikram-kumar-7/Skill-gap-Analyzer?style=for-the-badge&color=fbbf24)](https://github.com/Vikram-kumar-7/Skill-gap-Analyzer/stargazers)
- 
-**The career intelligence platform that tells you exactly what to learn next — and why.**
-
-React :- https://react.dev
-Vite :- https://vitejs.dev
-Tailwind CSS :- https://tailwindcss.com
-Node.js :- https://nodejs.org
-Express :- https://expressjs.com
-Supabase :- https://supabase.com
-OpenRouter :- https://openrouter.ai
-
-Live Demo :- skill-gap-analyzer-henna.vercel.app
-GitHub Stars :- https://github.com/Vikram-kumar-7/Skill-gap-Analyzer/stargazers)
-
-</div>
 
 ---
-
 ## What is this?
 
 SkillGap Analyzer is a **full-stack career intelligence platform** for developers and CS students. Upload your resume, paste a job description, and instantly get:
