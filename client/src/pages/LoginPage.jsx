@@ -84,10 +84,11 @@ export default function LoginPage() {
     borderRadius: 9,
     padding: "10px 14px",
     color: "white",
-    fontSize: 13,
+    fontSize: 14,
     outline: "none",
     marginBottom: 14,
     boxSizing: "border-box",
+    minHeight: "44px",
   };
 
   const labelStyle = {
@@ -148,7 +149,7 @@ export default function LoginPage() {
             <h1 style={{ color: "white", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>
               Get Started 👋
             </h1>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 24 }}>
+            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, marginBottom: 24 }}>
               Tell us about yourself
             </p>
 
@@ -167,7 +168,7 @@ export default function LoginPage() {
                 placeholder="e.g. Backend Developer" list="roles" style={inputStyle} />
               <datalist id="roles">{ROLE_LIST.map(r => <option key={r} value={r} />)}</datalist>
 
-              {error && <p style={{ color: "#f87171", fontSize: 12, marginBottom: 10 }}>{error}</p>}
+              {error && <p style={{ color: "#f87171", fontSize: 14, marginBottom: 10 }}>{error}</p>}
 
               <button type="submit" style={{
                 width: "100%", padding: "12px",
@@ -176,6 +177,7 @@ export default function LoginPage() {
                 color: "white", fontSize: 14, fontWeight: 700,
                 cursor: "pointer", display: "flex",
                 alignItems: "center", justifyContent: "center", gap: 8,
+                minHeight: "44px",
               }}>
                 Continue <ArrowRight size={15} />
               </button>
@@ -186,7 +188,11 @@ export default function LoginPage() {
                 background: "transparent",
                 border: "1px solid rgba(255,255,255,0.08)",
                 borderRadius: 10, color: "rgba(255,255,255,0.35)",
-                fontSize: 12, cursor: "pointer",
+                fontSize: 14, cursor: "pointer",
+                minHeight: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}>
                 Skip & use offline mode
               </button>
@@ -200,7 +206,7 @@ export default function LoginPage() {
             <h1 style={{ color: "white", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>
               Save your progress ✉️
             </h1>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 24 }}>
+            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, marginBottom: 24 }}>
               Enter your email to sync data across devices.<br />
               We'll send a magic link — no password needed.
             </p>
@@ -210,7 +216,7 @@ export default function LoginPage() {
               <input name="email" type="email" value={form.email} onChange={handleChange}
                 placeholder="you@example.com" style={inputStyle} />
 
-              {error && <p style={{ color: "#f87171", fontSize: 12, marginBottom: 10 }}>{error}</p>}
+              {error && <p style={{ color: "#f87171", fontSize: 14, marginBottom: 10 }}>{error}</p>}
 
               <button type="submit" disabled={loading} style={{
                 width: "100%", padding: "12px",
@@ -219,6 +225,7 @@ export default function LoginPage() {
                 color: "white", fontSize: 14, fontWeight: 700,
                 cursor: loading ? "not-allowed" : "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                minHeight: "44px",
               }}>
                 <Mail size={15} />
                 {loading ? "Sending..." : "Send Magic Link"}
@@ -229,7 +236,11 @@ export default function LoginPage() {
                 background: "transparent",
                 border: "1px solid rgba(255,255,255,0.08)",
                 borderRadius: 10, color: "rgba(255,255,255,0.35)",
-                fontSize: 12, cursor: "pointer",
+                fontSize: 14, cursor: "pointer",
+                minHeight: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}>
                 Skip — use offline mode instead
               </button>
@@ -237,8 +248,12 @@ export default function LoginPage() {
 
             <button onClick={() => setStep(1)} style={{
               background: "none", border: "none",
-              color: "rgba(255,255,255,0.3)", fontSize: 12,
+              color: "rgba(255,255,255,0.3)", fontSize: 14,
               cursor: "pointer", marginTop: 12,
+              minHeight: "44px",
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "0 12px",
             }}>
               ← Back
             </button>
@@ -260,7 +275,7 @@ export default function LoginPage() {
             <h2 style={{ color: "white", fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
               Check your email!
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, lineHeight: 1.7, marginBottom: 24 }}>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 1.7, marginBottom: 24 }}>
               We sent a magic link to<br />
               <strong style={{ color: "white" }}>{form.email}</strong><br />
               Click it to log in instantly.
@@ -270,7 +285,11 @@ export default function LoginPage() {
               background: "transparent",
               border: "1px solid rgba(255,255,255,0.1)",
               borderRadius: 10, color: "rgba(255,255,255,0.5)",
-              fontSize: 13, cursor: "pointer",
+              fontSize: 14, cursor: "pointer",
+              minHeight: "44px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}>
               Continue in offline mode for now
             </button>
@@ -278,7 +297,7 @@ export default function LoginPage() {
         )}
 
         <p style={{
-          color: "rgba(255,255,255,0.15)", fontSize: 11,
+          color: "rgba(255,255,255,0.15)", fontSize: 13,
           textAlign: "center", marginTop: 20,
         }}>
           No account needed · All data stored locally

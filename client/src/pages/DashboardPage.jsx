@@ -36,25 +36,21 @@ export default function DashboardPage() {
   ).length;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div className="flex flex-col gap-5 sm:gap-6">
       {/* Welcome banner */}
       <div
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 sm:p-6"
         style={{
           background: 'var(--bg-card)',
           border: '1px solid var(--border)',
           borderRadius: '14px',
-          padding: '20px 24px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '16px',
           boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
         }}
       >
         <div style={{ minWidth: 0 }}>
           <div
             style={{
-              fontSize: '20px',
+              fontSize: '18px',
               fontWeight: 700,
               color: 'white',
               overflow: 'hidden',
@@ -91,14 +87,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stat cards */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2,1fr)',
-          gap: '16px',
-        }}
-        className="grid-2col"
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <StatCard
           label="Skill Match"
           value={matchPct !== null ? `${matchPct}%` : '--'}
@@ -116,14 +105,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Radar + Activity */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2,1fr)',
-          gap: '16px',
-        }}
-        className="grid-2col"
-      >
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Radar */}
         <div
           style={{

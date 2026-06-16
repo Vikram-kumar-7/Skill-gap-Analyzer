@@ -88,12 +88,7 @@ export default function SkillTrackerPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Header */}
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px',
-        }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
           <div style={{ fontSize: '20px', fontWeight: 700, color: 'white' }}>Skill Tracker</div>
@@ -111,6 +106,7 @@ export default function SkillTrackerPage() {
             gap: '5px',
             flexShrink: 0,
             whiteSpace: 'nowrap',
+            minHeight: '44px', // ensure 44px target
           }}
         >
           <Plus size={14} /> Add Skill
@@ -118,51 +114,56 @@ export default function SkillTrackerPage() {
       </div>
 
       {/* Filter bar */}
-      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+      <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center flex-wrap">
+        <div className="relative flex items-center w-full sm:w-auto">
           <Search
             size={14}
             color="rgba(255,255,255,0.3)"
-            style={{ position: 'absolute', left: '10px', pointerEvents: 'none' }}
+            style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }}
           />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search skills..."
+            className="w-full sm:w-[200px]"
             style={{
-              width: '200px',
               paddingLeft: '32px',
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.1)',
               borderRadius: '9px',
-              padding: '8px 12px 8px 32px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
               color: 'white',
               fontSize: '13px',
               fontFamily: 'inherit',
               outline: 'none',
+              minHeight: '44px', // ensure 44px target
             }}
           />
         </div>
-        {['All', 'Learning', 'Learned'].map((f) => (
-          <button
-            key={f}
-            onClick={() => setFilter(f)}
-            style={{
-              padding: '6px 14px',
-              borderRadius: '9999px',
-              border: 'none',
-              cursor: 'pointer',
-              background: filter === f ? '#6366f1' : 'rgba(255,255,255,0.06)',
-              color: filter === f ? 'white' : 'rgba(255,255,255,0.5)',
-              fontSize: '12px',
-              fontWeight: filter === f ? 600 : 400,
-              fontFamily: 'inherit',
-              transition: 'background 0.15s, color 0.15s',
-            }}
-          >
-            {f}
-          </button>
-        ))}
+        <div className="flex gap-2 flex-wrap">
+          {['All', 'Learning', 'Learned'].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              style={{
+                padding: '10px 16px', // larger tap target on mobile
+                borderRadius: '9999px',
+                border: 'none',
+                cursor: 'pointer',
+                background: filter === f ? '#6366f1' : 'rgba(255,255,255,0.06)',
+                color: filter === f ? 'white' : 'rgba(255,255,255,0.5)',
+                fontSize: '12px',
+                fontWeight: filter === f ? 600 : 400,
+                fontFamily: 'inherit',
+                transition: 'background 0.15s, color 0.15s',
+                minHeight: '44px',
+              }}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Grid */}
@@ -206,7 +207,7 @@ export default function SkillTrackerPage() {
             if (e.target === e.currentTarget) setModal(false);
           }}
         >
-          <div className="modal-box">
+          <div className="modal-box w-full h-full max-w-full max-h-full sm:w-[380px] sm:h-auto sm:max-h-[90vh] rounded-none sm:rounded-2xl flex flex-col justify-center sm:justify-start">
             <div
               style={{ fontSize: '16px', fontWeight: 700, color: 'white', marginBottom: '20px' }}
             >
@@ -214,7 +215,7 @@ export default function SkillTrackerPage() {
             </div>
             <label className="label">Skill Name</label>
             <input
-              style={inp}
+              style={{ ...inp, minHeight: '44px', padding: '10px 14px' }}
               placeholder="e.g. React, Docker, Python..."
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
@@ -223,7 +224,7 @@ export default function SkillTrackerPage() {
             />
             <label className="label">Category</label>
             <select
-              style={{ ...inp, marginBottom: '14px' }}
+              style={{ ...inp, marginBottom: '14px', minHeight: '44px' }}
               value={newCat}
               onChange={(e) => setNewCat(e.target.value)}
             >
@@ -234,22 +235,26 @@ export default function SkillTrackerPage() {
               ))}
             </select>
             <label className="label">Status</label>
-            <select style={inp} value={newStat} onChange={(e) => setNewStat(e.target.value)}>
+            <select
+              style={{ ...inp, minHeight: '44px' }}
+              value={newStat}
+              onChange={(e) => setNewStat(e.target.value)}
+            >
               <option value="Learning">Learning</option>
               <option value="Learned">Learned</option>
             </select>
-            <div style={{ display: 'flex', gap: '10px', marginTop: '4px' }}>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
               <button
                 onClick={() => setModal(false)}
                 className="btn-outline"
-                style={{ flex: 1, padding: '10px' }}
+                style={{ flex: 1, padding: '12px', minHeight: '44px' }} // 44px tap target
               >
                 Cancel
               </button>
               <button
                 onClick={addSkill}
                 className="btn-primary"
-                style={{ flex: 1, padding: '10px' }}
+                style={{ flex: 1, padding: '12px', minHeight: '44px' }} // 44px tap target
               >
                 Add Skill
               </button>
@@ -318,13 +323,13 @@ function SkillCard({ skill, onDelete, onProgress }) {
       </div>
 
       {/* Progress */}
-      <div style={{ marginTop: '12px' }}>
+      <div style={{ marginTop: '4px' }}>
         <div
           style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '6px',
+            marginBottom: '2px',
           }}
         >
           <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)' }}>Progress</span>
@@ -333,8 +338,7 @@ function SkillCard({ skill, onDelete, onProgress }) {
           </span>
         </div>
         <div
-          className="progress-track"
-          style={{ cursor: 'pointer' }}
+          className="py-3 cursor-pointer" // larger interactive touch area
           onClick={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             const pct = Math.min(
@@ -344,14 +348,16 @@ function SkillCard({ skill, onDelete, onProgress }) {
             onProgress(pct);
           }}
         >
-          <div className="progress-fill" style={{ width: `${skill.progress}%` }} />
+          <div className="progress-track">
+            <div className="progress-fill" style={{ width: `${skill.progress}%` }} />
+          </div>
         </div>
       </div>
 
       {/* Footer */}
       <div
         style={{
-          marginTop: '12px',
+          marginTop: '4px',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -374,14 +380,19 @@ function SkillCard({ skill, onDelete, onProgress }) {
             border: 'none',
             cursor: 'pointer',
             color: 'rgba(255,255,255,0.2)',
-            padding: '2px',
-            lineHeight: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '44px',
+            minWidth: '44px',
+            margin: '-12px',
             transition: 'color 0.15s',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
           onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+          aria-label="Delete skill"
         >
-          <Trash2 size={13} />
+          <Trash2 size={14} />
         </button>
       </div>
     </div>

@@ -114,12 +114,13 @@ export default function SettingsPage() {
       background: 'rgba(255,255,255,0.04)',
       border: '1px solid rgba(255,255,255,0.1)',
       borderRadius: '9px',
-      padding: '9px 13px',
+      padding: '10px 13px',
       color: 'white',
       fontSize: '13px',
       fontFamily: 'inherit',
       outline: 'none',
       boxSizing: 'border-box',
+      minHeight: '44px', // ensure 44px tap target
     },
     value: val,
     onChange,
@@ -156,10 +157,7 @@ export default function SettingsPage() {
       <div style={cardStyle}>
         <SectionTitle icon={User} title="Profile" />
         <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '16px 0' }} />
-        <div
-          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}
-          className="grid-2col"
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             ['Name', form.name, (v) => setForm((f) => ({ ...f, name: v })), 'Your full name'],
             [
@@ -201,6 +199,7 @@ export default function SettingsPage() {
                 fontSize: '13px',
                 fontFamily: 'inherit',
                 outline: 'none',
+                minHeight: '44px', // ensure 44px tap target
               }}
             >
               {EXP_LEVELS.map((e) => (
@@ -224,7 +223,13 @@ export default function SettingsPage() {
         <button
           onClick={save}
           className="btn-primary"
-          style={{ marginTop: '16px', padding: '9px 24px', borderRadius: '9px', fontSize: '13px' }}
+          style={{
+            marginTop: '16px',
+            padding: '12px 24px',
+            borderRadius: '9px',
+            fontSize: '13px',
+            minHeight: '44px',
+          }}
         >
           {saved ? '✓ Saved!' : 'Save Changes'}
         </button>
@@ -271,24 +276,29 @@ export default function SettingsPage() {
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.1)',
                   borderRadius: '9px',
-                  padding: '9px 40px 9px 13px',
+                  padding: '10px 44px 10px 13px',
                   color: 'white',
                   fontSize: '13px',
                   fontFamily: 'inherit',
                   outline: 'none',
                   boxSizing: 'border-box',
+                  minHeight: '44px',
                 }}
               />
               <button
                 onClick={() => setShowKey((s) => !s)}
                 style={{
                   position: 'absolute',
-                  right: '10px',
+                  right: '0px',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
                   color: 'rgba(255,255,255,0.3)',
-                  lineHeight: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '44px',
+                  height: '44px',
                 }}
               >
                 {showKey ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -323,11 +333,13 @@ export default function SettingsPage() {
             onClick={exportData}
             className="btn-outline"
             style={{
-              padding: '9px 18px',
+              padding: '10px 18px',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '6px',
               fontSize: '13px',
+              minHeight: '44px',
             }}
           >
             <Download size={14} /> Export All Data
@@ -335,15 +347,17 @@ export default function SettingsPage() {
           <label
             className="btn-outline"
             style={{
-              padding: '9px 18px',
+              padding: '10px 18px',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '6px',
               fontSize: '13px',
               cursor: 'pointer',
               borderRadius: '9px',
               border: '1px solid rgba(255,255,255,0.12)',
               color: 'rgba(255,255,255,0.5)',
+              minHeight: '44px',
             }}
           >
             <Upload size={14} /> Import Data
@@ -377,10 +391,11 @@ export default function SettingsPage() {
               border: '1px solid rgba(248,113,113,0.2)',
               color: '#f87171',
               borderRadius: '9px',
-              padding: '8px 16px',
+              padding: '12px 16px',
               fontSize: '12px',
               cursor: 'pointer',
               fontFamily: 'inherit',
+              minHeight: '44px',
             }}
           >
             Full Reset — Delete All Data

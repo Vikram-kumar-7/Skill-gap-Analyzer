@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Zap, Plus } from 'lucide-react';
+import { Zap, Plus, Menu } from 'lucide-react';
 
 const PAGE_TITLES = {
   '/': { title: 'Dashboard', subtitle: 'Your learning overview' },
@@ -13,7 +13,7 @@ const PAGE_TITLES = {
   '/settings': { title: 'Settings', subtitle: 'Manage your account' },
 };
 
-export default function TopBar() {
+export default function TopBar({ onMenuClick }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { title, subtitle } = PAGE_TITLES[pathname] || { title: 'SkillGap Analyzer', subtitle: '' };
@@ -24,41 +24,63 @@ export default function TopBar() {
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
-        padding: '0 20px',
+        padding: '0 16px',
         height: '52px',
         flexShrink: 0,
         background: '#0a1020',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
       }}
     >
+      {/* Hamburger Menu Toggle on Mobile/Tablet */}
+      <button
+        onClick={onMenuClick}
+        className="lg:hidden flex items-center justify-center p-1 text-white/50 hover:text-white hover:bg-white/5 rounded-lg cursor-pointer"
+        style={{ minWidth: '44px', minHeight: '44px' }}
+        aria-label="Open sidebar"
+      >
+        <Menu size={18} />
+      </button>
+
       {/* Page info */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: '14px', fontWeight: 600, color: 'white', lineHeight: 1.2 }}>
+        <div
+          style={{
+            fontSize: '13px',
+            fontWeight: 600,
+            color: 'white',
+            lineHeight: 1.2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
           {title}
         </div>
         {subtitle && (
-          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', marginTop: '1px' }}>
+          <div
+            className="hidden sm:block"
+            style={{
+              fontSize: '10px',
+              color: 'rgba(255,255,255,0.35)',
+              marginTop: '1px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
             {subtitle}
           </div>
         )}
       </div>
 
       {/* Right side */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
-        {/* AI ON badge */}
+      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* AI ON badge - hidden on smaller mobile screens */}
         <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            background: 'rgba(16,185,129,0.1)',
-            border: '1px solid rgba(16,185,129,0.25)',
-            borderRadius: '8px',
-            padding: '4px 10px',
-          }}
+          className="hidden xs:flex items-center gap-1.5 bg-green-500/10 border border-green-500/25 rounded-lg px-2 py-1"
         >
-          <Zap size={10} color="#10b981" fill="#10b981" />
-          <span style={{ fontSize: '11px', color: '#10b981', fontWeight: 600 }}>AI ON</span>
+          <Zap size={9} color="#10b981" fill="#10b981" />
+          <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 600 }}>AI ON</span>
         </div>
 
         {/* New Analysis button */}
@@ -66,16 +88,17 @@ export default function TopBar() {
           onClick={() => navigate('/new-analysis')}
           className="btn-primary"
           style={{
-            padding: '7px 14px',
+            padding: '7px 12px',
             fontSize: '12px',
             display: 'flex',
             alignItems: 'center',
             gap: '5px',
             whiteSpace: 'nowrap',
+            minHeight: '44px', // ensure 44px tap target height
           }}
         >
           <Plus size={13} />
-          New Analysis
+          <span className="hidden sm:inline">New Analysis</span>
         </button>
       </div>
     </div>

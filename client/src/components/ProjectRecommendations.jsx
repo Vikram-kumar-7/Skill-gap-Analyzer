@@ -617,7 +617,7 @@ export default function ProjectRecommendations({ userSkills = [], onAddToProject
     <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* ── Header ── */}
       <div
-        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}
+        className="flex flex-col xs:flex-row xs:items-center justify-between gap-4"
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
           <div
@@ -651,6 +651,7 @@ export default function ProjectRecommendations({ userSkills = [], onAddToProject
           style={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 6,
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(255,255,255,0.1)',
@@ -662,6 +663,7 @@ export default function ProjectRecommendations({ userSkills = [], onAddToProject
             cursor: spinning ? 'not-allowed' : 'pointer',
             transition: 'all 0.15s',
             flexShrink: 0,
+            minHeight: '44px', // ensure 44px tap target
           }}
         >
           <RefreshCw
@@ -809,6 +811,7 @@ export default function ProjectRecommendations({ userSkills = [], onAddToProject
                   style={{
                     display: 'flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: 5,
                     background: added ? 'rgba(16,185,129,0.12)' : 'rgba(99,102,241,0.15)',
                     border: `1px solid ${added ? 'rgba(16,185,129,0.25)' : 'rgba(99,102,241,0.3)'}`,
@@ -820,6 +823,7 @@ export default function ProjectRecommendations({ userSkills = [], onAddToProject
                     cursor: added ? 'default' : 'pointer',
                     transition: 'all 0.15s',
                     flexShrink: 0,
+                    minHeight: '44px', // ensure 44px tap target
                   }}
                 >
                   {added ? (

@@ -102,13 +102,7 @@ export default function RoadmapPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Header */}
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px',
-          flexWrap: 'wrap',
-        }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
       >
         <div style={{ fontSize: '20px', fontWeight: 700, color: 'white' }}>Learning Roadmap</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
@@ -138,15 +132,7 @@ export default function RoadmapPage() {
       </div>
 
       {/* 3-column board */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px',
-          alignItems: 'start',
-          width: '100%',
-        }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start w-full">
         {PHASES.map((phase) => {
           const phaseSkills = grouped[phase.id] || [];
           const phaseDone = phaseSkills.filter((s) => completed.includes(s.name)).length;
@@ -240,9 +226,6 @@ export default function RoadmapPage() {
           );
         })}
       </div>
-
-      {/* Mobile fallback */}
-      <style>{`@media(max-width:800px){#roadmap-grid{grid-template-columns:1fr !important}}`}</style>
     </div>
   );
 }
@@ -273,25 +256,36 @@ function SkillCard({ skill, phase, completed, onToggle }) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
-          {/* Checkbox */}
+          {/* Checkbox with 44px tap target */}
           <button
             onClick={onToggle}
+            className="flex items-center justify-center cursor-pointer"
             style={{
-              width: '16px',
-              height: '16px',
-              borderRadius: '4px',
+              width: '44px',
+              height: '44px',
+              margin: '-14px 0 -14px -14px', // negative margin to maintain layout position
+              background: 'none',
+              border: 'none',
               flexShrink: 0,
-              cursor: 'pointer',
-              border: completed ? 'none' : '1px solid rgba(255,255,255,0.2)',
-              background: completed ? '#10b981' : 'transparent',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
             }}
+            aria-label="Toggle completed status"
           >
-            {completed && (
-              <span style={{ color: 'white', fontSize: '10px', fontWeight: 700 }}>✓</span>
-            )}
+            <div
+              style={{
+                width: '16px',
+                height: '16px',
+                borderRadius: '4px',
+                border: completed ? 'none' : '1px solid rgba(255,255,255,0.2)',
+                background: completed ? '#10b981' : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {completed && (
+                <span style={{ color: 'white', fontSize: '10px', fontWeight: 700 }}>✓</span>
+              )}
+            </div>
           </button>
           <div
             style={{
@@ -347,7 +341,7 @@ function SkillCard({ skill, phase, completed, onToggle }) {
               href={c.url}
               target="_blank"
               rel="noreferrer"
-              style={{ fontSize: '11px', color: phase.color, textDecoration: 'none' }}
+              style={{ fontSize: '11px', color: phase.color, textDecoration: 'none', padding: '6px 0' }} // touch targets for links
               onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
               onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
             >
@@ -359,7 +353,7 @@ function SkillCard({ skill, phase, completed, onToggle }) {
 
       {/* Collapsible tasks */}
       {skill.tasks?.length > 0 && (
-        <div style={{ marginTop: '8px' }}>
+        <div style={{ marginTop: '4px' }}>
           <button
             onClick={() => setOpen(!open)}
             style={{
@@ -368,7 +362,7 @@ function SkillCard({ skill, phase, completed, onToggle }) {
               cursor: 'pointer',
               color: 'rgba(255,255,255,0.4)',
               fontSize: '11px',
-              padding: 0,
+              padding: '12px 0', // Vertical padding to hit 44px tap target height
               display: 'flex',
               alignItems: 'center',
               gap: '4px',
@@ -379,7 +373,7 @@ function SkillCard({ skill, phase, completed, onToggle }) {
             {open ? 'Hide tasks' : 'Show tasks'}
           </button>
           {open && (
-            <div style={{ marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+            <div style={{ marginTop: '2px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
               {skill.tasks.map((t, i) => (
                 <div
                   key={i}

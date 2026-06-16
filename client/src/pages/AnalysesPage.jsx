@@ -32,12 +32,7 @@ export default function AnalysesPage() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Header */}
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px',
-        }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', minWidth: 0 }}>
           <div style={{ fontSize: '20px', fontWeight: 700, color: 'white' }}>My Analyses</div>
@@ -53,6 +48,7 @@ export default function AnalysesPage() {
             gap: '5px',
             flexShrink: 0,
             whiteSpace: 'nowrap',
+            minHeight: '44px', // ensure 44px target
           }}
         >
           <Plus size={14} /> New Analysis
@@ -81,20 +77,17 @@ export default function AnalysesPage() {
 function AnalysisCard({ analysis: a, onDelete, onActivate, fmtDate }) {
   return (
     <div
+      className="flex flex-col sm:flex-row sm:items-start gap-4 p-5"
       style={{
         background: 'var(--bg-card)',
         border: '1px solid var(--border)',
         borderRadius: '14px',
-        padding: '20px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: '16px',
         overflow: 'hidden',
       }}
     >
       {/* Left */}
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
         {/* Row 1 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
           <div
@@ -138,51 +131,52 @@ function AnalysisCard({ analysis: a, onDelete, onActivate, fmtDate }) {
 
       {/* Right */}
       <div
-        style={{
-          flexShrink: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '8px',
-          alignItems: 'flex-end',
-        }}
+        className="flex flex-row items-center justify-between sm:flex-col sm:items-end w-full sm:w-auto gap-3 pt-3 sm:pt-0 border-t border-white/5 sm:border-0"
       >
         <div style={{ fontSize: '28px', fontWeight: 700, color: '#a5b4fc', lineHeight: 1 }}>
           {a.matchPct}%
         </div>
-        {!a.isActive && (
+        <div className="flex items-center gap-3">
+          {!a.isActive && (
+            <button
+              onClick={onActivate}
+              style={{
+                border: '1px solid rgba(99,102,241,0.3)',
+                background: 'transparent',
+                color: '#a5b4fc',
+                borderRadius: '8px',
+                padding: '8px 14px',
+                fontSize: '12px',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontWeight: 500,
+                minHeight: '44px', // 44px tap target
+              }}
+            >
+              Set Active
+            </button>
+          )}
           <button
-            onClick={onActivate}
+            onClick={onDelete}
             style={{
-              border: '1px solid rgba(99,102,241,0.3)',
               background: 'transparent',
-              color: '#a5b4fc',
-              borderRadius: '8px',
-              padding: '6px 14px',
-              fontSize: '12px',
+              border: 'none',
               cursor: 'pointer',
-              fontFamily: 'inherit',
-              fontWeight: 500,
+              color: 'rgba(255,255,255,0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minHeight: '44px',
+              minWidth: '44px',
+              transition: 'color 0.15s',
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+            aria-label="Delete analysis"
           >
-            Set Active
+            <Trash2 size={16} />
           </button>
-        )}
-        <button
-          onClick={onDelete}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            color: 'rgba(255,255,255,0.2)',
-            padding: '4px',
-            lineHeight: 1,
-            transition: 'color 0.15s',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
-        >
-          <Trash2 size={14} />
-        </button>
+        </div>
       </div>
     </div>
   );

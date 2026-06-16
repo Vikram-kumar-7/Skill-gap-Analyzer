@@ -992,13 +992,7 @@ export default function InterviewPage() {
     >
       {/* ── Header ── */}
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 12,
-          flexWrap: 'wrap',
-        }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
       >
         <div style={{ minWidth: 0 }}>
           <div style={{ color: '#f0f4ff', fontSize: 20, fontWeight: 700 }}>Interview Prep</div>
@@ -1013,6 +1007,7 @@ export default function InterviewPage() {
           style={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 6,
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(255,255,255,0.1)',
@@ -1024,6 +1019,7 @@ export default function InterviewPage() {
             cursor: 'pointer',
             flexShrink: 0,
             fontFamily: 'inherit',
+            minHeight: '44px', // ensure 44px target
           }}
         >
           <RefreshCw
@@ -1041,7 +1037,7 @@ export default function InterviewPage() {
             key={cat}
             onClick={() => handleFilterChange(cat)}
             style={{
-              padding: '6px 14px',
+              padding: '10px 14px', // increased padding for 44px target height
               borderRadius: 9999,
               fontSize: 12,
               fontWeight: 600,
@@ -1052,6 +1048,7 @@ export default function InterviewPage() {
               cursor: 'pointer',
               transition: 'all 0.15s',
               fontFamily: 'inherit',
+              minHeight: '44px',
             }}
           >
             {cat}
@@ -1102,11 +1099,11 @@ export default function InterviewPage() {
 
       {/* ── Writing Pad (Interview Practice Card) ── */}
       <div
+        className="p-5 sm:p-7" // responsive padding
         style={{
           background: '#0e1525',
           border: '1px solid rgba(255,255,255,0.07)',
           borderRadius: 18,
-          padding: '28px 28px 24px',
           display: 'flex',
           flexDirection: 'column',
           gap: 20,
@@ -1181,7 +1178,7 @@ export default function InterviewPage() {
         </div>
 
         {/* Question text */}
-        <div style={{ color: '#f0f4ff', fontSize: 20, fontWeight: 600, lineHeight: 1.65 }}>
+        <div style={{ color: '#f0f4ff', fontSize: 18, fontWeight: 600, lineHeight: 1.65 }}>
           {current.question}
         </div>
 
@@ -1193,6 +1190,7 @@ export default function InterviewPage() {
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: 8,
               padding: '10px 18px',
               borderRadius: 10,
@@ -1206,6 +1204,8 @@ export default function InterviewPage() {
               cursor: 'pointer',
               transition: 'all 0.15s',
               fontFamily: 'inherit',
+              minHeight: '44px', // ensure 44px tap target
+              flex: '1 1 auto',
             }}
           >
             <Lightbulb size={14} style={{ color: hints ? '#818cf8' : 'rgba(255,255,255,0.4)' }} />
@@ -1222,6 +1222,7 @@ export default function InterviewPage() {
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: 8,
               padding: '10px 18px',
               borderRadius: 10,
@@ -1235,6 +1236,8 @@ export default function InterviewPage() {
               cursor: 'pointer',
               transition: 'all 0.15s',
               fontFamily: 'inherit',
+              minHeight: '44px', // ensure 44px tap target
+              flex: '1 1 auto',
             }}
           >
             <List size={14} style={{ color: outline ? '#a78bfa' : 'rgba(255,255,255,0.4)' }} />
@@ -1251,6 +1254,7 @@ export default function InterviewPage() {
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: 8,
               padding: '10px 18px',
               borderRadius: 10,
@@ -1268,6 +1272,8 @@ export default function InterviewPage() {
               cursor: userAnswer.trim() ? 'pointer' : 'not-allowed',
               transition: 'all 0.15s',
               fontFamily: 'inherit',
+              minHeight: '44px', // ensure 44px tap target
+              flex: '1 1 auto',
             }}
           >
             <Bot size={14} style={{ color: evaluation ? '#34d399' : 'rgba(99,102,241,0.6)' }} />
@@ -1800,50 +1806,58 @@ export default function InterviewPage() {
       </div>
 
       {/* ── Navigation ── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <button
-          onClick={handleNext}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '9px 18px',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: 9,
-            color: 'rgba(255,255,255,0.7)',
-            fontSize: 13,
-            fontWeight: 600,
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-          }}
-        >
-          <ChevronsRight size={15} /> Skip
-        </button>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full">
+        <div className="flex gap-2 w-full sm:w-auto flex-1">
+          <button
+            onClick={handleNext}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              padding: '10px 18px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: 9,
+              color: 'rgba(255,255,255,0.7)',
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              minHeight: '44px',
+              flex: 1,
+            }}
+          >
+            <ChevronsRight size={15} /> Skip
+          </button>
 
-        <button
-          onClick={handleMark}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '9px 18px',
-            background: isPracticed ? 'rgba(16,185,129,0.1)' : '#10b981',
-            border: isPracticed ? '1px solid rgba(16,185,129,0.25)' : 'none',
-            borderRadius: 9,
-            color: isPracticed ? '#10b981' : 'white',
-            fontSize: 13,
-            fontWeight: 600,
-            cursor: 'pointer',
-            fontFamily: 'inherit',
-          }}
-        >
-          <CheckCircle2 size={15} />
-          {isPracticed ? 'Completed ✓' : 'Mark Complete'}
-        </button>
+          <button
+            onClick={handleMark}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              padding: '10px 18px',
+              background: isPracticed ? 'rgba(16,185,129,0.1)' : '#10b981',
+              border: isPracticed ? '1px solid rgba(16,185,129,0.25)' : 'none',
+              borderRadius: 9,
+              color: isPracticed ? '#10b981' : 'white',
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              minHeight: '44px',
+              flex: 1,
+            }}
+          >
+            <CheckCircle2 size={15} />
+            {isPracticed ? 'Completed ✓' : 'Mark Complete'}
+          </button>
+        </div>
 
-        {/* Dot indicators */}
-        <div style={{ display: 'flex', gap: 5, alignItems: 'center', marginLeft: 24 }}>
+        {/* Dot indicators - hidden on mobile */}
+        <div className="hidden sm:flex gap-1.5 items-center px-4">
           {dotWindow.map((q, i) => {
             const realIdx = windowStart + i;
             return (
@@ -1875,11 +1889,11 @@ export default function InterviewPage() {
           onClick={handleNext}
           disabled={index === filtered.length - 1}
           style={{
-            marginLeft: 'auto',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 6,
-            padding: '9px 24px',
+            padding: '10px 24px',
             background:
               index === filtered.length - 1
                 ? 'rgba(255,255,255,0.04)'
@@ -1892,7 +1906,12 @@ export default function InterviewPage() {
             cursor: index === filtered.length - 1 ? 'not-allowed' : 'pointer',
             fontFamily: 'inherit',
             boxShadow: index === filtered.length - 1 ? 'none' : '0 4px 12px rgba(99,102,241,0.2)',
+            minHeight: '44px',
+            width: '100%',
+            smWidth: 'auto',
+            marginLeft: 'auto',
           }}
+          className="w-full sm:w-auto"
         >
           Next Question <ArrowRight size={15} />
         </button>

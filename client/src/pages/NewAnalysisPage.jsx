@@ -118,7 +118,7 @@ export default function NewAnalysisPage() {
               key={m}
               onClick={() => setMode(m)}
               style={{
-                padding: '7px 18px',
+                padding: '10px 18px', // Increased padding to ensure 44px tap target height
                 borderRadius: '8px',
                 border: 'none',
                 cursor: 'pointer',
@@ -128,6 +128,7 @@ export default function NewAnalysisPage() {
                 fontWeight: mode === m ? 600 : 400,
                 fontFamily: 'inherit',
                 transition: 'background 0.15s, color 0.15s',
+                minHeight: '44px',
               }}
             >
               {label}
@@ -152,10 +153,10 @@ export default function NewAnalysisPage() {
               setDragging(false);
               handleFile(e.dataTransfer.files[0]);
             }}
+            className="p-6 sm:p-10" // Responsive padding
             style={{
               border: `2px dashed ${dragging ? '#6366f1' : 'rgba(255,255,255,0.1)'}`,
               borderRadius: '12px',
-              padding: '40px 32px',
               textAlign: 'center',
               cursor: 'pointer',
               transition: 'border-color 0.15s',
@@ -235,7 +236,12 @@ export default function NewAnalysisPage() {
       {/* Target role */}
       <div style={cardStyle}>
         <div className="label">Target Benchmark Role</div>
-        <select className="inp" value={role} onChange={(e) => setRole(e.target.value)}>
+        <select
+          className="inp"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          style={{ minHeight: '44px' }} // 44px tap target height
+        >
           {ROLES.map((r) => (
             <option key={r} value={r}>
               {r}

@@ -90,10 +90,7 @@ export default function CareerSimPage() {
       </div>
 
       {/* Salary cards */}
-      <div
-        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}
-        className="grid-2col"
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div style={cardStyle}>
           <div className="label">Current Estimated Salary</div>
           <div style={{ fontSize: '28px', fontWeight: 700, color: '#a5b4fc', marginTop: '6px' }}>
@@ -160,10 +157,7 @@ export default function CareerSimPage() {
 
       {/* Role comparison */}
       <div style={{ fontSize: '14px', fontWeight: 600, color: 'white' }}>Role Comparison</div>
-      <div
-        style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}
-        className="grid-2col"
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <RoleCard role={roleA} stats={statsA} roles={ROLES} onChange={setRoleA} />
         <RoleCard role={roleB} stats={statsB} roles={ROLES} onChange={setRoleB} />
       </div>
@@ -190,12 +184,13 @@ function RoleCard({ role, stats, roles, onChange }) {
           background: 'rgba(255,255,255,0.04)',
           border: '1px solid rgba(255,255,255,0.1)',
           borderRadius: '9px',
-          padding: '9px 12px',
+          padding: '10px 12px',
           color: 'white',
           fontSize: '13px',
           fontFamily: 'inherit',
           outline: 'none',
           marginBottom: '14px',
+          minHeight: '44px', // ensure 44px tap target
         }}
       >
         {roles.map((r) => (

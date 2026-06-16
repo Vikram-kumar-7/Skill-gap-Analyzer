@@ -16,6 +16,8 @@ import SettingsPage from './pages/SettingsPage.jsx';
 import { supabase } from './utils/supabase';
 
 function AppShell() {
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
   return (
     <div
       id="app-shell"
@@ -27,7 +29,7 @@ function AppShell() {
         background: '#080d1a',
       }}
     >
-      <Sidebar />
+      <Sidebar isOpen={mobileSidebarOpen} onClose={() => setMobileSidebarOpen(false)} />
       <div
         id="main"
         style={{
@@ -39,14 +41,14 @@ function AppShell() {
           overflow: 'hidden',
         }}
       >
-        <TopBar />
+        <TopBar onMenuClick={() => setMobileSidebarOpen(true)} />
         <main
           id="page-area"
+          className="p-4 md:p-6"
           style={{
             flex: 1,
             overflowY: 'auto',
             overflowX: 'hidden',
-            padding: '24px',
             minHeight: 0,
           }}
         >
