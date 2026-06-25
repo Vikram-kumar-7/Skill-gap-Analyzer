@@ -1,6 +1,6 @@
 // ============================================================
 // src/services/interviewAI.js
-// Nemotron 550B Ultra handles all interview tasks:
+// google/gemma-4-31b-it:free handles all interview tasks:
 //   - Answer evaluation with 4-axis scoring
 //   - Progressive hint generation
 //   - Targeted follow-up questions

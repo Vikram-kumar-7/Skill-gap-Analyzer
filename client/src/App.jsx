@@ -13,7 +13,9 @@ import CareerSimPage from './pages/CareerSimPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 import InterviewPage from './pages/InterviewPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
+import PlacementPage from './pages/PlacementPage.jsx';
 import { supabase } from './utils/supabase';
+import { syncRemoteToLocal } from './utils/storage.js';
 
 function AppShell() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -26,7 +28,7 @@ function AppShell() {
         height: '100vh',
         width: '100vw',
         overflow: 'hidden',
-        background: '#080d1a',
+        background: 'var(--color-base)',
       }}
     >
       <Sidebar isOpen={mobileSidebarOpen} onClose={() => setMobileSidebarOpen(false)} />
@@ -62,6 +64,7 @@ function AppShell() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/interview" element={<InterviewPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/placement" element={<PlacementPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
@@ -116,6 +119,7 @@ export default function App() {
             target_role: profile.targetRole,
             updated_at: new Date().toISOString(),
           });
+          syncRemoteToLocal();
         } catch (err) {
           console.error('Failed to sync profile to Supabase users table:', err.message);
         }

@@ -12,14 +12,25 @@ import { aiCache } from '../utils/aiCache';
 export function useAI() {
   const [loadingStates, setLoadingStates] = useState({});
   const [error, setError] = useState(null);
+  const [isWakingUp, setIsWakingUp] = useState(false);
 
   const execute = useCallback(async (key, serviceMethod, ...args) => {
     setLoadingStates((prev) => ({ ...prev, [key]: true }));
     setError(null);
+    setIsWakingUp(false);
+
+    const wakeTimer = setTimeout(() => {
+      setIsWakingUp(true);
+    }, 4000);
+
     try {
       const res = await serviceMethod(...args);
+      clearTimeout(wakeTimer);
+      setIsWakingUp(false);
       return res;
     } catch (err) {
+      clearTimeout(wakeTimer);
+      setIsWakingUp(false);
       const msg = err.message || 'AI request failed. Please check your credentials or API quota.';
       setError(msg);
       throw err;
@@ -110,6 +121,7 @@ export function useAI() {
   return {
     loadingStates,
     error,
+    isWakingUp,
     evaluateAnswer,
     generateHints,
     generateFollowUp,

@@ -4,6 +4,7 @@ import { compareSkills } from '../services/comparisonEngine.js';
 import { analyzeMarket } from '../services/marketAnalyzer.js';
 import { generateRoadmap } from '../services/roadmapGenerator.js';
 import { generateInsights } from '../services/aiService.js';
+import { getGitHubAnalysis } from '../utils/db.js';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -22,6 +23,14 @@ export const analyze = async (req, res) => {
       return res.status(400).json({ error: 'Job description is required.' });
     }
 
+    if (typeof jobDescription !== 'string' || jobDescription.length > 50000) {
+      return res.status(400).json({ error: 'Job description must be a string under 50,000 characters.' });
+    }
+
+    if (targetRole && (typeof targetRole !== 'string' || targetRole.length > 200)) {
+      return res.status(400).json({ error: 'Target role must be a string under 200 characters.' });
+    }
+
     let resumeText = '';
     if (req.file) {
       resumeText = await extractTextFromPDF(req.file.buffer);
@@ -31,7 +40,35 @@ export const analyze = async (req, res) => {
       return res.status(400).json({ error: 'Please upload a resume PDF or provide resume text.' });
     }
 
-    const resumeSkillsObj = extractSkills(resumeText);
+    if (typeof resumeText !== 'string' || resumeText.length > 50000) {
+      return res.status(400).json({ error: 'Resume text must be a string under 50,000 characters.' });
+    }
+
+    let resumeSkillsObj = extractSkills(resumeText);
+
+    // Merge GitHub Intelligence output as an additional input alongside resume skills
+    const githubUsername = req.body.githubUsername || req.query.githubUsername;
+    if (githubUsername) {
+      try {
+        const cached = await getGitHubAnalysis(githubUsername);
+        if (cached && cached.data && cached.data.skillConfidence) {
+          const confidenceThreshold = 3.0; // High confidence threshold
+          const gitSkills = Object.entries(cached.data.skillConfidence)
+            .filter(([_, conf]) => conf >= confidenceThreshold)
+            .map(([skill, _]) => ({ skill, frequency: 1 }));
+
+          const existingSkills = new Set(resumeSkillsObj.map((s) => s.skill.toLowerCase()));
+          for (const gs of gitSkills) {
+            if (!existingSkills.has(gs.skill.toLowerCase())) {
+              resumeSkillsObj.push(gs);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to merge GitHub skills in resume analysis:', err.message);
+      }
+    }
+
     const jobSkillsObj = extractSkills(jobDescription);
     const { missing, matched, matchPercentage } = compareSkills(resumeSkillsObj, jobSkillsObj);
     const marketData = analyzeMarket(missing);

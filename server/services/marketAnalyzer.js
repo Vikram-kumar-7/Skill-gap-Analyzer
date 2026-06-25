@@ -82,12 +82,22 @@ const difficultyMap = {
   'project management': 2,
 };
 
+// Precompute demand counts once at module load
+const demandCache = new Map();
+if (Array.isArray(jobs)) {
+  for (const job of jobs) {
+    if (job && Array.isArray(job.skills)) {
+      const lowercaseSkills = new Set(job.skills.map((s) => s.toLowerCase()));
+      for (const skill of lowercaseSkills) {
+        demandCache.set(skill, (demandCache.get(skill) || 0) + 1);
+      }
+    }
+  }
+}
+
 export const calculateDemand = (skill) => {
   const lowerSkill = skill.toLowerCase();
-  let count = 0;
-  jobs.forEach((job) => {
-    if (job.skills.map((s) => s.toLowerCase()).includes(lowerSkill)) count++;
-  });
+  const count = demandCache.get(lowerSkill) || 0;
   return parseFloat(((count / jobs.length) * 100).toFixed(1));
 };
 

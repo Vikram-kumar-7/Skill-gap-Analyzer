@@ -2,15 +2,16 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Zap, Plus, Menu } from 'lucide-react';
 
 const PAGE_TITLES = {
-  '/': { title: 'Dashboard', subtitle: 'Your learning overview' },
-  '/new-analysis': { title: 'New Analysis', subtitle: 'Analyze your skill gap' },
-  '/analyses': { title: 'My Analyses', subtitle: 'View and manage past results' },
-  '/roadmap': { title: 'Learning Roadmap', subtitle: 'Your personalized skill path' },
-  '/skill-tracker': { title: 'Skill Tracker', subtitle: 'Track your progress' },
-  '/career-sim': { title: 'Career Simulator', subtitle: 'Explore earning potential' },
-  '/projects': { title: 'Projects', subtitle: 'Showcase your work' },
-  '/interview': { title: 'Interview Prep', subtitle: 'Practice with flashcards' },
-  '/settings': { title: 'Settings', subtitle: 'Manage your account' },
+  '/':             { title: 'Dashboard',          subtitle: 'Your learning overview' },
+  '/new-analysis': { title: 'New Analysis',       subtitle: 'Analyze your skill gap' },
+  '/analyses':     { title: 'My Analyses',        subtitle: 'View and manage past results' },
+  '/roadmap':      { title: 'Learning Roadmap',   subtitle: 'Your personalized skill path' },
+  '/skill-tracker':{ title: 'Skill Tracker',      subtitle: 'Track your progress' },
+  '/career-sim':   { title: 'Career Simulator',   subtitle: 'Explore earning potential' },
+  '/projects':     { title: 'Projects',           subtitle: 'Showcase your work' },
+  '/interview':    { title: 'Interview Prep',     subtitle: 'Practice with AI-driven questions' },
+  '/placement':    { title: 'Placement Readiness',subtitle: 'Industry-ready assessment' },
+  '/settings':     { title: 'Settings',           subtitle: 'Manage your account' },
 };
 
 export default function TopBar({ onMenuClick }) {
@@ -24,34 +25,66 @@ export default function TopBar({ onMenuClick }) {
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
-        padding: '0 16px',
-        height: '52px',
+        padding: '0 20px',
+        height: '56px',
         flexShrink: 0,
-        background: '#0a1020',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        background: 'var(--color-surface)',
+        borderBottom: '1px solid var(--border)',
+        backdropFilter: 'blur(12px)',
+        position: 'relative',
+        zIndex: 10,
       }}
     >
-      {/* Hamburger Menu Toggle on Mobile/Tablet */}
+      {/* Subtle accent line at very top */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent 0%, var(--accent-glow) 40%, var(--accent-glow) 60%, transparent 100%)',
+          opacity: 0.6,
+        }}
+      />
+
+      {/* Hamburger */}
       <button
         onClick={onMenuClick}
-        className="lg:hidden flex items-center justify-center p-1 text-white/50 hover:text-white hover:bg-white/5 rounded-lg cursor-pointer"
-        style={{ minWidth: '44px', minHeight: '44px' }}
+        className="lg:hidden flex items-center justify-center rounded-lg cursor-pointer"
+        style={{
+          minWidth: '36px',
+          minHeight: '36px',
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid var(--border)',
+          color: 'var(--text-muted)',
+          transition: 'background var(--dur-med) ease, color var(--dur-med) ease',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+          e.currentTarget.style.color = 'var(--text-primary)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+          e.currentTarget.style.color = 'var(--text-muted)';
+        }}
         aria-label="Open sidebar"
       >
-        <Menu size={18} />
+        <Menu size={17} />
       </button>
 
       {/* Page info */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div
           style={{
-            fontSize: '13px',
-            fontWeight: 600,
-            color: 'white',
+            fontSize: '14px',
+            fontWeight: 700,
+            color: 'var(--text-primary)',
             lineHeight: 1.2,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
+            letterSpacing: '-0.01em',
           }}
         >
           {title}
@@ -60,8 +93,8 @@ export default function TopBar({ onMenuClick }) {
           <div
             className="hidden sm:block"
             style={{
-              fontSize: '10px',
-              color: 'rgba(255,255,255,0.35)',
+              fontSize: '11px',
+              color: 'var(--text-faint)',
               marginTop: '1px',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -74,13 +107,20 @@ export default function TopBar({ onMenuClick }) {
       </div>
 
       {/* Right side */}
-      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-        {/* AI ON badge - hidden on smaller mobile screens */}
+      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* AI ON badge */}
         <div
-          className="hidden xs:flex items-center gap-1.5 bg-green-500/10 border border-green-500/25 rounded-lg px-2 py-1"
+          className="hidden xs:flex items-center gap-1.5 rounded-lg px-2.5 py-1.5"
+          style={{
+            background: 'rgba(16,185,129,0.08)',
+            border: '1px solid rgba(16,185,129,0.20)',
+            boxShadow: '0 0 8px rgba(16,185,129,0.10)',
+          }}
         >
           <Zap size={9} color="#10b981" fill="#10b981" />
-          <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 600 }}>AI ON</span>
+          <span style={{ fontSize: '10px', color: '#10b981', fontWeight: 700, letterSpacing: '0.04em' }}>
+            AI ON
+          </span>
         </div>
 
         {/* New Analysis button */}
@@ -88,13 +128,14 @@ export default function TopBar({ onMenuClick }) {
           onClick={() => navigate('/new-analysis')}
           className="btn-primary"
           style={{
-            padding: '7px 12px',
+            padding: '8px 14px',
             fontSize: '12px',
             display: 'flex',
             alignItems: 'center',
             gap: '5px',
             whiteSpace: 'nowrap',
-            minHeight: '44px', // ensure 44px tap target height
+            minHeight: '36px',
+            borderRadius: '9px',
           }}
         >
           <Plus size={13} />

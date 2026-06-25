@@ -28,6 +28,29 @@ export const extractSkillsFromText = (text) => {
 // ── Analysis engine ───────────────────────────────────────────────────────────
 export const runAnalysis = ({ resumeText, jobDescription, targetRole }) => {
   const resumeSkills = extractSkillsFromText(resumeText);
+  
+  // Merge GitHub Intelligence output as an additional input alongside resume skills
+  try {
+    const gitAnalysisStr = localStorage.getItem('sga_github_analysis');
+    if (gitAnalysisStr) {
+      const gitAnalysis = JSON.parse(gitAnalysisStr);
+      if (gitAnalysis && gitAnalysis.skillConfidence) {
+        const confidenceThreshold = 3.0; // High confidence threshold
+        const gitSkills = Object.entries(gitAnalysis.skillConfidence)
+          .filter(([_, conf]) => conf >= confidenceThreshold)
+          .map(([skill, _]) => skill);
+
+        for (const gs of gitSkills) {
+          if (!resumeSkills.includes(gs)) {
+            resumeSkills.push(gs);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to merge GitHub skills in client-side analysis:', err.message);
+  }
+
   const jdSkills = extractSkillsFromText(jobDescription);
   const roleRequired = ROLE_REQUIREMENTS[targetRole] || [];
 

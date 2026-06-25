@@ -65,7 +65,7 @@ SkillGap Analyzer is a full-stack career intelligence platform for developers an
 - Salary projection before vs after learning roadmap skills
 - Side-by-side role comparison (e.g. Frontend vs DevOps)
 - ROI bar chart per missing skill
-- Indian market salary data (LPA) from curated dataset
+- Indian market salary data (LPA) from curated dataset (Based on a snapshot of 400 job postings analyzed in June 2026)
 
 ### Project Tracker and Recommendations
 - Track your portfolio projects with status, tech stack, GitHub links
@@ -362,13 +362,17 @@ Letting an LLM guess a composite score leads to inconsistent results. The final 
 **Why prefetch interview hints?**
 When a flashcard displays, the app silently fetches hints in the background after a 1-second debounce. When the user clicks Show Hint, it renders instantly from the LRU cache — zero network wait.
 
+**Why is there a Mongoose and Redis/BullMQ in-memory fallback?**
+To keep development and setup lightweight, the backend features a graceful database and task queue fallback. If local MongoDB or Redis instances are not running, the server automatically transitions to an in-memory map cache and asynchronous queue.
+*Note on Persistence:* This fallback is designed strictly as a **development convenience** to facilitate rapid local prototyping and offline demos. Because in-memory states are ephemeral and clear on server restart, a persistent MongoDB and Redis instance are required in production to support durable caching of parsed profile metrics.
+
 ---
 
 ## Roadmap
 
 - [ ] Company-specific interview question sets (Google, Microsoft, Amazon)
-- [ ] MongoDB persistence for full backend data storage
-- [ ] GitHub integration to auto-import your repos as projects
+- [x] MongoDB persistence for full backend data storage (with graceful local memory fallback)
+- [x] GitHub integration to auto-import your repos as projects (via GitHub Intelligence Engine)
 - [ ] Resume bullet point AI improver
 - [ ] Daily AI coaching tip via email
 

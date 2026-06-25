@@ -1,6 +1,6 @@
 // ============================================================
 // src/services/projectAI.js
-// Gemma 4 26B handles all project and roadmap tasks:
+// google/gemma-4-31b-it:free handles all project and roadmap tasks:
 //   - Project suggestions based on developer gaps
 //   - milestone-based roadmaps
 //   - Code reviews assessing historical coding habits
