@@ -134,7 +134,7 @@ export default function NewAnalysisPage() {
       </div>
 
       {/* ── Bento grid ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '20px', alignItems: 'start' }}>
+      <div className="na-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '20px', alignItems: 'start' }}>
 
         {/* ════ LEFT COLUMN ════ */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -447,6 +447,28 @@ export default function NewAnalysisPage() {
           </div>
         </div>
       </div>
+      <style>{`
+        @media (max-width:768px){
+          .na-grid{grid-template-columns:1fr!important;gap:16px!important}
+          .na-form{padding:20px!important}
+          .na-title{font-size:24px!important}
+          .na-desc{font-size:12px!important}
+        }
+        @media (max-width:640px){
+          .na-grid{padding:12px!important}
+          .na-form{padding:16px!important}
+          .na-title{font-size:20px!important}
+          .na-desc{font-size:11px!important}
+          .na-input{width:100%!important;min-width:100%!important}
+          .na-btn{width:100%!important}
+          .na-toggle{flex-wrap:wrap!important}
+        }
+        @media (max-width:480px){
+          .na-form{padding:14px!important;gap:14px!important}
+          .na-title{font-size:18px!important;line-height:1.2!important}
+          .na-desc{font-size:10px!important;line-height:1.4!important}
+        }
+      `}</style>
     </div>
   );
 }

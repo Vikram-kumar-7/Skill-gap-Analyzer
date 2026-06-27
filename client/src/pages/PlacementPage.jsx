@@ -13,7 +13,6 @@ import {
   ShieldAlert, 
   Trophy,
   Sliders,
-  Code
 } from 'lucide-react';
 
 const Github = (props) => (
@@ -334,7 +333,7 @@ export default function PlacementPage() {
     <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px', boxSizing: 'border-box' }}>
 
       {/* â•â• HERO: Readiness Index â•â• */}
-      <div style={{ ...glass({ padding:'24px 28px' }), display:'grid', gridTemplateColumns:'auto 1fr', gap:'28px', alignItems:'start' }}>
+      <div className="pl-hero" style={{ ...glass({ padding:'24px 28px' }), display:'grid', gridTemplateColumns:'auto 1fr', gap:'28px', alignItems:'start' }}>
         <RimGlow />
         {/* Orb */}
         <div style={{ position:'absolute', top:'-60px', right:'-60px', width:'240px', height:'240px', borderRadius:'50%', background:'rgba(78,222,163,0.06)', filter:'blur(60px)', pointerEvents:'none', zIndex:0 }} />
@@ -432,7 +431,7 @@ export default function PlacementPage() {
       </div>
 
       {/* â•â• MAIN GRID â•â• */}
-      <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr', gap:'24px', alignItems:'start' }}>
+      <div className="pl-main" style={{ display:'grid', gridTemplateColumns:'2fr 1fr', gap:'24px', alignItems:'start' }}>
 
         {/* LEFT: GitHub + CS Quiz */}
         <div style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
@@ -676,46 +675,8 @@ export default function PlacementPage() {
           </div>
         </div>
 
-        {/* RIGHT: DSA + Projects */}
+        {/* RIGHT: Projects */}
         <div style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
-
-          {/* DSA Score Estimator */}
-          <div style={glass({ padding:'24px' })}>
-            <RimGlow />
-            <div style={{ position:'relative', zIndex:1 }}>
-              <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'6px' }}>
-                <div style={{ width:32, height:32, borderRadius:'9px', background:'rgba(251,191,36,0.10)', border:'1px solid rgba(251,191,36,0.20)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                  <Code size={16} color="#fbbf24" />
-                </div>
-                <h3 style={{ fontSize:'15px', fontWeight:700, color:'#d4e4fa' }}>DSA Score Estimator</h3>
-              </div>
-              <p style={{ fontSize:'11px', color:'rgba(187,202,191,0.40)', marginBottom:'18px', lineHeight:1.5 }}>Drag sliders to set your solved counts â€” score updates live in the gauge.</p>
-
-              <div style={{ display:'flex', flexDirection:'column', gap:'18px' }}>
-                {[
-                  { label:'Easy Solved',   value:lcEasy,   max:150, color:'#4edea3', trackBg:'rgba(78,222,163,0.15)', set: (val) => { setLcEasy(val); localStorage.setItem('sga_lc_easy', val.toString()); } },
-                  { label:'Medium Solved', value:lcMedium, max:100, color:'#fbbf24', trackBg:'rgba(251,191,36,0.15)', set: (val) => { setLcMedium(val); localStorage.setItem('sga_lc_medium', val.toString()); } },
-                  { label:'Hard Solved',   value:lcHard,   max:40,  color:'#f87171', trackBg:'rgba(248,113,113,0.15)', set: (val) => { setLcHard(val); localStorage.setItem('sga_lc_hard', val.toString()); } },
-                ].map(({ label, value, set, max, color, trackBg }) => (
-                  <div key={label}>
-                    <div style={{ display:'flex', justifyContent:'space-between', fontSize:'11px', marginBottom:'8px' }}>
-                      <span style={{ color:'rgba(187,202,191,0.50)' }}>{label}</span>
-                      <span style={{ color, fontWeight:800, fontSize:'13px' }}>{value}</span>
-                    </div>
-                    <div style={{ position:'relative', height:'4px', background:'rgba(255,255,255,0.06)', borderRadius:'999px', overflow:'hidden', marginBottom:'4px' }}>
-                      <div style={{ width:`${(value/max)*100}%`, height:'100%', background:`linear-gradient(90deg, ${trackBg}, ${color})`, borderRadius:'999px', boxShadow:`0 0 8px ${color}60`, transition:'width 0.15s' }} />
-                    </div>
-                    <input type="range" min="0" max={max} value={value} onChange={e => set(Number(e.target.value))} style={{ width:'100%', accentColor:color, cursor:'pointer', marginTop:'4px' }} />
-                  </div>
-                ))}
-              </div>
-
-              <div style={{ marginTop:'18px', background:'rgba(255,255,255,0.02)', border:'1px solid rgba(255,255,255,0.05)', borderRadius:'12px', padding:'12px 14px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                <span style={{ fontSize:'10px', color:'rgba(187,202,191,0.40)', textTransform:'uppercase', letterSpacing:'0.06em' }}>DSA Score (updates gauge â†‘)</span>
-                <span style={{ fontSize:'18px', fontWeight:900, color:'#fbbf24', letterSpacing:'-0.02em' }}>{lcScore}<span style={{ fontSize:'11px', fontWeight:400, color:'rgba(255,255,255,0.25)' }}>/100</span></span>
-              </div>
-            </div>
-          </div>
 
           {/* Project Validation */}
           <div style={glass({ padding:'24px' })}>
@@ -765,6 +726,26 @@ export default function PlacementPage() {
           </div>
         </div>
       </div>
+      <style>{`
+        @media (max-width:640px){
+          .pl-hero{grid-template-columns:1fr!important;gap:16px!important}
+          .pl-main{grid-template-columns:1fr!important}
+          .pl-hero svg{width:120px!important;height:120px!important}
+          .pl-score-badge{font-size:12px!important;padding:8px 10px!important}
+          .pl-section{padding:18px 16px!important}
+          .pl-input-group{flex-direction:column!important}
+          .pl-input-group input{min-width:100%!important}
+          .pl-input-group button{width:100%!important}
+          .pl-evidence-grid{grid-template-columns:1fr!important}
+          .pl-quiz-grid{grid-template-columns:1fr!important}
+        }
+        @media (max-width:480px){
+          .pl-hero{padding:16px 12px!important;gap:12px!important}
+          .pl-section{padding:14px 12px!important;gap:12px!important}
+          .pl-badge-group{gap:6px!important}
+          .pl-badge{font-size:11px!important;padding:5px 8px!important}
+        }
+      `}</style>
     </div>
   );
 }

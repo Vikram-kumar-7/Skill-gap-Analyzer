@@ -3,7 +3,9 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "agentation": "^3.0.2"
+    "agentation": "^3.0.2",
+    "cheerio": "^1.2.0",
+    "html2canvas": "^1.4.1"
   },
   "devDependencies": {
     "prettier": "^3.2.5"

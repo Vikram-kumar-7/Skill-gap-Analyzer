@@ -16,6 +16,7 @@ import ProjectsPage from './pages/ProjectsPage.jsx';
 import InterviewPage from './pages/InterviewPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import PlacementPage from './pages/PlacementPage.jsx';
+import DSATrackerPage from './pages/DSATrackerPage.jsx';
 import { supabase } from './utils/supabase';
 import { syncRemoteToLocal } from './utils/storage.js';
 
@@ -49,12 +50,12 @@ function AppShell() {
         <TopBar onMenuClick={() => setMobileSidebarOpen(true)} />
         <main
           id="page-area"
-          className="p-4 md:p-6"
           style={{
             flex: 1,
             overflowY: 'auto',
             overflowX: 'hidden',
             minHeight: 0,
+            padding: 0,
           }}
         >
           <Routes>
@@ -63,6 +64,7 @@ function AppShell() {
             <Route path="/analyses" element={<AnalysesPage />} />
             <Route path="/roadmap" element={<RoadmapPage />} />
             <Route path="/skill-tracker" element={<SkillTrackerPage />} />
+            <Route path="/dsa-tracker" element={<DSATrackerPage />} />
             <Route path="/career-sim" element={<CareerSimPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/interview" element={<InterviewPage />} />

@@ -161,6 +161,27 @@ export default function CareerSimPage() {
         <RoleCard role={roleA} stats={statsA} roles={ROLES} onChange={setRoleA} />
         <RoleCard role={roleB} stats={statsB} roles={ROLES} onChange={setRoleB} />
       </div>
+      <style>{`
+        @media (max-width:768px){
+          .cs-grid{gridTemplateColumns:1fr!important;gap:16px!important}
+          .cs-card{padding:16px!important}
+          .cs-title{font-size:20px!important}
+        }
+        @media (max-width:640px){
+          .cs-card{padding:12px!important;border-radius:12px!important}
+          .cs-title{font-size:18px!important;line-height:1.2!important}
+          .cs-desc{font-size:12px!important}
+          .cs-input{width:100%!important;padding:10px 12px!important;font-size:12px!important}
+          .cs-select{width:100%!important;padding:10px 12px!important;font-size:12px!important}
+          .cs-btn{width:100%!important;padding:8px 12px!important;font-size:11px!important}
+          .cs-buttons{gap:8px!important;flex-wrap:wrap!important}
+        }
+        @media (max-width:480px){
+          .cs-card{padding:10px!important;gap:8px!important}
+          .cs-title{font-size:16px!important}
+          .cs-btn{padding:6px 10px!important;font-size:10px!important}
+        }
+      `}</style>
     </div>
   );
 }

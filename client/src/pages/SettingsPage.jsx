@@ -798,6 +798,26 @@ export default function SettingsPage() {
 
       {/* Bottom padding for mobile scroll */}
       <div style={{ height: '24px' }} />
+      <style>{`
+        @media (max-width:768px){
+          .set-card{padding:16px!important}
+          .set-grid{gridTemplateColumns:1fr!important;gap:10px!important}
+          .set-title{font-size:18px!important}
+          .set-input{width:100%!important;padding:10px 12px!important;font-size:12px!important}
+        }
+        @media (max-width:640px){
+          .set-card{padding:12px!important;border-radius:12px!important}
+          .set-section{padding:16px!important;gap:12px!important}
+          .set-title{font-size:16px!important;line-height:1.2!important}
+          .set-btn{width:100%!important;padding:8px 12px!important;font-size:11px!important}
+          .set-chips{gap:6px!important;flex-wrap:wrap!important}
+        }
+        @media (max-width:480px){
+          .set-card{padding:10px!important;gap:8px!important}
+          .set-section{padding:12px!important}
+          .set-title{font-size:14px!important}
+        }
+      `}</style>
     </div>
   );
 }

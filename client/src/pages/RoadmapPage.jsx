@@ -292,7 +292,7 @@ export default function RoadmapPage() {
       </div>
 
       {/* KANBAN COLUMNS */}
-      <div style={{
+      <div className="rd-kanban" style={{
         display: 'flex',
         gap: '20px',
         overflowX: 'auto',
@@ -301,7 +301,7 @@ export default function RoadmapPage() {
         msOverflowStyle: 'none',
       }}>
         {columns.map((col) => (
-          <div key={col.id} style={{ flex: '0 0 340px', display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 }}>
+          <div key={col.id} className="rd-col" style={{ flex: '0 0 340px', display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'spaceBetween', paddingBottom: '12px', borderBottom: `2px solid ${col.accentColor}50` }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div style={{
@@ -503,6 +503,27 @@ export default function RoadmapPage() {
           </div>
         </div>
       )}
+      <style>{`
+        @media (max-width:768px){
+          .rd-kanban{gap:16px!important;padding-bottom:16px!important}
+          .rd-col{flex:0 0 300px!important}
+          .rd-card{padding:12px!important}
+          .rd-title{font-size:18px!important}
+        }
+        @media (max-width:640px){
+          .rd-kanban{gap:12px!important;padding-bottom:12px!important;overflow-x:auto!important;flex-direction:row!important}
+          .rd-col{flex:0 0 280px!important;min-width:280px!important}
+          .rd-card{padding:10px!important;border-radius:10px!important;font-size:12px!important}
+          .rd-title{font-size:16px!important;line-height:1.2!important}
+          .rd-btn{width:100%!important;padding:8px 12px!important;font-size:11px!important}
+          .rd-modal{width:calc(100% - 32px)!important;max-width:100%!important;margin:0 16px!important}
+        }
+        @media (max-width:480px){
+          .rd-col{flex:0 0 260px!important;min-width:260px!important}
+          .rd-card{padding:8px!important;gap:6px!important;font-size:11px!important}
+          .rd-title{font-size:14px!important}
+        }
+      `}</style>
     </div>
   );
 }

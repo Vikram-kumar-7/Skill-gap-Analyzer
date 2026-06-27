@@ -274,6 +274,26 @@ export default function SkillTrackerPage() {
           </div>
         </div>
       )}
+      <style>{`
+        @media (max-width:768px){
+          .st-grid{gridTemplateColumns:repeat(auto-fill, minmax(240px, 1fr))!important;gap:12px!important}
+          .st-card{padding:16px!important}
+          .st-title{font-size:20px!important}
+        }
+        @media (max-width:640px){
+          .st-grid{gridTemplateColumns:repeat(auto-fill, minmax(200px, 1fr))!important;gap:10px!important}
+          .st-card{padding:12px!important;border-radius:12px!important}
+          .st-title{font-size:18px!important;line-height:1.2!important}
+          .st-search{width:100%!important;margin-bottom:12px!important}
+          .st-input{width:100%!important;padding:10px 12px!important;font-size:12px!important}
+          .st-btn{width:100%!important;padding:8px 12px!important;font-size:11px!important}
+        }
+        @media (max-width:480px){
+          .st-grid{gridTemplateColumns:1fr!important}
+          .st-card{padding:10px!important;gap:8px!important}
+          .st-title{font-size:16px!important}
+        }
+      `}</style>
     </div>
   );
 }

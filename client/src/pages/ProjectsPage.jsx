@@ -253,6 +253,24 @@ export default function ProjectsPage() {
           </div>
         </div>
       )}
+      <style>{`
+        @media (max-width:768px){
+          .pj-grid{gridTemplateColumns:repeat(auto-fill, minmax(260px, 1fr))!important;gap:12px!important}
+          .pj-card{padding:16px!important}
+          .pj-title{font-size:20px!important}
+        }
+        @media (max-width:640px){
+          .pj-grid{gridTemplateColumns:1fr!important;gap:10px!important}
+          .pj-card{padding:12px!important;border-radius:12px!important}
+          .pj-title{font-size:18px!important;line-height:1.2!important}
+          .pj-input{width:100%!important;padding:10px 12px!important;font-size:12px!important}
+          .pj-btn{width:100%!important;padding:8px 12px!important;font-size:11px!important}
+        }
+        @media (max-width:480px){
+          .pj-card{padding:10px!important;gap:8px!important}
+          .pj-title{font-size:16px!important}
+        }
+      `}</style>
     </div>
   );
 }

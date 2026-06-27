@@ -829,12 +829,80 @@ select option { background: #111827; color: var(--text-primary); }
 }
 
 /* ═══════════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE UTILITIES
+   ═══════════════════════════════════════════════ */
+
+/* Responsive padding */
+.px-mobile { padding-left: 12px; padding-right: 12px; }
+.py-mobile { padding-top: 12px; padding-bottom: 12px; }
+@media (min-width: 640px) {
+  .sm\:px-6 { padding-left: 24px; padding-right: 24px; }
+}
+@media (min-width: 768px) {
+  .md\:px-8 { padding-left: 32px; padding-right: 32px; }
+}
+
+/* Responsive gaps */
+.gap-mobile { gap: 12px; }
+.gap-sm-mobile { gap: 8px; }
+@media (min-width: 640px) {
+  .sm\:gap-4 { gap: 16px; }
+  .sm\:gap-6 { gap: 24px; }
+}
+@media (min-width: 768px) {
+  .md\:gap-6 { gap: 24px; }
+  .md\:gap-8 { gap: 32px; }
+}
+
+/* Responsive grid layouts */
+.grid-mobile { display: grid; gridTemplateColumns: 1fr; }
+@media (min-width: 640px) {
+  .sm\:grid-2 { gridTemplateColumns: repeat(2, 1fr); }
+}
+@media (min-width: 768px) {
+  .md\:grid-2 { gridTemplateColumns: repeat(2, 1fr); }
+  .md\:grid-3 { gridTemplateColumns: repeat(3, 1fr); }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-3 { gridTemplateColumns: repeat(3, 1fr); }
+  .lg\:grid-4 { gridTemplateColumns: repeat(4, 1fr); }
+}
+
+/* Responsive flex */
+.flex-col-mobile { display: flex; flexDirection: column; }
+@media (min-width: 640px) {
+  .sm\:flex-row { display: flex; flexDirection: row; }
+}
+
+/* Responsive text sizes */
+.text-sm-mobile { fontSize: '12px'; }
+@media (min-width: 640px) {
+  .sm\:text-base { fontSize: '14px'; }
+}
+
+/* Responsive widths */
+.w-full-mobile { width: 100%; }
+@media (min-width: 640px) {
+  .sm\:w-auto { width: auto; }
+}
+
+/* Hide/show utilities */
+.hidden-mobile { display: none; }
+@media (min-width: 640px) {
+  .sm\:hidden { display: none; }
+  .sm\:block { display: block; }
+  .sm\:flex { display: flex; }
+}
+@media (min-width: 1024px) {
+  .lg\:block { display: block; }
+  .lg\:flex { display: flex; }
+}
+
+/* ═══════════════════════════════════════════════
    LAYOUT: Sidebar offset on desktop (unlayered)
    ═══════════════════════════════════════════════ */
 @media (width >= 64rem) {
   #app-shell {
     padding-left: 210px !important;
-    /* TEST: bright border to confirm rule applies */
-    outline: 4px solid red !important;
   }
 }

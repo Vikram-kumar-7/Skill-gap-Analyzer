@@ -11,6 +11,7 @@ import analyzeRoutes from "./routes/analyzeRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import githubRoutes from "./routes/githubRoutes.js";
 import placementRoutes from "./routes/placementRoutes.js";
+import dsaRoutes from "./routes/dsaRoutes.js";
 
 dotenv.config();
 
@@ -70,6 +71,7 @@ app.use("/api/analyze", analyzeLimiter, analyzeRoutes);
 app.use("/api/ai", aiLimiter, aiRoutes);
 app.use("/api/github", githubRoutes);
 app.use("/api/placement", placementRoutes);
+app.use("/api/dsa", dsaRoutes);
 
 // === Static Data Endpoints ===
 const dataDir = join(__dirname, "data");

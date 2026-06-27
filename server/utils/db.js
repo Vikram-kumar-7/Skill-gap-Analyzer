@@ -88,3 +88,148 @@ export const getGitHubAnalysis = async (username) => {
 };
 
 export const isMongoDBFallback = () => isFallbackMode;
+
+// ═══════════════════════════════════════════════
+// DSA SCORE SCHEMA & METHODS
+// ═══════════════════════════════════════════════
+
+const dsaScoreSchema = new mongoose.Schema({
+  userId: { type: String, required: true, index: true },
+  username: { type: String, required: true },
+  leetcodeUsername: { type: String, default: null },
+  easy: { type: Number, default: 0 },
+  medium: { type: Number, default: 0 },
+  hard: { type: Number, default: 0 },
+  score: { type: Number, default: 0 },
+  tier: { type: String, enum: ['Beginner', 'Internship-ready', 'Startup SDE-1', 'Product company ready', 'FAANG interviews', 'Competitive level'] },
+  scoreBreakdown: {
+    easy: { type: Number, default: 0 },
+    medium: { type: Number, default: 0 },
+    hard: { type: Number, default: 0 },
+  },
+  savedAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  source: { type: String, enum: ['leetcode', 'gfg', 'manual'], default: 'leetcode' },
+  acceptanceRate: { type: Number, default: 0 },
+  ranking: { type: Number, default: null },
+});
+
+let DSAScoreModel;
+try {
+  DSAScoreModel = mongoose.model('DSAScore', dsaScoreSchema);
+} catch {
+  DSAScoreModel = mongoose.models.DSAScore;
+}
+
+// Memory fallback for DSA scores
+const dsaMemoryDb = new Map();
+
+export const saveDSAScore = async (userId, scoreData) => {
+  const { username, easy, medium, hard, score, tier, scoreBreakdown } = scoreData;
+
+  if (isFallbackMode) {
+    dsaMemoryDb.set(userId, {
+      userId,
+      username,
+      easy,
+      medium,
+      hard,
+      score,
+      tier,
+      scoreBreakdown,
+      savedAt: new Date(),
+      updatedAt: new Date(),
+    });
+    return true;
+  }
+
+  try {
+    await DSAScoreModel.findOneAndUpdate(
+      { userId },
+      {
+        userId,
+        username,
+        easy,
+        medium,
+        hard,
+        score,
+        tier,
+        scoreBreakdown,
+        updatedAt: new Date(),
+      },
+      { upsert: true, new: true }
+    );
+    return true;
+  } catch (error) {
+    console.error('Failed to save DSA score to MongoDB:', error.message);
+    dsaMemoryDb.set(userId, {
+      userId,
+      username,
+      easy,
+      medium,
+      hard,
+      score,
+      tier,
+      scoreBreakdown,
+      savedAt: new Date(),
+      updatedAt: new Date(),
+    });
+    return false;
+  }
+};
+
+export const getDSAScore = async (userId) => {
+  if (isFallbackMode) {
+    return dsaMemoryDb.get(userId) || null;
+  }
+
+  try {
+    const record = await DSAScoreModel.findOne({ userId });
+    if (record) {
+      return record.toObject();
+    }
+    return dsaMemoryDb.get(userId) || null;
+  } catch (error) {
+    console.error('Failed to get DSA score from MongoDB:', error.message);
+    return dsaMemoryDb.get(userId) || null;
+  }
+};
+
+export const getDSAScoreHistory = async (userId, limit = 30) => {
+  if (isFallbackMode) {
+    const current = dsaMemoryDb.get(userId);
+    return current ? [current] : [];
+  }
+
+  try {
+    const records = await DSAScoreModel.find({ userId })
+      .sort({ savedAt: -1 })
+      .limit(limit)
+      .lean();
+    return records;
+  } catch (error) {
+    console.error('Failed to get DSA score history:', error.message);
+    const current = dsaMemoryDb.get(userId);
+    return current ? [current] : [];
+  }
+};
+
+export const saveLeetcodeUsername = async (userId, leetcodeUsername) => {
+  if (isFallbackMode) {
+    const current = dsaMemoryDb.get(userId) || {};
+    dsaMemoryDb.set(userId, { ...current, userId, leetcodeUsername });
+    return true;
+  }
+
+  try {
+    await DSAScoreModel.findOneAndUpdate(
+      { userId },
+      { leetcodeUsername, updatedAt: new Date() },
+      { upsert: true, new: true }
+    );
+    return true;
+  } catch (error) {
+    console.error('Failed to save LeetCode username:', error.message);
+    return false;
+  }
+};

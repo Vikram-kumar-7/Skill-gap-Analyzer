@@ -118,6 +118,25 @@ export default function AnalysesPage() {
           )}
         </>
       )}
+      <style>{`
+        @media (max-width:768px){
+          .an-card{padding:18px!important}
+          .an-grid{gridTemplateColumns:repeat(auto-fill, minmax(280px, 1fr))!important;gap:12px!important}
+          .an-stats{gridTemplateColumns:repeat(2, 1fr)!important;gap:10px!important}
+        }
+        @media (max-width:640px){
+          .an-card{padding:14px!important;border-radius:12px!important}
+          .an-grid{gridTemplateColumns:1fr!important;gap:10px!important}
+          .an-stats{gridTemplateColumns:1fr!important;gap:8px!important;padding:12px!important}
+          .an-title{font-size:20px!important;line-height:1.2!important}
+          .an-desc{font-size:12px!important}
+        }
+        @media (max-width:480px){
+          .an-card{padding:12px!important;gap:8px!important}
+          .an-title{font-size:18px!important}
+          .an-btn{width:100%!important;padding:8px 12px!important;font-size:11px!important}
+        }
+      `}</style>
     </div>
   );
 }

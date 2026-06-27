@@ -2021,6 +2021,31 @@ export default function InterviewPage() {
           )}
         </div>
       )}
+      <style>{`
+        @media (max-width:768px){
+          .iv-header{flex-direction:column!important;gap:12px!important}
+          .iv-card{padding:20px!important}
+          .iv-title{font-size:18px!important}
+          .iv-question{font-size:15px!important}
+        }
+        @media (max-width:640px){
+          .iv-card{padding:16px!important;border-radius:12px!important;gap:12px!important}
+          .iv-title{font-size:16px!important;line-height:1.2!important}
+          .iv-question{font-size:14px!important;line-height:1.4!important}
+          .iv-buttons{gap:8px!important;flex-wrap:wrap!important}
+          .iv-btn{padding:10px 12px!important;font-size:11px!important;min-width:auto!important}
+          .iv-nav{gap:8px!important}
+          .iv-filter{flex-wrap:wrap!important}
+          .iv-insights{padding:12px!important}
+        }
+        @media (max-width:480px){
+          .iv-card{padding:12px!important;gap:10px!important}
+          .iv-title{font-size:15px!important}
+          .iv-question{font-size:12px!important}
+          .iv-buttons{flex-direction:column!important}
+          .iv-btn{width:100%!important}
+        }
+      `}</style>
     </div>
   );
 }

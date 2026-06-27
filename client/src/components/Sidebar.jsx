@@ -20,6 +20,7 @@ const NAV = [
   { icon: FileText,        label: 'My Analyses',       to: '/analyses'               },
   { icon: Map,             label: 'Roadmap',           to: '/roadmap'                },
   { icon: BarChart2,       label: 'Skill Tracker',     to: '/skill-tracker'          },
+  { icon: TrendingUp,      label: 'DSA Tracker',       to: '/dsa-tracker'            },
   { icon: TrendingUp,      label: 'Career Simulator',  to: '/career-sim'             },
   { icon: FolderOpen,      label: 'Projects',          to: '/projects'               },
   { icon: MessageSquare,   label: 'Interview Prep',    to: '/interview'              },

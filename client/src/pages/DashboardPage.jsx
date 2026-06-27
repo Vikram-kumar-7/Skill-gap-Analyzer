@@ -100,7 +100,7 @@ export default function DashboardPage() {
       <StatsRow analyses={analyses} avgMatch={avgMatch} />
 
       {/* ── Main Bento Grid ── */}
-      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gridTemplateRows:'auto', gap:'20px' }}>
+      <div className="db-bento" style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gridTemplateRows:'auto', gap:'20px' }}>
 
         {/* Radar (2 cols wide) */}
         <div style={{ gridColumn:'span 2' }}>
@@ -116,6 +116,25 @@ export default function DashboardPage() {
         {/* Quick Access (bottom row) */}
         <QuickAccess navigate={navigate} />
       </div>
+      <style>{`
+        @media (max-width:768px){
+          .db-bento{grid-template-columns:1fr!important;gap:16px!important}
+          .db-bento>div:nth-child(1){grid-column:span 1!important}
+          .db-stats{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;padding:12px!important}
+        }
+        @media (max-width:640px){
+          .db-stats{grid-template-columns:1fr!important;gap:8px!important;padding:8px!important}
+          .db-stats>div{min-width:100%!important}
+          .db-bento{gap:12px!important;padding:12px!important}
+          .db-card{padding:16px!important}
+          .db-title{font-size:18px!important}
+        }
+        @media (max-width:480px){
+          .db-stats{padding:6px!important}
+          .db-card{padding:12px!important;border-radius:12px!important}
+          .db-title{font-size:16px!important}
+        }
+      `}</style>
     </div>
   );
 }
@@ -194,7 +213,7 @@ function StatsRow({ analyses, avgMatch }) {
       icon:<Target size={15} />, sub:'Total gap items' },
   ];
   return (
-    <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'14px' }}>
+    <div className="db-stats" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'14px' }}>
       {stats.map(s => (
         <div key={s.label} style={{ ...glassCard({ borderRadius:'16px', padding:'18px 20px' }) }}>
           <RimGlow />
