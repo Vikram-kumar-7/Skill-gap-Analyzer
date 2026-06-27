@@ -7,17 +7,12 @@
 //   - Progress saved to localStorage
 //   - Reveal answer animation
 // ============================================================
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  ChevronLeft,
-  ChevronRight,
-  RotateCcw,
   CheckCircle2,
-  Circle,
   Sparkles,
   Trophy,
   RefreshCw,
-  Brain,
   TrendingUp,
   TrendingDown,
   Minus,
@@ -699,7 +694,7 @@ export default function InterviewPage() {
   const [outline, setOutline] = useState(null);
   const [evaluation, setEvaluation] = useState(null);
 
-  const { loadingStates, evaluateAnswer, generateHints, generateAnswerOutline } = useAI();
+  const { loadingStates, error, isWakingUp, evaluateAnswer, generateHints, generateAnswerOutline } = useAI();
 
   // Reset states when changing question
   useEffect(() => {
@@ -1018,7 +1013,7 @@ export default function InterviewPage() {
             cursor: 'pointer',
             flexShrink: 0,
             fontFamily: 'inherit',
-            minHeight: '44px', // ensure 44px target
+            minHeight: '44px',
           }}
         >
           <RefreshCw
@@ -1036,14 +1031,14 @@ export default function InterviewPage() {
             key={cat}
             onClick={() => handleFilterChange(cat)}
             style={{
-              padding: '10px 14px', // increased padding for 44px target height
+              padding: '10px 14px',
               borderRadius: 9999,
               fontSize: 12,
               fontWeight: 600,
               border: '1px solid',
-              background: filter === cat ? 'rgba(99,102,241,0.2)' : 'transparent',
-              borderColor: filter === cat ? 'rgba(99,102,241,0.4)' : 'rgba(255,255,255,0.1)',
-              color: filter === cat ? '#a5b4fc' : 'rgba(255,255,255,0.5)',
+              background: filter === cat ? 'rgba(78,222,163,0.14)' : 'transparent',
+              borderColor: filter === cat ? 'rgba(78,222,163,0.40)' : 'rgba(255,255,255,0.1)',
+              color: filter === cat ? '#4edea3' : 'rgba(255,255,255,0.5)',
               cursor: 'pointer',
               transition: 'all 0.15s',
               fontFamily: 'inherit',
@@ -1063,470 +1058,291 @@ export default function InterviewPage() {
       {/* ── Progress bar ── */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span
-            style={{
-              fontSize: 11,
-              color: 'rgba(255,255,255,0.3)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-            }}
-          >
-            Progress
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Session Progress
           </span>
-          <span style={{ fontSize: 11, color: '#a5b4fc' }}>{Math.round(progress)}%</span>
+          <span style={{ fontSize: 11, color: '#4edea3' }}>{Math.round(progress)}%</span>
         </div>
-        <div
-          style={{
-            width: '100%',
-            height: 6,
-            background: 'rgba(255,255,255,0.1)',
-            borderRadius: 9999,
-            overflow: 'hidden',
-            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.3)',
-          }}
-        >
-          <div
-            style={{
-              width: `${progress}%`,
-              height: '100%',
-              background: 'linear-gradient(90deg,#6366f1,#8b5cf6)',
-              borderRadius: 9999,
-              transition: 'width 0.4s ease',
-              minWidth: progress > 0 ? '4px' : '0',
-            }}
-          />
+        <div style={{ width: '100%', height: 4, background: 'rgba(255,255,255,0.07)', borderRadius: 9999, overflow: 'hidden' }}>
+          <div style={{
+            width: `${progress}%`, height: '100%',
+            background: 'linear-gradient(90deg, #10b981, #4edea3)',
+            borderRadius: 9999, transition: 'width 0.4s ease',
+            boxShadow: '0 0 8px rgba(78,222,163,0.6)',
+            minWidth: progress > 0 ? '4px' : '0',
+          }} />
         </div>
       </div>
 
-      {/* ── Writing Pad (Interview Practice Card) ── */}
-      <div
-        className="p-5 sm:p-7" // responsive padding
-        style={{
-          background: '#0e1525',
-          border: '1px solid rgba(255,255,255,0.07)',
-          borderRadius: 18,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 20,
-          opacity: spinning ? 0.4 : 1,
-          transition: 'opacity 0.2s',
-        }}
-      >
-        {/* Top row: badges + counter */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <span
-              style={{
-                background: catStyle.bg,
-                color: catStyle.color,
-                border: `1px solid ${catStyle.border}`,
-                borderRadius: 9999,
-                padding: '3px 10px',
-                fontSize: 11,
-                fontWeight: 600,
-              }}
-            >
-              {current.category}
-            </span>
-            <span
-              style={{
-                background: diffStyle.bg,
-                color: diffStyle.color,
-                border: `1px solid ${diffStyle.border}`,
-                borderRadius: 9999,
-                padding: '3px 10px',
-                fontSize: 11,
-                fontWeight: 600,
-              }}
-            >
-              {current.difficulty}
-            </span>
-            <span
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                color: 'rgba(255,255,255,0.4)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 9999,
-                padding: '3px 10px',
-                fontSize: 11,
-              }}
-            >
-              {current.skill}
-            </span>
+      {/* ── Main Glass Card ── */}
+      <div style={{
+        background: 'linear-gradient(to bottom, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.50) 100%), rgba(5,20,36,0.85)',
+        backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
+        border: '1px solid rgba(78,222,163,0.18)', borderRadius: 24, padding: '28px',
+        display: 'flex', flexDirection: 'column', gap: 24,
+        position: 'relative', overflow: 'hidden',
+        boxShadow: '0 30px 60px -15px rgba(0,0,0,0.80), 0 8px 16px -4px rgba(0,0,0,0.90), inset 0 1px 2px rgba(255,255,255,0.08)',
+        opacity: spinning ? 0.4 : 1, transition: 'opacity 0.2s',
+      }}>
+        {/* Rim glow */}
+        <div style={{ position:'absolute', inset:0, borderRadius:'inherit', background:'linear-gradient(135deg,rgba(255,255,255,0.07) 0%,transparent 60%)', pointerEvents:'none', zIndex:0 }} />
+        <style>{`@keyframes rim-ip{0%,100%{opacity:.30}50%{opacity:1}} @keyframes pulse-ip{0%,100%{opacity:1}50%{opacity:.3}}`}</style>
+        <div style={{ position:'absolute', inset:0, borderRadius:'inherit', padding:'1px',
+          background:'linear-gradient(135deg,rgba(78,222,163,.70) 0%,rgba(78,222,163,0) 40%,rgba(78,222,163,0) 70%,rgba(78,222,163,.55) 100%)',
+          WebkitMask:'linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)',
+          WebkitMaskComposite:'xor', maskComposite:'exclude',
+          pointerEvents:'none', animation:'rim-ip 4s ease-in-out infinite', zIndex:0 }} />
+        <div style={{ position:'absolute', top:'-60px', right:'-60px', width:'220px', height:'220px', borderRadius:'50%', background:'rgba(78,222,163,0.06)', filter:'blur(60px)', pointerEvents:'none', zIndex:0 }} />
+
+        {/* ── Session Active header ── */}
+        <div style={{ position:'relative', zIndex:1, display:'flex', flexDirection:'column', gap:8 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+            <span style={{ width:8, height:8, borderRadius:'50%', background:'#4edea3', display:'inline-block', boxShadow:'0 0 8px #4edea3', animation:'pulse-ip 2.5s ease-in-out infinite' }} />
+            <span style={{ fontSize:10, fontWeight:700, color:'#4edea3', letterSpacing:'0.18em', textTransform:'uppercase' }}>Session Active</span>
           </div>
-          <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: 12, flexShrink: 0 }}>
-            {index + 1} / {filtered.length}
-          </span>
-        </div>
-
-        {/* Question text */}
-        <div style={{ color: '#f0f4ff', fontSize: 18, fontWeight: 600, lineHeight: 1.65 }}>
-          {current.question}
-        </div>
-
-        {/* AI Action Buttons */}
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <button
-            onClick={handleFetchHints}
-            disabled={loadingStates.generateHints}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              padding: '10px 18px',
-              borderRadius: 10,
-              fontSize: 13,
-              fontWeight: 600,
-              background: hints ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.03)',
-              border: hints
-                ? '1px solid rgba(99,102,241,0.35)'
-                : '1px solid rgba(255,255,255,0.08)',
-              color: hints ? '#a5b4fc' : 'rgba(255,255,255,0.7)',
-              cursor: 'pointer',
-              transition: 'all 0.15s',
-              fontFamily: 'inherit',
-              minHeight: '44px', // ensure 44px tap target
-              flex: '1 1 auto',
-            }}
-          >
-            <Lightbulb size={14} style={{ color: hints ? '#818cf8' : 'rgba(255,255,255,0.4)' }} />
-            {loadingStates.generateHints
-              ? 'Fetching Hints...'
-              : hints
-                ? 'Hints Loaded'
-                : 'AI Hints'}
-          </button>
-
-          <button
-            onClick={handleFetchOutline}
-            disabled={loadingStates.generateAnswerOutline}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              padding: '10px 18px',
-              borderRadius: 10,
-              fontSize: 13,
-              fontWeight: 600,
-              background: outline ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.03)',
-              border: outline
-                ? '1px solid rgba(139,92,246,0.35)'
-                : '1px solid rgba(255,255,255,0.08)',
-              color: outline ? '#c4b5fd' : 'rgba(255,255,255,0.7)',
-              cursor: 'pointer',
-              transition: 'all 0.15s',
-              fontFamily: 'inherit',
-              minHeight: '44px', // ensure 44px tap target
-              flex: '1 1 auto',
-            }}
-          >
-            <List size={14} style={{ color: outline ? '#a78bfa' : 'rgba(255,255,255,0.4)' }} />
-            {loadingStates.generateAnswerOutline
-              ? 'Generating Outline...'
-              : outline
-                ? 'Outline Loaded'
-                : 'Answer Outline'}
-          </button>
-
-          <button
-            onClick={handleEvaluate}
-            disabled={loadingStates.evaluateAnswer || !userAnswer.trim()}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              padding: '10px 18px',
-              borderRadius: 10,
-              fontSize: 13,
-              fontWeight: 700,
-              background: evaluation
-                ? 'rgba(16,185,129,0.15)'
-                : userAnswer.trim()
-                  ? 'linear-gradient(135deg, #8b5cf6, #6366f1)'
-                  : 'rgba(139,92,246,0.08)',
-              border: evaluation
-                ? '1px solid rgba(16,185,129,0.35)'
-                : userAnswer.trim()
-                  ? 'none'
-                  : '1px solid rgba(139,92,246,0.2)',
-              color: evaluation
-                ? '#6ee7b7'
-                : userAnswer.trim()
-                  ? 'white'
-                  : 'rgba(139,92,246,0.4)',
-              cursor: userAnswer.trim() ? 'pointer' : 'not-allowed',
-              transition: 'all 0.15s',
-              fontFamily: 'inherit',
-              minHeight: '44px',
-              flex: '1 1 auto',
-              boxShadow: userAnswer.trim() && !evaluation ? '0 4px 14px rgba(99,102,241,0.25)' : 'none',
-            }}
-          >
-            <Bot size={14} />
-            {loadingStates.evaluateAnswer
-              ? 'Evaluating...'
-              : evaluation
-                ? '✓ Evaluation Done'
-                : '✦ AI Evaluate'}
-          </button>
-        </div>
-
-        {/* Hints Display */}
-        {hints && (
-          <div
-            style={{
-              background: 'rgba(99,102,241,0.04)',
-              border: '1px solid rgba(99,102,241,0.15)',
-              borderRadius: 12,
-              padding: '18px 20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 12,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Lightbulb size={13} color="#818cf8" />
-              <span
-                style={{
-                  color: '#a5b4fc',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}
-              >
-                Progressive Hints
-              </span>
+          <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', gap:12, flexWrap:'wrap' }}>
+            <div>
+              <h2 style={{ fontSize:28, fontWeight:800, color:'#d4e4fa', letterSpacing:'-0.02em', lineHeight:1.1, marginBottom:2 }}>Mock Interview</h2>
+              <span style={{ fontSize:20, fontWeight:700, color:'rgba(16,185,129,0.75)' }}>Question {index + 1} / {filtered.length}</span>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {hints.map((h, i) => (
-                <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      color: 'white',
-                      background: '#4f46e5',
-                      width: 18,
-                      height: 18,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                      marginTop: 2,
-                      fontWeight: 700,
-                    }}
-                  >
-                    {i + 1}
-                  </span>
-                  <p
-                    style={{
-                      color: 'rgba(255,255,255,0.7)',
-                      fontSize: 13,
-                      margin: 0,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    <TypewriterText text={h} />
-                  </p>
-                </div>
-              ))}
+            <div style={{ textAlign:'right' }}>
+              <div style={{ fontSize:11, color:'rgba(187,202,191,0.50)', marginBottom:4 }}>{practicedInFilter} of {filtered.length} practiced</div>
+              <div style={{ width:160, height:4, background:'rgba(255,255,255,0.06)', borderRadius:9999, overflow:'hidden' }}>
+                <div style={{ height:'100%', width:`${progress}%`, background:'#4edea3', borderRadius:9999, boxShadow:'0 0 6px #4edea3' }} />
+              </div>
             </div>
+          </div>
+        </div>
+
+        {/* Banners */}
+        {isWakingUp && (
+          <div style={{ position:'relative', zIndex:1, display:'flex', alignItems:'center', gap:8, background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.25)', padding:'12px 16px', borderRadius:12, color:'#fbbf24', fontSize:13, fontWeight:500 }}>
+            <RefreshCw size={15} style={{ animation:'spin 2s linear infinite', flexShrink:0 }} />
+            <span>Waking up server... (~15s)</span>
+          </div>
+        )}
+        {error && (
+          <div style={{ position:'relative', zIndex:1, display:'flex', alignItems:'center', gap:10, background:'rgba(248,113,113,0.08)', border:'1px solid rgba(248,113,113,0.22)', padding:'12px 16px', borderRadius:12, color:'#f87171', fontSize:13, fontWeight:500 }}>
+            <AlertTriangle size={16} style={{ flexShrink:0 }} />
+            <span>{error}</span>
           </div>
         )}
 
-        {/* Outline Display */}
-        {outline && (
-          <div
-            style={{
-              background: 'rgba(139,92,246,0.04)',
-              border: '1px solid rgba(139,92,246,0.15)',
-              borderRadius: 12,
-              padding: '18px 20px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 16,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <List size={13} color="#a78bfa" />
-              <span
-                style={{
-                  color: '#c4b5fd',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                }}
-              >
-                Structured Answer Outline
-              </span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {outline.opening && (
-                <div>
-                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                    1. Opening Hook
+        {/* ── Question Section ── */}
+        <div style={{ position:'relative', zIndex:1, background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.06)', borderRadius:18, padding:'24px' }}>
+          <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:20 }}>
+            <span style={{ background:catStyle.bg, color:catStyle.color, border:`1px solid ${catStyle.border}`, borderRadius:8, padding:'4px 12px', fontSize:10, fontWeight:700, letterSpacing:'0.06em', textTransform:'uppercase' }}>{current.category}</span>
+            <span style={{ background:diffStyle.bg, color:diffStyle.color, border:`1px solid ${diffStyle.border}`, borderRadius:8, padding:'4px 12px', fontSize:10, fontWeight:700, letterSpacing:'0.06em', textTransform:'uppercase' }}>{current.difficulty}</span>
+            <span style={{ background:'rgba(78,222,163,0.08)', color:'rgba(78,222,163,0.75)', border:'1px solid rgba(78,222,163,0.18)', borderRadius:8, padding:'4px 12px', fontSize:10, fontWeight:700, letterSpacing:'0.06em', textTransform:'uppercase' }}>{current.skill}</span>
+          </div>
+          <h4 style={{ fontSize:22, fontWeight:700, color:'#d4e4fa', lineHeight:1.55, marginBottom:20, letterSpacing:'-0.01em' }}>{current.question}</h4>
+          <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
+            <button onClick={handleFetchHints} disabled={loadingStates.generateHints} style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:12, fontSize:13, fontWeight:600, background: hints ? 'rgba(78,222,163,0.12)' : 'rgba(255,255,255,0.04)', border: hints ? '1px solid rgba(78,222,163,0.30)' : '1px solid rgba(255,255,255,0.08)', color: hints ? '#4edea3' : 'rgba(255,255,255,0.65)', cursor:'pointer', transition:'all 0.15s', fontFamily:'inherit', minHeight:'40px', flex:'1 1 auto' }}>
+              <Lightbulb size={14} style={{ color: hints ? '#4edea3' : 'rgba(255,255,255,0.4)' }} />
+              {loadingStates.generateHints ? 'Fetching...' : hints ? 'Hints Loaded' : 'AI Hints'}
+            </button>
+            <button onClick={handleFetchOutline} disabled={loadingStates.generateAnswerOutline} style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:12, fontSize:13, fontWeight:600, background: outline ? 'rgba(139,92,246,0.12)' : 'rgba(255,255,255,0.04)', border: outline ? '1px solid rgba(139,92,246,0.30)' : '1px solid rgba(255,255,255,0.08)', color: outline ? '#c4b5fd' : 'rgba(255,255,255,0.65)', cursor:'pointer', transition:'all 0.15s', fontFamily:'inherit', minHeight:'40px', flex:'1 1 auto' }}>
+              <List size={14} style={{ color: outline ? '#a78bfa' : 'rgba(255,255,255,0.4)' }} />
+              {loadingStates.generateAnswerOutline ? 'Generating...' : outline ? 'Outline Loaded' : 'Answer Outline'}
+            </button>
+            <button onClick={handleEvaluate} disabled={loadingStates.evaluateAnswer || !userAnswer.trim()} style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 18px', borderRadius:12, fontSize:13, fontWeight:700, background: evaluation ? 'rgba(78,222,163,0.12)' : userAnswer.trim() ? 'linear-gradient(135deg, #8b5cf6, #ec4899)' : 'rgba(139,92,246,0.08)', border: evaluation ? '1px solid rgba(78,222,163,0.30)' : userAnswer.trim() ? 'none' : '1px solid rgba(139,92,246,0.18)', color: evaluation ? '#4edea3' : userAnswer.trim() ? 'white' : 'rgba(139,92,246,0.4)', cursor: userAnswer.trim() ? 'pointer' : 'not-allowed', transition:'all 0.15s', fontFamily:'inherit', minHeight:'40px', flex:'1 1 auto', boxShadow: userAnswer.trim() && !evaluation ? '0 0 20px rgba(236,72,153,0.25)' : 'none' }}>
+              <Bot size={14} />
+              {loadingStates.evaluateAnswer ? 'Evaluating...' : evaluation ? '✓ Done' : '✦ AI Evaluate'}
+            </button>
+          </div>
+        </div>
+
+        {/* Hints */}
+        {(loadingStates.generateHints || hints) && (
+          <div style={{ position:'relative', zIndex:1, background:'rgba(78,222,163,0.04)', border:'1px solid rgba(78,222,163,0.15)', borderRadius:14, padding:'18px 20px', display:'flex', flexDirection:'column', gap:12 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:6 }}><Lightbulb size={13} color="#4edea3" /><span style={{ color:'#4edea3', fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em' }}>Progressive Hints</span></div>
+            {loadingStates.generateHints ? (
+              <div style={{ display:'flex', flexDirection:'column', gap:10, padding:'4px 0' }}>
+                <div className="skeleton-pulse skeleton-line" style={{ height:'14px', width:'90%' }} />
+                <div className="skeleton-pulse skeleton-line" style={{ height:'14px', width:'75%' }} />
+                <div className="skeleton-pulse skeleton-line" style={{ height:'14px', width:'85%' }} />
+              </div>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                {hints.map((h, i) => (
+                  <div key={i} style={{ display:'flex', gap:10, alignItems:'flex-start' }}>
+                    <span style={{ fontSize:10, color:'#003824', background:'#4edea3', width:18, height:18, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:2, fontWeight:800 }}>{i+1}</span>
+                    <p style={{ color:'rgba(255,255,255,0.75)', fontSize:13, margin:0, lineHeight:1.55 }}><TypewriterText text={h} /></p>
                   </div>
-                  <div
-                    style={{
-                      color: 'rgba(255,255,255,0.75)',
-                      fontSize: 13,
-                      marginTop: 2,
-                      fontStyle: 'italic',
-                    }}
-                  >
-                    "{outline.opening}"
-                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Outline */}
+        {(loadingStates.generateAnswerOutline || outline) && (
+          <div style={{ position:'relative', zIndex:1, background:'rgba(139,92,246,0.04)', border:'1px solid rgba(139,92,246,0.15)', borderRadius:14, padding:'18px 20px', display:'flex', flexDirection:'column', gap:16 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:6 }}><List size={13} color="#a78bfa" /><span style={{ color:'#c4b5fd', fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em' }}>Structured Answer Outline</span></div>
+            {loadingStates.generateAnswerOutline ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '4px 0' }}>
+                <div className="skeleton-pulse skeleton-line" style={{ height: '12px', width: '60%', marginBottom: '8px' }} />
+                <div className="skeleton-pulse skeleton-line" style={{ height: '14px', width: '90%' }} />
+                <div className="skeleton-pulse skeleton-line" style={{ height: '14px', width: '75%' }} />
+              </div>
+            ) : (
+              <>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {outline.opening && (
+                    <div>
+                      <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                        1. Opening Hook
+                      </div>
+                      <div
+                        style={{
+                          color: 'rgba(255,255,255,0.75)',
+                          fontSize: 13,
+                          marginTop: 2,
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        "{outline.opening}"
+                      </div>
+                    </div>
+                  )}
+                  {outline.coreConcepts && outline.coreConcepts.length > 0 && (
+                    <div>
+                      <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                        2. Core Concepts
+                      </div>
+                      <ul
+                        style={{
+                          margin: '4px 0 0',
+                          paddingLeft: 20,
+                          color: 'rgba(255,255,255,0.7)',
+                          fontSize: 13,
+                        }}
+                      >
+                        {outline.coreConcepts.map((c, i) => (
+                          <li key={i} style={{ marginBottom: 2 }}>
+                            {c}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {outline.steps && outline.steps.length > 0 && (
+                    <div>
+                      <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                        3. Step-by-Step Response Flow
+                      </div>
+                      <ol
+                        style={{
+                          margin: '4px 0 0',
+                          paddingLeft: 20,
+                          color: 'rgba(255,255,255,0.7)',
+                          fontSize: 13,
+                        }}
+                      >
+                        {outline.steps.map((s, i) => (
+                          <li key={i} style={{ marginBottom: 2 }}>
+                            {s}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
+                  {outline.edgeCases && outline.edgeCases.length > 0 && (
+                    <div>
+                      <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                        4. Edge Cases & Trade-offs
+                      </div>
+                      <ul
+                        style={{
+                          margin: '4px 0 0',
+                          paddingLeft: 20,
+                          color: 'rgba(255,255,255,0.7)',
+                          fontSize: 13,
+                        }}
+                      >
+                        {outline.edgeCases.map((e, i) => (
+                          <li key={i} style={{ marginBottom: 2 }}>
+                            {e}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {outline.closing && (
+                    <div>
+                      <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                        5. Closing Statement
+                      </div>
+                      <div
+                        style={{
+                          color: 'rgba(255,255,255,0.75)',
+                          fontSize: 13,
+                          marginTop: 2,
+                          fontStyle: 'italic',
+                        }}
+                      >
+                        "{outline.closing}"
+                      </div>
+                    </div>
+                  )}
+                  {outline.complexityNote && (
+                    <div
+                      style={{
+                        background: 'rgba(255,255,255,0.02)',
+                        padding: 8,
+                        borderRadius: 6,
+                        border: '1px dashed rgba(255,255,255,0.05)',
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: 'rgba(255,255,255,0.3)',
+                          fontSize: 10,
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                        }}
+                      >
+                        Complexity & Scale Note
+                      </div>
+                      <div style={{ color: '#a5b4fc', fontSize: 12, marginTop: 2 }}>
+                        {outline.complexityNote}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-              {outline.coreConcepts && outline.coreConcepts.length > 0 && (
-                <div>
-                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                    2. Core Concepts
-                  </div>
-                  <ul
-                    style={{
-                      margin: '4px 0 0',
-                      paddingLeft: 20,
-                      color: 'rgba(255,255,255,0.7)',
-                      fontSize: 13,
-                    }}
-                  >
-                    {outline.coreConcepts.map((c, i) => (
-                      <li key={i} style={{ marginBottom: 2 }}>
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {outline.steps && outline.steps.length > 0 && (
-                <div>
-                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                    3. Step-by-Step Response Flow
-                  </div>
-                  <ol
-                    style={{
-                      margin: '4px 0 0',
-                      paddingLeft: 20,
-                      color: 'rgba(255,255,255,0.7)',
-                      fontSize: 13,
-                    }}
-                  >
-                    {outline.steps.map((s, i) => (
-                      <li key={i} style={{ marginBottom: 2 }}>
-                        {s}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              )}
-              {outline.edgeCases && outline.edgeCases.length > 0 && (
-                <div>
-                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                    4. Edge Cases & Trade-offs
-                  </div>
-                  <ul
-                    style={{
-                      margin: '4px 0 0',
-                      paddingLeft: 20,
-                      color: 'rgba(255,255,255,0.7)',
-                      fontSize: 13,
-                    }}
-                  >
-                    {outline.edgeCases.map((e, i) => (
-                      <li key={i} style={{ marginBottom: 2 }}>
-                        {e}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {outline.closing && (
-                <div>
-                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                    5. Closing Statement
-                  </div>
-                  <div
-                    style={{
-                      color: 'rgba(255,255,255,0.75)',
-                      fontSize: 13,
-                      marginTop: 2,
-                      fontStyle: 'italic',
-                    }}
-                  >
-                    "{outline.closing}"
-                  </div>
-                </div>
-              )}
-              {outline.complexityNote && (
+
+                {/* Model Answer (Full Explanation) */}
                 <div
                   style={{
-                    background: 'rgba(255,255,255,0.02)',
-                    padding: 8,
-                    borderRadius: 6,
-                    border: '1px dashed rgba(255,255,255,0.05)',
+                    marginTop: 12,
+                    borderTop: '1px solid rgba(255,255,255,0.08)',
+                    paddingTop: 14,
                   }}
                 >
+                  <div style={{ color: '#f0f4ff', fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
+                    Model Solution & Full Explanation:
+                  </div>
                   <div
                     style={{
-                      color: 'rgba(255,255,255,0.3)',
-                      fontSize: 10,
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
+                      background: 'rgba(0,0,0,0.15)',
+                      border: '1px solid rgba(255,255,255,0.04)',
+                      borderRadius: 8,
+                      padding: '12px 14px',
+                      color: 'rgba(255,255,255,0.6)',
+                      fontSize: 13,
+                      lineHeight: 1.7,
                     }}
                   >
-                    Complexity & Scale Note
-                  </div>
-                  <div style={{ color: '#a5b4fc', fontSize: 12, marginTop: 2 }}>
-                    {outline.complexityNote}
+                    {current.answer}
                   </div>
                 </div>
-              )}
-            </div>
-
-            {/* Model Answer (Full Explanation) */}
-            <div
-              style={{
-                marginTop: 12,
-                borderTop: '1px solid rgba(255,255,255,0.08)',
-                paddingTop: 14,
-              }}
-            >
-              <div style={{ color: '#f0f4ff', fontSize: 13, fontWeight: 700, marginBottom: 6 }}>
-                Model Solution & Full Explanation:
-              </div>
-              <div
-                style={{
-                  background: 'rgba(0,0,0,0.15)',
-                  border: '1px solid rgba(255,255,255,0.04)',
-                  borderRadius: 8,
-                  padding: '12px 14px',
-                  color: 'rgba(255,255,255,0.6)',
-                  fontSize: 13,
-                  lineHeight: 1.7,
-                }}
-              >
-                {current.answer}
-              </div>
-            </div>
+              </>
+            )}
           </div>
         )}
 
         {/* AI Evaluation Display */}
-        {evaluation && (
+        {(loadingStates.evaluateAnswer || evaluation) && (
           <div
             style={{
               background: 'rgba(16,185,129,0.03)',
@@ -1538,225 +1354,245 @@ export default function InterviewPage() {
               gap: 16,
             }}
           >
-            {/* Header with Bot and Chronic warning */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
-                gap: 10,
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Bot size={13} color="#10b981" />
-                <span
-                  style={{
-                    color: '#6ee7b7',
-                    fontSize: 12,
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  AI Evaluation Result
-                </span>
+            {loadingStates.evaluateAnswer ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: '4px 0' }}>
+                <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div className="skeleton-pulse" style={{ width: 84, height: 84, borderRadius: '50%', flexShrink: 0 }} />
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 18px', flex: 1 }}>
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} style={{ minWidth: 140, flex: 1 }}>
+                        <div className="skeleton-pulse skeleton-line" style={{ height: '12px', width: '60%', marginBottom: '6px' }} />
+                        <div className="skeleton-pulse skeleton-line" style={{ height: '6px', width: '100%' }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="skeleton-pulse skeleton-line" style={{ height: '14px', width: '100%', marginTop: '12px' }} />
+                <div className="skeleton-pulse skeleton-line" style={{ height: '14px', width: '90%' }} />
               </div>
-              {evaluation.chronicGapRepeated && (
+            ) : (
+              <>
+                {/* Header with Bot and Chronic warning */}
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 5,
-                    background: 'rgba(248,113,113,0.12)',
-                    border: '1px solid rgba(248,113,113,0.25)',
-                    borderRadius: 6,
-                    padding: '3px 10px',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: '#f87171',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: 10,
                   }}
                 >
-                  <AlertTriangle size={12} />
-                  Chronic Gap Repeated: "{evaluation.chronicGapName}"
-                </div>
-              )}
-            </div>
-
-            {/* Score Ring / Bar display */}
-            <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
-              <div
-                style={{
-                  width: 84,
-                  height: 84,
-                  borderRadius: '50%',
-                  background: 'rgba(16,185,129,0.06)',
-                  border: '3px solid #10b981',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <span style={{ fontSize: 24, fontWeight: 800, color: '#10b981' }}>
-                  {evaluation.overallScore}
-                </span>
-                <span
-                  style={{
-                    fontSize: 9,
-                    color: 'rgba(255,255,255,0.4)',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                  }}
-                >
-                  Overall
-                </span>
-              </div>
-
-              {/* Subscores gauges */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 18px', flex: 1 }}>
-                {[
-                  { label: 'Technical Accuracy (40%)', score: evaluation.technicalAccuracy },
-                  { label: 'Completeness (25%)', score: evaluation.completeness },
-                  { label: 'Clarity (15%)', score: evaluation.clarity },
-                  { label: 'Depth (20%)', score: evaluation.depth },
-                ].map((s, idx) => {
-                  const scoreColor =
-                    s.score >= 80 ? '#10b981' : s.score >= 55 ? '#fbbf24' : '#f87171';
-                  return (
-                    <div key={idx} style={{ minWidth: 140, flex: 1 }}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          marginBottom: 3,
-                        }}
-                      >
-                        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
-                          {s.label}
-                        </span>
-                        <span style={{ fontSize: 11, fontWeight: 700, color: scoreColor }}>
-                          {s.score}%
-                        </span>
-                      </div>
-                      <div
-                        style={{
-                          width: '100%',
-                          height: 4,
-                          background: 'rgba(255,255,255,0.06)',
-                          borderRadius: 9999,
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: `${s.score}%`,
-                            height: '100%',
-                            background: scoreColor,
-                            borderRadius: 9999,
-                          }}
-                        />
-                      </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Bot size={13} color="#10b981" />
+                    <span
+                      style={{
+                        color: '#6ee7b7',
+                        fontSize: 12,
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em',
+                      }}
+                    >
+                      AI Evaluation Result
+                    </span>
+                  </div>
+                  {evaluation.chronicGapRepeated && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 5,
+                        background: 'rgba(248,113,113,0.12)',
+                        border: '1px solid rgba(248,113,113,0.25)',
+                        borderRadius: 6,
+                        padding: '3px 10px',
+                        fontSize: 11,
+                        fontWeight: 700,
+                        color: '#f87171',
+                      }}
+                    >
+                      <AlertTriangle size={12} />
+                      Chronic Gap Repeated: "{evaluation.chronicGapName}"
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Critique Feedback & Plan */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-                borderTop: '1px solid rgba(255,255,255,0.06)',
-                paddingTop: 14,
-              }}
-            >
-              <div>
-                <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                  Critique Feedback
+                  )}
                 </div>
-                <p
-                  style={{
-                    color: 'rgba(255,255,255,0.85)',
-                    fontSize: 13,
-                    margin: '3px 0 0',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {evaluation.feedback}
-                </p>
-              </div>
 
-              {evaluation.strengths && evaluation.strengths.length > 0 && (
-                <div>
-                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                    Strengths
-                  </div>
-                  <ul
-                    style={{ margin: '4px 0 0', paddingLeft: 18, color: '#6ee7b7', fontSize: 13 }}
+                {/* Score Ring / Bar display */}
+                <div style={{ display: 'flex', gap: 24, alignItems: 'center', flexWrap: 'wrap' }}>
+                  <div
+                    style={{
+                      width: 84,
+                      height: 84,
+                      borderRadius: '50%',
+                      background: 'rgba(16,185,129,0.06)',
+                      border: '3px solid #10b981',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
                   >
-                    {evaluation.strengths.map((st, i) => (
-                      <li key={i} style={{ marginBottom: 1 }}>
-                        {st}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {evaluation.missingPoints && evaluation.missingPoints.length > 0 && (
-                <div>
-                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
-                    Gaps / Missing Points
+                    <span style={{ fontSize: 24, fontWeight: 800, color: '#10b981' }}>
+                      {evaluation.overallScore}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 9,
+                        color: 'rgba(255,255,255,0.4)',
+                        textTransform: 'uppercase',
+                        fontWeight: 700,
+                      }}
+                    >
+                      Overall
+                    </span>
                   </div>
-                  <ul
-                    style={{ margin: '4px 0 0', paddingLeft: 18, color: '#f87171', fontSize: 13 }}
-                  >
-                    {evaluation.missingPoints.map((mp, i) => (
-                      <li key={i} style={{ marginBottom: 1 }}>
-                        {mp}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
 
-              {evaluation.improvementPlan && (
+                  {/* Subscores gauges */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 18px', flex: 1 }}>
+                    {[
+                      { label: 'Technical Accuracy (40%)', score: evaluation.technicalAccuracy },
+                      { label: 'Completeness (25%)', score: evaluation.completeness },
+                      { label: 'Clarity (15%)', score: evaluation.clarity },
+                      { label: 'Depth (20%)', score: evaluation.depth },
+                    ].map((s, idx) => {
+                      const scoreColor =
+                        s.score >= 80 ? '#10b981' : s.score >= 55 ? '#fbbf24' : '#f87171';
+                      return (
+                        <div key={idx} style={{ minWidth: 140, flex: 1 }}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              marginBottom: 3,
+                            }}
+                          >
+                            <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
+                              {s.label}
+                            </span>
+                            <span style={{ fontSize: 11, fontWeight: 700, color: scoreColor }}>
+                              {s.score}%
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              width: '100%',
+                              height: 4,
+                              background: 'rgba(255,255,255,0.06)',
+                              borderRadius: 9999,
+                              overflow: 'hidden',
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: `${s.score}%`,
+                                height: '100%',
+                                background: scoreColor,
+                                borderRadius: 9999,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Critique Feedback & Plan */}
                 <div
                   style={{
-                    background: 'rgba(16,185,129,0.05)',
-                    border: '1px dashed rgba(16,185,129,0.2)',
-                    padding: '10px 12px',
-                    borderRadius: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 12,
+                    borderTop: '1px solid rgba(255,255,255,0.06)',
+                    paddingTop: 14,
                   }}
                 >
-                  <div
-                    style={{
-                      color: '#34d399',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.04em',
-                    }}
-                  >
-                    Actionable Improvement Plan
+                  <div>
+                    <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                      Critique Feedback
+                    </div>
+                    <p
+                      style={{
+                        color: 'rgba(255,255,255,0.85)',
+                        fontSize: 13,
+                        margin: '3px 0 0',
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {evaluation.feedback}
+                    </p>
                   </div>
-                  <div
-                    style={{
-                      color: 'rgba(255,255,255,0.75)',
-                      fontSize: 13,
-                      marginTop: 4,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {evaluation.improvementPlan}
-                  </div>
+
+                  {evaluation.strengths && evaluation.strengths.length > 0 && (
+                    <div>
+                      <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                        Strengths
+                      </div>
+                      <ul
+                        style={{ margin: '4px 0 0', paddingLeft: 18, color: '#6ee7b7', fontSize: 13 }}
+                      >
+                        {evaluation.strengths.map((st, i) => (
+                          <li key={i} style={{ marginBottom: 1 }}>
+                            {st}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {evaluation.missingPoints && evaluation.missingPoints.length > 0 && (
+                    <div>
+                      <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 11, fontWeight: 600 }}>
+                        Gaps / Missing Points
+                      </div>
+                      <ul
+                        style={{ margin: '4px 0 0', paddingLeft: 18, color: '#f87171', fontSize: 13 }}
+                      >
+                        {evaluation.missingPoints.map((mp, i) => (
+                          <li key={i} style={{ marginBottom: 1 }}>
+                            {mp}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {evaluation.improvementPlan && (
+                    <div
+                      style={{
+                        background: 'rgba(16,185,129,0.05)',
+                        border: '1px dashed rgba(16,185,129,0.2)',
+                        padding: '10px 12px',
+                        borderRadius: 8,
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: '#34d399',
+                          fontSize: 11,
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em',
+                        }}
+                      >
+                        Actionable Improvement Plan
+                      </div>
+                      <div
+                        style={{
+                          color: 'rgba(255,255,255,0.75)',
+                          fontSize: 13,
+                          marginTop: 4,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {evaluation.improvementPlan}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
         )}
 

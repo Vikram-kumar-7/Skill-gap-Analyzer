@@ -9,7 +9,6 @@ import {
   FolderOpen,
   MessageSquare,
   Settings,
-  Zap,
   X,
   Award,
 } from 'lucide-react';
@@ -74,15 +73,16 @@ export default function Sidebar({ isOpen, onClose }) {
                 width: '34px',
                 height: '34px',
                 borderRadius: '10px',
-                background: 'linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
-                boxShadow: '0 2px 10px rgba(108,93,211,0.50), 0 0 0 1px rgba(255,255,255,0.10)',
+                overflow: 'hidden',
+                border: '1px solid var(--border)',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.30)',
               }}
             >
-              <Zap size={16} color="white" fill="white" />
+              <img src="/logo.jpg" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div style={{ minWidth: 0 }}>
               <div
@@ -142,17 +142,17 @@ export default function Sidebar({ isOpen, onClose }) {
           style={{ flex: 1, padding: '10px 8px', overflowY: 'auto', overflowX: 'hidden' }}
           aria-label="Main navigation"
         >
-          {NAV.map(({ icon: Icon, label, to, end }) => (
+          {NAV.map((item) => (
             <NavLink
-              key={to}
-              to={to}
-              end={end}
+              key={item.to}
+              to={item.to}
+              end={item.end}
               onClick={() => { if (window.innerWidth < 1024) onClose(); }}
               className={({ isActive }) =>
                 `sidebar-nav-item${isActive ? ' active' : ''}`
               }
             >
-              <Icon size={16} style={{ flexShrink: 0 }} />
+              <item.icon size={16} style={{ flexShrink: 0 }} />
               <span
                 style={{
                   fontSize: '13px',
@@ -163,7 +163,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   whiteSpace: 'nowrap',
                 }}
               >
-                {label}
+                {item.label}
               </span>
             </NavLink>
           ))}

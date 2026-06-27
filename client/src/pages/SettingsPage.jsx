@@ -3,8 +3,6 @@ import {
   User,
   Zap,
   Database,
-  Eye,
-  EyeOff,
   Download,
   Upload,
   AlertTriangle,
@@ -36,7 +34,7 @@ const THEME_OPTIONS = [
   { id: 'light', label: 'Light', icon: Sun },
 ];
 
-// ── Sub-components ─────────────────────────────────────────────────────────────
+// eslint-disable-next-line no-unused-vars
 const SectionTitle = ({ icon: Icon, title, accent = '#6366f1' }) => (
   <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
     <div
@@ -122,8 +120,6 @@ export default function SettingsPage() {
   const [aiEnabled, setAiEnabled] = useState(
     () => localStorage.getItem('sga_ai_enabled') === 'true'
   );
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem('sga_api_key') || '');
-  const [showKey, setShowKey] = useState(false);
 
   // Target Companies
   const [companies, setCompanies] = useState(() => {
@@ -163,8 +159,7 @@ export default function SettingsPage() {
   // ── Persistence ──────────────────────────────────────────────────────────────
   useEffect(() => {
     localStorage.setItem('sga_ai_enabled', String(aiEnabled));
-    localStorage.setItem('sga_api_key', apiKey);
-  }, [aiEnabled, apiKey]);
+  }, [aiEnabled]);
 
   useEffect(() => {
     localStorage.setItem('sga_target_companies', JSON.stringify(companies));
@@ -567,8 +562,9 @@ export default function SettingsPage() {
             gap: '8px',
           }}
         >
-          {THEME_OPTIONS.map(({ id, label, icon: Icon }) => {
+          {THEME_OPTIONS.map(({ id, label, icon }) => {
             const active = theme === id;
+            const Icon = icon;
             return (
               <button
                 key={id}
@@ -631,39 +627,22 @@ export default function SettingsPage() {
           onChange={setAiEnabled}
         />
         {aiEnabled && (
-          <div style={{ marginTop: '14px' }}>
-            <Label>OpenAI API Key</Label>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <input
-                type={showKey ? 'text' : 'password'}
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-..."
-                style={{ ...inputStyle, paddingRight: '44px' }}
-                onFocus={focusHandler}
-                onBlur={blurHandler}
-              />
-              <button
-                onClick={() => setShowKey((s) => !s)}
-                style={{
-                  position: 'absolute',
-                  right: '0px',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: 'rgba(255,255,255,0.3)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '44px',
-                  height: '44px',
-                }}
-              >
-                {showKey ? <EyeOff size={15} /> : <Eye size={15} />}
-              </button>
-            </div>
-            <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.25)', marginTop: '6px' }}>
-              Your key is stored locally and never sent to our servers.
+          <div style={{ marginTop: '14px', fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                background: 'rgba(139,92,246,0.08)',
+                border: '1px solid rgba(139,92,246,0.2)',
+                borderRadius: '8px',
+                padding: '12px 14px',
+              }}
+            >
+              <Zap size={14} color="#a78bfa" style={{ flexShrink: 0 }} />
+              <span>
+                AI features are run securely via the application backend. No client-side API key configuration is required.
+              </span>
             </div>
           </div>
         )}

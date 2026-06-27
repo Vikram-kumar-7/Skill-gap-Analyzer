@@ -16,6 +16,25 @@ const SALARY_MAP = {
   'UI/UX Designer': 8,
 };
 
+const CustomTooltip = ({ active, payload }) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div
+      style={{
+        background: '#0e1525',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: '8px',
+        padding: '8px 12px',
+      }}
+    >
+      <div style={{ color: 'white', fontSize: '12px', fontWeight: 600 }}>
+        {payload[0]?.payload?.name}
+      </div>
+      <div style={{ color: '#a5b4fc', fontSize: '11px' }}>ROI: {payload[0]?.value}</div>
+    </div>
+  );
+};
+
 export default function CareerSimPage() {
   const [analyses, setAnalyses] = useState(() => getAnalyses());
   const [roleA, setRoleA] = useState(ROLES[0]);
@@ -58,25 +77,6 @@ export default function CareerSimPage() {
     padding: '20px',
     overflow: 'hidden',
     boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
-  };
-
-  const CustomTooltip = ({ active, payload }) => {
-    if (!active || !payload?.length) return null;
-    return (
-      <div
-        style={{
-          background: '#0e1525',
-          border: '1px solid rgba(255,255,255,0.08)',
-          borderRadius: '8px',
-          padding: '8px 12px',
-        }}
-      >
-        <div style={{ color: 'white', fontSize: '12px', fontWeight: 600 }}>
-          {payload[0]?.payload?.name}
-        </div>
-        <div style={{ color: '#a5b4fc', fontSize: '11px' }}>ROI: {payload[0]?.value}</div>
-      </div>
-    );
   };
 
   return (

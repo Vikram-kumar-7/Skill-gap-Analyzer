@@ -123,10 +123,8 @@ export default function TopBar({ onMenuClick }) {
           </span>
         </div>
 
-        {/* New Analysis button */}
         <button
           onClick={() => navigate('/new-analysis')}
-          className="btn-primary"
           style={{
             padding: '8px 14px',
             fontSize: '12px',
@@ -136,6 +134,24 @@ export default function TopBar({ onMenuClick }) {
             whiteSpace: 'nowrap',
             minHeight: '36px',
             borderRadius: '9px',
+            background: 'linear-gradient(135deg, #7C3AED 0%, #EC4899 100%)',
+            border: 'none',
+            color: 'white',
+            fontWeight: 700,
+            cursor: 'pointer',
+            boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)',
+            transition: 'transform var(--dur-fast) var(--ease-out)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 6px 16px rgba(236, 72, 153, 0.5)';
+            e.currentTarget.style.transform = 'translateY(-1px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(124, 58, 237, 0.3)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          onMouseDown={(e) => {
+            e.currentTarget.style.transform = 'translateY(1px)';
           }}
         >
           <Plus size={13} />

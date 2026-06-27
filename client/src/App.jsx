@@ -3,7 +3,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Agentation } from 'agentation';
 import Sidebar from './components/Sidebar.jsx';
 import TopBar from './components/TopBar.jsx';
-import LoginPage from './pages/LoginPage.jsx';
+import GetStarted from './pages/GetStarted.jsx';
+import SaveProgress from './pages/SaveProgress.jsx';
+import CheckEmail from './pages/CheckEmail.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import NewAnalysisPage from './pages/NewAnalysisPage.jsx';
 import AnalysesPage from './pages/AnalysesPage.jsx';
@@ -76,7 +78,8 @@ function AppShell() {
 export default function App() {
   const [user, setUser] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem('sga_user') || 'null');
+      const u = JSON.parse(localStorage.getItem('sga_user') || 'null');
+      return u && !u.onboardingTemp ? u : null;
     } catch {
       return null;
     }
@@ -85,7 +88,8 @@ export default function App() {
   useEffect(() => {
     const onStorage = () => {
       try {
-        setUser(JSON.parse(localStorage.getItem('sga_user') || 'null'));
+        const u = JSON.parse(localStorage.getItem('sga_user') || 'null');
+        setUser(u && !u.onboardingTemp ? u : null);
       } catch {
         setUser(null);
       }
@@ -136,7 +140,18 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {user ? <AppShell /> : <LoginPage onLogin={setUser} />}
+      <Routes>
+        {user ? (
+          <Route path="/*" element={<AppShell />} />
+        ) : (
+          <>
+            <Route path="/get-started" element={<GetStarted />} />
+            <Route path="/save-progress" element={<SaveProgress />} />
+            <Route path="/check-email" element={<CheckEmail />} />
+            <Route path="*" element={<Navigate to="/get-started" replace />} />
+          </>
+        )}
+      </Routes>
       {import.meta.env.DEV && <Agentation />}
     </BrowserRouter>
   );

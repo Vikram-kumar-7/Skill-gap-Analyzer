@@ -1,51 +1,68 @@
-import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit2, FolderOpen, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Trash2, Edit2, FolderOpen, ExternalLink, Layers, Cpu } from 'lucide-react';
 import { getProjects, saveProjects, addActivity, getSkills } from '../utils/storage.js';
 import ProjectRecommendations from '../components/ProjectRecommendations';
 
-const STATUS_STYLE = {
-  'In Progress': 'pill-yellow',
-  Done: 'pill-green',
-  Paused: 'pill-muted',
+/* ─── Design tokens ─── */
+const EMERALD = '#4edea3';
+const glass = (extra = {}) => ({
+  background: 'linear-gradient(135deg, rgba(5,20,36,0.88) 0%, rgba(13,28,45,0.60) 100%)',
+  backdropFilter: 'blur(24px)',
+  WebkitBackdropFilter: 'blur(24px)',
+  border: '1px solid rgba(78,222,163,0.14)',
+  boxShadow: '0 4px 6px rgba(0,0,0,0.40), 0 24px 48px rgba(0,0,0,0.55), inset 0 1px 1px rgba(255,255,255,0.06)',
+  borderRadius: '18px',
+  position: 'relative',
+  overflow: 'hidden',
+  ...extra,
+});
+
+function RimGlow() {
+  return (
+    <>
+      <div style={{ position:'absolute', inset:0, borderRadius:'inherit', background:'linear-gradient(135deg,rgba(255,255,255,0.06) 0%,transparent 60%)', pointerEvents:'none', zIndex:0 }} />
+      <style>{`@keyframes rim-pj{0%,100%{opacity:.28}50%{opacity:.85}}`}</style>
+      <div style={{ position:'absolute', inset:0, borderRadius:'inherit', padding:'1px',
+        background:'linear-gradient(135deg,rgba(78,222,163,.65) 0%,rgba(78,222,163,0) 40%,rgba(78,222,163,0) 70%,rgba(78,222,163,.50) 100%)',
+        WebkitMask:'linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)',
+        WebkitMaskComposite:'xor', maskComposite:'exclude',
+        pointerEvents:'none', animation:'rim-pj 4s ease-in-out infinite', zIndex:0 }} />
+    </>
+  );
+}
+
+const STATUS_CONFIG = {
+  'In Progress': { bg: 'rgba(251,191,36,0.12)', color: '#fbbf24', border: 'rgba(251,191,36,0.28)' },
+  Done:          { bg: 'rgba(78,222,163,0.12)',  color: '#4edea3', border: 'rgba(78,222,163,0.28)' },
+  Paused:        { bg: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.40)', border: 'rgba(255,255,255,0.10)' },
 };
 
-const EMPTY_FORM = {
-  name: '',
-  description: '',
-  techStack: [],
-  skills: [],
-  status: 'In Progress',
-  github: '',
+const EMPTY_FORM = { name:'', description:'', techStack:[], skills:[], status:'In Progress', github:'' };
+
+const inputStyle = {
+  width:'100%', background:'rgba(5,7,10,0.70)', border:'1px solid rgba(255,255,255,0.08)',
+  borderRadius:'12px', padding:'11px 15px', color:'#d4e4fa', fontSize:'13px',
+  fontFamily:'inherit', outline:'none', marginBottom:'14px', boxSizing:'border-box',
+  transition:'border-color 0.18s ease, box-shadow 0.18s ease',
 };
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState(() => getProjects());
-  const [modal, setModal] = useState(false);
-  const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState(EMPTY_FORM);
+  const [modal, setModal]       = useState(false);
+  const [editing, setEditing]   = useState(null);
+  const [form, setForm]         = useState(EMPTY_FORM);
   const [techInput, setTechInput] = useState('');
   const [skillInput, setSkillInput] = useState('');
 
-  const sync = (arr) => {
-    saveProjects(arr);
-    setProjects(arr);
-  };
+  const sync = (arr) => { saveProjects(arr); setProjects(arr); };
 
-  const openAdd = () => {
-    setForm(EMPTY_FORM);
-    setEditing(null);
-    setModal(true);
-  };
-  const openEdit = (p) => {
-    setForm({ ...p });
-    setEditing(p.id);
-    setModal(true);
-  };
+  const openAdd  = () => { setForm(EMPTY_FORM); setEditing(null); setModal(true); };
+  const openEdit = (p) => { setForm({ ...p }); setEditing(p.id); setModal(true); };
 
   const save = () => {
     if (!form.name.trim()) return;
     if (editing) {
-      sync(projects.map((p) => (p.id === editing ? { ...form, id: editing } : p)));
+      sync(projects.map(p => p.id === editing ? { ...form, id: editing } : p));
       addActivity(`Updated project: ${form.name}`);
     } else {
       sync([{ ...form, id: Date.now(), createdAt: Date.now() }, ...projects]);
@@ -56,123 +73,79 @@ export default function ProjectsPage() {
 
   const remove = (id) => {
     if (!confirm('Delete this project?')) return;
-    sync(projects.filter((p) => p.id !== id));
+    sync(projects.filter(p => p.id !== id));
   };
 
-  const addTag = (field, value, setter) => {
-    if (!value.trim()) return;
-    setForm((f) => ({ ...f, [field]: [...(f[field] || []), value.trim()] }));
-    setter('');
-  };
-
-  const removeTag = (field, idx) =>
-    setForm((f) => ({ ...f, [field]: f[field].filter((_, i) => i !== idx) }));
-
-  const inp = {
-    width: '100%',
-    background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '9px',
-    padding: '9px 13px',
-    color: 'white',
-    fontSize: '13px',
-    fontFamily: 'inherit',
-    outline: 'none',
-    marginBottom: '14px',
-    boxSizing: 'border-box',
-  };
+  const addTag    = (field, value, setter) => { if (!value.trim()) return; setForm(f => ({ ...f, [field]: [...(f[field]||[]), value.trim()] })); setter(''); };
+  const removeTag = (field, idx) => setForm(f => ({ ...f, [field]: f[field].filter((_,i)=>i!==idx) }));
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      {/* Header */}
-      <div
-        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-          <div style={{ fontSize: '20px', fontWeight: 700, color: 'white' }}>Projects</div>
-          <div className="pill pill-indigo">{projects.length}</div>
+    <div style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
+
+      {/* ── Page Header ── */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'12px' }}>
+        <div>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+            <div style={{ width:36, height:36, borderRadius:'10px', background:'rgba(78,222,163,0.12)', border:'1px solid rgba(78,222,163,0.22)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <Layers size={18} color={EMERALD} />
+            </div>
+            <h1 style={{ fontSize:'22px', fontWeight:800, color:'#d4e4fa', letterSpacing:'-0.02em' }}>Projects</h1>
+            <span style={{ fontSize:'11px', fontWeight:700, color:EMERALD, background:'rgba(78,222,163,0.10)', border:'1px solid rgba(78,222,163,0.22)', borderRadius:'999px', padding:'3px 10px' }}>
+              {projects.length}
+            </span>
+          </div>
+          <p style={{ fontSize:'12px', color:'rgba(187,202,191,0.50)', marginTop:'4px', marginLeft:'46px' }}>Showcase and manage your portfolio projects</p>
         </div>
-        <button
-          onClick={openAdd}
-          className="btn-primary"
-          style={{
-            padding: '8px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            flexShrink: 0,
-            whiteSpace: 'nowrap',
-            minHeight: '44px', // ensure 44px target
-          }}
+        <button onClick={openAdd} style={{
+          display:'flex', alignItems:'center', gap:'8px', padding:'10px 20px',
+          background:`linear-gradient(135deg, ${EMERALD} 0%, #10b981 100%)`,
+          border:'none', borderRadius:'12px', color:'#003824', fontSize:'13px', fontWeight:800,
+          cursor:'pointer', fontFamily:'inherit', minHeight:'42px',
+          boxShadow:'0 0 20px rgba(78,222,163,0.25), 0 4px 12px rgba(0,0,0,0.40)',
+          transition:'all 0.18s ease',
+        }}
+          onMouseEnter={e => { e.currentTarget.style.transform='scale(1.04)'; e.currentTarget.style.boxShadow='0 0 28px rgba(78,222,163,0.35), 0 6px 18px rgba(0,0,0,0.40)'; }}
+          onMouseLeave={e => { e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.boxShadow='0 0 20px rgba(78,222,163,0.25), 0 4px 12px rgba(0,0,0,0.40)'; }}
         >
-          <Plus size={14} /> Add Project
+          <Plus size={15} /> Add Project
         </button>
       </div>
 
+      {/* ── Empty State ── */}
       {projects.length === 0 ? (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '60px 20px',
-            gap: '16px',
-          }}
-        >
-          <div
-            style={{
-              width: '80px',
-              height: '80px',
-              borderRadius: '50%',
-              background: 'rgba(99,102,241,0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <FolderOpen size={36} color="#6366f1" />
+        <div style={{ ...glass({ padding:'64px 24px' }), display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'20px', textAlign:'center' }}>
+          <RimGlow />
+          <div style={{ position:'relative', zIndex:1 }}>
+            <div style={{ width:80, height:80, borderRadius:'22px', background:'rgba(78,222,163,0.08)', border:'1px solid rgba(78,222,163,0.20)', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 16px', boxShadow:'0 0 30px rgba(78,222,163,0.12)' }}>
+              <FolderOpen size={36} color={EMERALD} style={{ opacity:0.7 }} />
+            </div>
+            <div style={{ fontSize:'20px', fontWeight:700, color:'#d4e4fa', marginBottom:'8px' }}>No projects yet</div>
+            <div style={{ fontSize:'13px', color:'rgba(187,202,191,0.50)', marginBottom:'24px', lineHeight:1.6 }}>
+              Showcase your work by adding your first project
+            </div>
+            <button onClick={openAdd} style={{
+              display:'flex', alignItems:'center', gap:'8px', padding:'12px 28px',
+              background:`linear-gradient(135deg, ${EMERALD} 0%, #10b981 100%)`,
+              border:'none', borderRadius:'12px', color:'#003824', fontSize:'13px', fontWeight:800,
+              cursor:'pointer', fontFamily:'inherit', margin:'0 auto',
+              boxShadow:'0 0 20px rgba(78,222,163,0.25)',
+            }}>
+              <Plus size={15} /> Add Your First Project
+            </button>
           </div>
-          <div style={{ fontSize: '16px', fontWeight: 600, color: 'white' }}>No projects yet</div>
-          <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)' }}>
-            Showcase your work by adding projects
-          </div>
-          <button
-            onClick={openAdd}
-            className="btn-primary"
-            style={{
-              padding: '10px 24px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              minHeight: '44px',
-            }}
-          >
-            <Plus size={14} /> Add Project
-          </button>
         </div>
       ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px,1fr))', // better on 375px mobile
-            gap: '16px',
-          }}
-        >
-          {projects.map((p) => (
-            <ProjectCard
-              key={p.id}
-              project={p}
-              onEdit={() => openEdit(p)}
-              onDelete={() => remove(p.id)}
-            />
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(290px,1fr))', gap:'18px' }}>
+          {projects.map(p => (
+            <ProjectCard key={p.id} project={p} onEdit={() => openEdit(p)} onDelete={() => remove(p.id)} />
           ))}
         </div>
       )}
 
       {/* ── AI Project Recommendations ── */}
-      <div style={{ marginTop: '8px' }}>
+      <div style={{ marginTop:'8px' }}>
         <ProjectRecommendations
-          userSkills={getSkills().map((s) => s.name.toLowerCase())}
+          userSkills={getSkills().map(s => s.name.toLowerCase())}
           onAddToProjects={(project) => {
             const next = [{ ...project, id: Date.now(), createdAt: Date.now() }, ...projects];
             sync(next);
@@ -181,123 +154,101 @@ export default function ProjectsPage() {
         />
       </div>
 
-      {/* Modal */}
+      {/* ── Modal ── */}
       {modal && (
-        <div
-          className="modal-overlay"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setModal(false);
-          }}
-        >
-          <div className="modal-box w-full h-full max-w-full max-h-full sm:w-[480px] sm:h-auto sm:max-h-[90vh] rounded-none sm:rounded-2xl flex flex-col justify-center sm:justify-start">
-            <div
-              style={{ fontSize: '16px', fontWeight: 700, color: 'white', marginBottom: '20px' }}
-            >
-              {editing ? 'Edit Project' : 'Add Project'}
-            </div>
+        <div onClick={e => { if(e.target===e.currentTarget) setModal(false); }} style={{
+          position:'fixed', inset:0, background:'rgba(0,0,0,0.75)', backdropFilter:'blur(8px)',
+          display:'flex', alignItems:'center', justifyContent:'center', zIndex:9999, padding:'20px',
+        }}>
+          <div style={{
+            ...glass({ padding:'28px', borderRadius:'22px', overflow:'auto' }),
+            width:'100%', maxWidth:'480px', maxHeight:'90vh',
+          }}>
+            <RimGlow />
+            <div style={{ position:'relative', zIndex:1 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'22px' }}>
+                <div style={{ width:32, height:32, borderRadius:'9px', background:'rgba(78,222,163,0.12)', border:'1px solid rgba(78,222,163,0.22)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                  <Layers size={16} color={EMERALD} />
+                </div>
+                <h2 style={{ fontSize:'17px', fontWeight:700, color:'#d4e4fa' }}>{editing ? 'Edit Project' : 'Add Project'}</h2>
+              </div>
 
-            <label className="label">Project Name *</label>
-            <input
-              style={{ ...inp, minHeight: '44px', padding: '10px 14px' }}
-              placeholder="e.g. Portfolio Website"
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-            />
-
-            <label className="label">Description</label>
-            <textarea
-              style={{ ...inp, minHeight: '80px', resize: 'vertical' }}
-              placeholder="What does this project do?"
-              value={form.description}
-              onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-            />
-
-            <label className="label">Tech Stack (press Enter to add)</label>
-            <input
-              style={{ ...inp, marginBottom: '6px', minHeight: '44px', padding: '10px 14px' }}
-              placeholder="e.g. React, Node.js, MongoDB"
-              value={techInput}
-              onChange={(e) => setTechInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  addTag('techStack', techInput, setTechInput);
-                }
-              }}
-            />
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
-              {(form.techStack || []).map((t, i) => (
-                <span
-                  key={i}
-                  className="pill pill-muted"
-                  style={{ cursor: 'pointer', padding: '8px 12px', minHeight: '32px' }}
-                  onClick={() => removeTag('techStack', i)}
-                >
-                  {t} ×
-                </span>
+              {[
+                { label:'Project Name *', type:'text', key:'name', placeholder:'e.g. Portfolio Website' },
+              ].map(f => (
+                <div key={f.key}>
+                  <label style={{ display:'block', fontSize:'10px', fontWeight:700, color:'rgba(187,202,191,0.50)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'6px' }}>{f.label}</label>
+                  <input style={inputStyle} placeholder={f.placeholder} value={form[f.key]} onChange={e => setForm(ff => ({ ...ff, [f.key]: e.target.value }))}
+                    onFocus={e => { e.target.style.borderColor='rgba(78,222,163,0.45)'; e.target.style.boxShadow='0 0 12px rgba(78,222,163,0.10)'; }}
+                    onBlur={e =>  { e.target.style.borderColor='rgba(255,255,255,0.08)'; e.target.style.boxShadow='none'; }}
+                  />
+                </div>
               ))}
-            </div>
 
-            <label className="label">Skills Used (press Enter to add)</label>
-            <input
-              style={{ ...inp, marginBottom: '6px', minHeight: '44px', padding: '10px 14px' }}
-              placeholder="e.g. React, REST API"
-              value={skillInput}
-              onChange={(e) => setSkillInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  addTag('skills', skillInput, setSkillInput);
-                }
-              }}
-            />
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
-              {(form.skills || []).map((s, i) => (
-                <span
-                  key={i}
-                  className="pill pill-indigo"
-                  style={{ cursor: 'pointer', padding: '8px 12px', minHeight: '32px' }}
-                  onClick={() => removeTag('skills', i)}
-                >
-                  {s} ×
-                </span>
-              ))}
-            </div>
+              <label style={{ display:'block', fontSize:'10px', fontWeight:700, color:'rgba(187,202,191,0.50)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'6px' }}>Description</label>
+              <textarea style={{ ...inputStyle, minHeight:'80px', resize:'vertical' }} placeholder="What does this project do?"
+                value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
+                onFocus={e => { e.target.style.borderColor='rgba(78,222,163,0.45)'; e.target.style.boxShadow='0 0 12px rgba(78,222,163,0.10)'; }}
+                onBlur={e =>  { e.target.style.borderColor='rgba(255,255,255,0.08)'; e.target.style.boxShadow='none'; }}
+              />
 
-            <label className="label">Status</label>
-            <select
-              style={{ ...inp, minHeight: '44px' }}
-              value={form.status}
-              onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
-            >
-              <option value="In Progress">In Progress</option>
-              <option value="Done">Done</option>
-              <option value="Paused">Paused</option>
-            </select>
+              {/* Tech Stack */}
+              <label style={{ display:'block', fontSize:'10px', fontWeight:700, color:'rgba(187,202,191,0.50)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'6px' }}>Tech Stack (Enter to add)</label>
+              <input style={{ ...inputStyle, marginBottom:'8px' }} placeholder="e.g. React, Node.js" value={techInput}
+                onChange={e => setTechInput(e.target.value)}
+                onKeyDown={e => { if(e.key==='Enter'){ e.preventDefault(); addTag('techStack', techInput, setTechInput); }}}
+                onFocus={e => { e.target.style.borderColor='rgba(78,222,163,0.45)'; e.target.style.boxShadow='0 0 12px rgba(78,222,163,0.10)'; }}
+                onBlur={e =>  { e.target.style.borderColor='rgba(255,255,255,0.08)'; e.target.style.boxShadow='none'; }}
+              />
+              <div style={{ display:'flex', flexWrap:'wrap', gap:'6px', marginBottom:'16px' }}>
+                {(form.techStack||[]).map((t,i) => (
+                  <span key={i} onClick={() => removeTag('techStack',i)} style={{ fontSize:'11px', color:'rgba(187,202,191,0.70)', background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.10)', borderRadius:'6px', padding:'4px 10px', cursor:'pointer' }}>{t} ×</span>
+                ))}
+              </div>
 
-            <label className="label">GitHub URL</label>
-            <input
-              style={{ ...inp, minHeight: '44px', padding: '10px 14px' }}
-              placeholder="https://github.com/..."
-              value={form.github || ''}
-              onChange={(e) => setForm((f) => ({ ...f, github: e.target.value }))}
-            />
+              {/* Skills */}
+              <label style={{ display:'block', fontSize:'10px', fontWeight:700, color:'rgba(187,202,191,0.50)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'6px' }}>Skills Used (Enter to add)</label>
+              <input style={{ ...inputStyle, marginBottom:'8px' }} placeholder="e.g. REST API, GraphQL" value={skillInput}
+                onChange={e => setSkillInput(e.target.value)}
+                onKeyDown={e => { if(e.key==='Enter'){ e.preventDefault(); addTag('skills', skillInput, setSkillInput); }}}
+                onFocus={e => { e.target.style.borderColor='rgba(78,222,163,0.45)'; e.target.style.boxShadow='0 0 12px rgba(78,222,163,0.10)'; }}
+                onBlur={e =>  { e.target.style.borderColor='rgba(255,255,255,0.08)'; e.target.style.boxShadow='none'; }}
+              />
+              <div style={{ display:'flex', flexWrap:'wrap', gap:'6px', marginBottom:'16px' }}>
+                {(form.skills||[]).map((s,i) => (
+                  <span key={i} onClick={() => removeTag('skills',i)} style={{ fontSize:'11px', color:EMERALD, background:'rgba(78,222,163,0.09)', border:'1px solid rgba(78,222,163,0.22)', borderRadius:'6px', padding:'4px 10px', cursor:'pointer' }}>{s} ×</span>
+                ))}
+              </div>
 
-            <div style={{ display: 'flex', gap: '10px', marginTop: '12px' }}>
-              <button
-                onClick={() => setModal(false)}
-                className="btn-outline"
-                style={{ flex: 1, padding: '12px', minHeight: '44px' }}
+              {/* Status */}
+              <label style={{ display:'block', fontSize:'10px', fontWeight:700, color:'rgba(187,202,191,0.50)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'6px' }}>Status</label>
+              <select style={{ ...inputStyle }} value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
+                onFocus={e => { e.target.style.borderColor='rgba(78,222,163,0.45)'; }}
+                onBlur={e =>  { e.target.style.borderColor='rgba(255,255,255,0.08)'; }}
               >
-                Cancel
-              </button>
-              <button
-                onClick={save}
-                className="btn-primary"
-                style={{ flex: 1, padding: '12px', minHeight: '44px' }}
-              >
-                Save
-              </button>
+                <option value="In Progress">In Progress</option>
+                <option value="Done">Done</option>
+                <option value="Paused">Paused</option>
+              </select>
+
+              {/* GitHub URL */}
+              <label style={{ display:'block', fontSize:'10px', fontWeight:700, color:'rgba(187,202,191,0.50)', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'6px' }}>GitHub URL</label>
+              <input style={inputStyle} placeholder="https://github.com/..." value={form.github||''}
+                onChange={e => setForm(f => ({ ...f, github: e.target.value }))}
+                onFocus={e => { e.target.style.borderColor='rgba(78,222,163,0.45)'; e.target.style.boxShadow='0 0 12px rgba(78,222,163,0.10)'; }}
+                onBlur={e =>  { e.target.style.borderColor='rgba(255,255,255,0.08)'; e.target.style.boxShadow='none'; }}
+              />
+
+              <div style={{ display:'flex', gap:'10px', marginTop:'8px' }}>
+                <button onClick={() => setModal(false)} style={{ flex:1, padding:'12px', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.10)', borderRadius:'12px', color:'rgba(255,255,255,0.65)', fontSize:'13px', fontWeight:600, cursor:'pointer', fontFamily:'inherit', minHeight:'44px', transition:'all 0.15s' }}
+                  onMouseEnter={e => e.currentTarget.style.background='rgba(255,255,255,0.08)'}
+                  onMouseLeave={e => e.currentTarget.style.background='rgba(255,255,255,0.04)'}
+                >Cancel</button>
+                <button onClick={save} style={{ flex:1, padding:'12px', background:`linear-gradient(135deg, ${EMERALD}, #10b981)`, border:'none', borderRadius:'12px', color:'#003824', fontSize:'13px', fontWeight:800, cursor:'pointer', fontFamily:'inherit', minHeight:'44px', transition:'all 0.15s', boxShadow:'0 0 16px rgba(78,222,163,0.20)' }}
+                  onMouseEnter={e => e.currentTarget.style.boxShadow='0 0 24px rgba(78,222,163,0.35)'}
+                  onMouseLeave={e => e.currentTarget.style.boxShadow='0 0 16px rgba(78,222,163,0.20)'}
+                >Save</button>
+              </div>
             </div>
           </div>
         </div>
@@ -307,161 +258,80 @@ export default function ProjectsPage() {
 }
 
 function ProjectCard({ project: p, onEdit, onDelete }) {
+  const sc = STATUS_CONFIG[p.status] || STATUS_CONFIG.Paused;
+
   return (
-    <div
-      style={{
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border)',
-        borderRadius: '14px',
-        padding: '20px',
-        overflow: 'hidden',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
-      }}
+    <div style={{
+      background: 'linear-gradient(135deg, rgba(5,20,36,0.88) 0%, rgba(13,28,45,0.65) 100%)',
+      backdropFilter:'blur(20px)', WebkitBackdropFilter:'blur(20px)',
+      border:'1px solid rgba(78,222,163,0.14)', borderRadius:'18px', padding:'22px',
+      display:'flex', flexDirection:'column', gap:'14px',
+      position:'relative', overflow:'hidden',
+      boxShadow:'0 4px 6px rgba(0,0,0,0.35), 0 16px 32px rgba(0,0,0,0.50)',
+      transition:'all 0.22s ease', cursor:'default',
+    }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(78,222,163,0.30)'; e.currentTarget.style.boxShadow='0 8px 24px rgba(0,0,0,0.50), 0 0 20px rgba(78,222,163,0.08)'; e.currentTarget.style.transform='translateY(-2px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(78,222,163,0.14)'; e.currentTarget.style.boxShadow='0 4px 6px rgba(0,0,0,0.35), 0 16px 32px rgba(0,0,0,0.50)'; e.currentTarget.style.transform='translateY(0)'; }}
     >
-      {/* Row 1 */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          gap: '8px',
-        }}
-      >
-        <div
-          style={{
-            fontSize: '14px',
-            fontWeight: 700,
-            color: 'white',
-            flex: 1,
-            minWidth: 0,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {p.name}
+      {/* Subtle inner highlight */}
+      <div style={{ position:'absolute', inset:0, borderRadius:'inherit', background:'linear-gradient(135deg,rgba(255,255,255,0.05) 0%,transparent 60%)', pointerEvents:'none' }} />
+
+      {/* Header row */}
+      <div style={{ position:'relative', zIndex:1, display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:'8px' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:'10px', minWidth:0 }}>
+          <div style={{ width:34, height:34, borderRadius:'9px', background:'rgba(78,222,163,0.10)', border:'1px solid rgba(78,222,163,0.20)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <Cpu size={16} color="#4edea3" />
+          </div>
+          <div style={{ fontSize:'14px', fontWeight:700, color:'#d4e4fa', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{p.name}</div>
         </div>
-        <span className={`pill ${STATUS_STYLE[p.status] || 'pill-muted'}`}>{p.status}</span>
+        <span style={{ fontSize:'10px', fontWeight:700, color:sc.color, background:sc.bg, border:`1px solid ${sc.border}`, borderRadius:'6px', padding:'3px 9px', whiteSpace:'nowrap', letterSpacing:'0.04em', textTransform:'uppercase' }}>{p.status}</span>
       </div>
 
       {/* Description */}
       {p.description && (
-        <div
-          style={{
-            fontSize: '12px',
-            color: 'rgba(255,255,255,0.5)',
-            lineHeight: 1.5,
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
+        <div style={{ position:'relative', zIndex:1, fontSize:'12px', color:'rgba(187,202,191,0.60)', lineHeight:1.65, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
           {p.description}
         </div>
       )}
 
-      {/* Tech stack */}
-      {(p.techStack || []).length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-          {p.techStack.map((t, i) => (
-            <span key={i} className="pill pill-muted">
-              {t}
-            </span>
+      {/* Tech Stack */}
+      {(p.techStack||[]).length > 0 && (
+        <div style={{ position:'relative', zIndex:1, display:'flex', flexWrap:'wrap', gap:'6px' }}>
+          {p.techStack.map((t,i) => (
+            <span key={i} style={{ fontSize:'10px', color:'rgba(187,202,191,0.65)', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.08)', borderRadius:'5px', padding:'3px 8px' }}>{t}</span>
           ))}
         </div>
       )}
 
       {/* Skills */}
-      {(p.skills || []).length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-          {p.skills.map((s, i) => (
-            <span key={i} className="pill pill-indigo">
-              {s}
-            </span>
+      {(p.skills||[]).length > 0 && (
+        <div style={{ position:'relative', zIndex:1, display:'flex', flexWrap:'wrap', gap:'6px' }}>
+          {p.skills.map((s,i) => (
+            <span key={i} style={{ fontSize:'10px', color:'#4edea3', background:'rgba(78,222,163,0.09)', border:'1px solid rgba(78,222,163,0.20)', borderRadius:'5px', padding:'3px 8px' }}>{s}</span>
           ))}
         </div>
       )}
 
       {/* Footer */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: 'auto',
-          paddingTop: '4px',
-          borderTop: '1px solid rgba(255,255,255,0.05)',
-        }}
-      >
+      <div style={{ position:'relative', zIndex:1, display:'flex', alignItems:'center', justifyContent:'space-between', paddingTop:'12px', borderTop:'1px solid rgba(255,255,255,0.06)', marginTop:'auto' }}>
         {p.github ? (
-          <a
-            href={p.github}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              fontSize: '11px',
-              color: 'rgba(255,255,255,0.4)',
-              textDecoration: 'none',
-              transition: 'color 0.15s',
-              minHeight: '44px', // 44px tap target height
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'white')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
+          <a href={p.github} target="_blank" rel="noreferrer" style={{ display:'flex', alignItems:'center', gap:'5px', fontSize:'11px', color:'rgba(187,202,191,0.45)', textDecoration:'none', minHeight:'36px', transition:'color 0.15s' }}
+            onMouseEnter={e => e.currentTarget.style.color='#4edea3'}
+            onMouseLeave={e => e.currentTarget.style.color='rgba(187,202,191,0.45)'}
           >
             <ExternalLink size={12} /> GitHub
           </a>
-        ) : (
-          <div />
-        )}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <button
-            onClick={onEdit}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'rgba(255,255,255,0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '44px',
-              minHeight: '44px',
-              margin: '-12px 0 -12px -12px',
-              transition: 'color 0.15s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#a5b4fc')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
-            aria-label="Edit project"
-          >
-            <Edit2 size={14} />
-          </button>
-          <button
-            onClick={onDelete}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'rgba(255,255,255,0.3)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '44px',
-              minHeight: '44px',
-              margin: '-12px -12px -12px 0',
-              transition: 'color 0.15s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = '#f87171')}
-            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
-            aria-label="Delete project"
-          >
-            <Trash2 size={14} />
-          </button>
+        ) : <div />}
+        <div style={{ display:'flex', gap:'8px' }}>
+          {[
+            { action: onEdit, icon: <Edit2 size={14} />, hover: '#4edea3', hoverBg: 'rgba(78,222,163,0.10)', label:'Edit' },
+            { action: onDelete, icon: <Trash2 size={14} />, hover: '#f87171', hoverBg: 'rgba(248,113,113,0.10)', label:'Delete' },
+          ].map(({ action, icon, hover, hoverBg, label }) => (
+            <button key={label} onClick={action} title={label} style={{ background:'none', border:'none', cursor:'pointer', color:'rgba(187,202,191,0.40)', display:'flex', alignItems:'center', justifyContent:'center', width:'34px', height:'34px', borderRadius:'8px', transition:'all 0.15s' }}
+              onMouseEnter={e => { e.currentTarget.style.color=hover; e.currentTarget.style.background=hoverBg; }}
+              onMouseLeave={e => { e.currentTarget.style.color='rgba(187,202,191,0.40)'; e.currentTarget.style.background='none'; }}
+            >{icon}</button>
+          ))}
         </div>
       </div>
     </div>
