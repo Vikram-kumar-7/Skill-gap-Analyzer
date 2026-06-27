@@ -80,7 +80,7 @@ export default function CareerSimPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }}>
       {/* Header */}
       <div>
         <div style={{ fontSize: '20px', fontWeight: 700, color: 'white' }}>Career Simulator</div>

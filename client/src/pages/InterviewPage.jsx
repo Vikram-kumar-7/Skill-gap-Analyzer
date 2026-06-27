@@ -1731,9 +1731,9 @@ export default function InterviewPage() {
                   border: 'none',
                   padding: 0,
                   background: practiced.has(q.id)
-                    ? '#10b981'
-                    : realIdx === index
-                      ? '#6366f1'
+                      ? '#10b981'
+                      : realIdx === index
+                        ? '#4edea3'
                       : 'rgba(255,255,255,0.15)',
                   cursor: 'pointer',
                   transition: 'all 0.15s',
@@ -1755,15 +1755,15 @@ export default function InterviewPage() {
             background:
               index === filtered.length - 1
                 ? 'rgba(255,255,255,0.04)'
-                : 'linear-gradient(135deg,#6366f1,#8b5cf6)',
+                : 'linear-gradient(135deg,#10b981,#059669)',
             border: 'none',
             borderRadius: 9,
-            color: index === filtered.length - 1 ? 'rgba(255,255,255,0.2)' : 'white',
+            color: index === filtered.length - 1 ? 'rgba(255,255,255,0.2)' : '#003824',
             fontSize: 13,
             fontWeight: 600,
             cursor: index === filtered.length - 1 ? 'not-allowed' : 'pointer',
             fontFamily: 'inherit',
-            boxShadow: index === filtered.length - 1 ? 'none' : '0 4px 12px rgba(99,102,241,0.2)',
+            boxShadow: index === filtered.length - 1 ? 'none' : '0 0 14px rgba(16,185,129,0.25)',
             minHeight: '44px',
             width: '100%',
             smWidth: 'auto',

@@ -46,13 +46,12 @@ export default function Sidebar({ isOpen, onClose }) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-[210px] h-screen transition-transform duration-300 lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex flex-col w-[210px] h-screen transition-transform duration-300 lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
           background: 'var(--color-surface)',
           borderRight: '1px solid var(--border)',
-          boxShadow: '4px 0 24px rgba(0,0,0,0.40)',
         }}
       >
         {/* ── Logo + close ── */}
@@ -197,14 +196,14 @@ export default function Sidebar({ isOpen, onClose }) {
                 height: '32px',
                 borderRadius: '50%',
                 flexShrink: 0,
-                background: 'linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%)',
+                background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '11px',
                 fontWeight: 700,
                 color: 'white',
-                boxShadow: '0 0 0 2px rgba(108,93,211,0.30)',
+                boxShadow: '0 0 0 2px rgba(16,185,129,0.30)',
               }}
             >
               {initials}

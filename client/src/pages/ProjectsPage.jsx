@@ -80,7 +80,7 @@ export default function ProjectsPage() {
   const removeTag = (field, idx) => setForm(f => ({ ...f, [field]: f[field].filter((_,i)=>i!==idx) }));
 
   return (
-    <div style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }}>
 
       {/* ── Page Header ── */}
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'12px' }}>

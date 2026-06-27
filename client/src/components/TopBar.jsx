@@ -134,20 +134,20 @@ export default function TopBar({ onMenuClick }) {
             whiteSpace: 'nowrap',
             minHeight: '36px',
             borderRadius: '9px',
-            background: 'linear-gradient(135deg, #7C3AED 0%, #EC4899 100%)',
+            background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
             border: 'none',
-            color: 'white',
+            color: '#003824',
             fontWeight: 700,
             cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(124, 58, 237, 0.3)',
-            transition: 'transform var(--dur-fast) var(--ease-out)',
+            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
+            transition: 'transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-med) ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = '0 6px 16px rgba(236, 72, 153, 0.5)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.55)';
             e.currentTarget.style.transform = 'translateY(-1px)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(124, 58, 237, 0.3)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.35)';
             e.currentTarget.style.transform = 'translateY(0)';
           }}
           onMouseDown={(e) => {

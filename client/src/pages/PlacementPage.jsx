@@ -331,10 +331,10 @@ export default function PlacementPage() {
   const strokeDashoffset = circumference - (overallScore / 100) * circumference;
 
   return (
-    <div style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', padding: '16px', boxSizing: 'border-box' }}>
 
       {/* â•â• HERO: Readiness Index â•â• */}
-      <div style={{ ...glass({ padding:'28px' }), display:'flex', flexWrap:'wrap', gap:'28px', alignItems:'center' }}>
+      <div style={{ ...glass({ padding:'24px 28px' }), display:'grid', gridTemplateColumns:'auto 1fr', gap:'28px', alignItems:'start' }}>
         <RimGlow />
         {/* Orb */}
         <div style={{ position:'absolute', top:'-60px', right:'-60px', width:'240px', height:'240px', borderRadius:'50%', background:'rgba(78,222,163,0.06)', filter:'blur(60px)', pointerEvents:'none', zIndex:0 }} />
@@ -359,7 +359,7 @@ export default function PlacementPage() {
             </svg>
             <div style={{ textAlign:'center' }}>
               <div style={{ fontSize:'32px', fontWeight:900, color:EMERALD, lineHeight:1, letterSpacing:'-0.03em' }}>{overallScore}%</div>
-              <div style={{ fontSize:'9px', color:'rgba(187,202,191,0.45)', textTransform:'uppercase', letterSpacing:'0.12em', marginTop:'3px' }}>Readiness</div>
+              <div style={{ fontSize:'9px', color:'rgba(187,202,191,0.45)', textTransform:'uppercase', letterSpacing:'0.12em', marginTop:'2px' }}>Readiness</div>
             </div>
           </div>
         </div>
@@ -421,10 +421,10 @@ export default function PlacementPage() {
               { label:'Resume',     value:resumeScore,   color:'#818cf8', weight:weights.resume },
               { label:'Core CS',    value:quizScore,     color:'#22d3ee', weight:weights.coreCs },
             ].map(({ label, value, color, weight }) => (
-              <div key={label} style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)', padding:'7px 12px', borderRadius:'10px', display:'flex', gap:'8px', alignItems:'center' }}>
-                <span style={{ fontSize:'10px', color:'rgba(187,202,191,0.40)' }}>{label}</span>
-                <span style={{ fontSize:'13px', fontWeight:800, color }}>{value}/100</span>
-                <span style={{ fontSize:'9px', color:'rgba(255,255,255,0.22)' }}>({(weight*100).toFixed(0)}%)</span>
+              <div key={label} style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)', padding:'7px 12px', borderRadius:'9px', display:'inline-flex', alignItems:'center', gap:'6px' }}>
+                <span style={{ fontSize:'11px', color:'rgba(187,202,191,0.45)', lineHeight:'16px' }}>{label}</span>
+                <span style={{ fontSize:'14px', fontWeight:800, color, lineHeight:'16px' }}>{value}/100</span>
+                <span style={{ fontSize:'10px', color:'rgba(255,255,255,0.25)', lineHeight:'16px' }}>({(weight*100).toFixed(0)}%)</span>
               </div>
             ))}
           </div>
@@ -432,10 +432,10 @@ export default function PlacementPage() {
       </div>
 
       {/* â•â• MAIN GRID â•â• */}
-      <div className="grid grid-cols-1 lg:grid-cols-12" style={{ display:'grid', gap:'24px' }}>
+      <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr', gap:'24px', alignItems:'start' }}>
 
         {/* LEFT: GitHub + CS Quiz */}
-        <div className="lg:col-span-8" style={{ display:'flex', flexDirection:'column', gap:'24px', gridColumn:'span 8' }}>
+        <div style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
 
           {/* GitHub Intelligence Engine */}
           <div style={glass({ padding:'26px' })}>
@@ -454,7 +454,7 @@ export default function PlacementPage() {
 
               <div style={{ display:'flex', gap:'10px', flexWrap:'wrap' }}>
                 <input
-                  type="text" placeholder="Username only â€” e.g. Vikram-kumar-7"
+                  type="text" placeholder="Username only - e.g. Vikram-kumar-7"
                   value={githubUser}
                   onChange={e => { const raw=e.target.value; const m=raw.match(/github\.com\/([\w.-]+)/); setGithubUser(m?m[1]:raw); setGitValidationError(''); }}
                   onKeyDown={e => { if(e.key==='Enter'&&!analyzingGit) handleGitAnalyze(); }}
@@ -465,13 +465,13 @@ export default function PlacementPage() {
                 />
                 <button onClick={handleGitAnalyze} disabled={analyzingGit} style={{
                   display:'flex', alignItems:'center', gap:'8px', padding:'12px 20px',
-                  background: analyzingGit ? 'rgba(255,255,255,0.04)' : 'linear-gradient(135deg,#8b5cf6,#ec4899)',
-                  border:'none', borderRadius:'12px', color:'white', fontSize:'13px', fontWeight:700,
+                  background: analyzingGit ? 'rgba(255,255,255,0.04)' : 'linear-gradient(135deg,#10b981,#059669)',
+                  border:'none', borderRadius:'12px', color:'#003824', fontSize:'13px', fontWeight:700,
                   cursor: analyzingGit ? 'not-allowed' : 'pointer', fontFamily:'inherit', minHeight:'44px',
-                  boxShadow: analyzingGit ? 'none' : '0 0 20px rgba(236,72,153,0.28)',
+                  boxShadow: analyzingGit ? 'none' : '0 0 20px rgba(16,185,129,0.35)',
                   transition:'all 0.18s',
                 }}>
-                  {analyzingGit ? <RefreshCw size={15} style={{ animation:'spin 1s linear infinite' }} /> : <Play size={14} fill="white" />}
+                  {analyzingGit ? <RefreshCw size={15} style={{ animation:'spin 1s linear infinite' }} /> : <Play size={14} fill="#003824" />}
                   Analyze My Profile
                 </button>
               </div>
@@ -510,7 +510,7 @@ export default function PlacementPage() {
                   {gitResult.isMock && (
                     <div style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(245,158,11,0.07)', border:'1px solid rgba(245,158,11,0.22)', borderRadius:'12px', padding:'12px 16px', color:'#fbbf24', fontSize:'12px' }}>
                       <AlertCircle size={15} style={{ flexShrink:0 }} />
-                      <span><strong>Demo data â€” GitHub API unavailable:</strong> Displaying simulated profile metrics.</span>
+                      <span><strong>Demo data - GitHub API unavailable:</strong> Displaying simulated profile metrics.</span>
                     </div>
                   )}
 
@@ -519,7 +519,7 @@ export default function PlacementPage() {
                     <div style={{ background:'rgba(78,222,163,0.04)', border:'1px solid rgba(78,222,163,0.15)', borderRadius:'12px', padding:'14px' }}>
                       <div style={{ fontSize:'10px', fontWeight:700, color:EMERALD, textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:'10px' }}>Strengths</div>
                       <div style={{ display:'flex', flexDirection:'column', gap:'5px' }}>
-                        {gitResult.strengths?.map(s => <span key={s} style={{ fontSize:'12px', color:'rgba(255,255,255,0.75)' }}>âœ¦ {s}</span>)}
+                        {gitResult.strengths?.map(s => <span key={s} style={{ fontSize:'12px', color:'rgba(255,255,255,0.75)' }}>{s}</span>)}
                       </div>
                     </div>
                     <div style={{ background:'rgba(244,63,94,0.04)', border:'1px solid rgba(244,63,94,0.15)', borderRadius:'12px', padding:'14px' }}>
@@ -677,7 +677,7 @@ export default function PlacementPage() {
         </div>
 
         {/* RIGHT: DSA + Projects */}
-        <div className="lg:col-span-4" style={{ display:'flex', flexDirection:'column', gap:'24px', gridColumn:'span 4' }}>
+        <div style={{ display:'flex', flexDirection:'column', gap:'24px' }}>
 
           {/* DSA Score Estimator */}
           <div style={glass({ padding:'24px' })}>

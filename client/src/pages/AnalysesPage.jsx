@@ -65,10 +65,7 @@ export default function AnalysesPage() {
   const archived = analyses.filter((a) => !a.isActive);
 
   return (
-    <div
-      className="fade-in"
-      style={{ display: 'flex', flexDirection: 'column', gap: '28px', paddingBottom: '24px' }}
-    >
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '28px', paddingBottom: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }} className="fade-in">
       {/* ── Page header ── */}
       <PageHeader count={analyses.length} onNew={() => navigate('/new-analysis')} />
 

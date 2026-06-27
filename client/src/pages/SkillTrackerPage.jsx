@@ -83,7 +83,7 @@ export default function SkillTrackerPage() {
   const learningCount = skills.filter((s) => s.status === 'Learning').length;
 
   return (
-    <div className="flex flex-col gap-5 fade-in">
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '20px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }} className="fade-in">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

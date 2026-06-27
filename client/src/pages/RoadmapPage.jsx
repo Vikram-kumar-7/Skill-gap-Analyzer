@@ -1,35 +1,64 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Check, Plus, Lock, Clock, TrendingUp, Move, Scale } from 'lucide-react';
 import { getAnalyses } from '../utils/storage.js';
+
+const EMERALD = '#4edea3';
+const EMERALD_DIM = 'rgba(78,222,163,0.12)';
+const EMERALD_GLOW = 'rgba(78,222,163,0.20)';
+
+const glassCard = (extra = {}) => ({
+  background: 'linear-gradient(135deg, rgba(5,20,36,0.90) 0%, rgba(13,28,45,0.65) 100%)',
+  backdropFilter: 'blur(24px)',
+  WebkitBackdropFilter: 'blur(24px)',
+  border: '1px solid rgba(78,222,163,0.18)',
+  boxShadow:
+    '0 4px 6px rgba(0,0,0,0.40), 0 24px 48px rgba(0,0,0,0.55), inset 0 1px 1px rgba(255,255,255,0.08)',
+  borderRadius: '20px',
+  position: 'relative',
+  overflow: 'hidden',
+  ...extra,
+});
+
+function RimGlow() {
+  return (
+    <>
+      <div style={{ position:'absolute', inset:0, borderRadius:'inherit',
+        background:'linear-gradient(135deg,rgba(255,255,255,0.07) 0%,transparent 60%)',
+        pointerEvents:'none', zIndex:0 }} />
+      <style>{`@keyframes rim-db{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
+      <div style={{ position:'absolute', inset:0, borderRadius:'inherit', padding:'1px',
+        background:'linear-gradient(135deg,rgba(78,222,163,.7) 0%,rgba(78,222,163,0) 40%,rgba(78,222,163,0) 70%,rgba(78,222,163,.55) 100%)',
+        WebkitMask:'linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)',
+        WebkitMaskComposite:'xor', maskComposite:'exclude',
+        pointerEvents:'none', animation:'rim-db 4s ease-in-out infinite', zIndex:0 }} />
+    </>
+  );
+}
 
 export default function RoadmapPage() {
   const navigate = useNavigate();
 
-  // State declarations
   const [analyses, setAnalyses] = useState(() => getAnalyses());
   const [showAddModal, setShowAddModal] = useState(false);
   const [customSkillName, setCustomSkillName] = useState('');
 
-  // Listen for storage changes
   useEffect(() => {
     const handler = () => setAnalyses(getAnalyses());
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
   }, []);
 
-  // Derived data
   const active = analyses.find(a => a.isActive);
   const enriched = active?.enrichedMissing || [];
   const completed = enriched.filter(s => s.completed);
   const total = enriched.length;
   const progressPct = total > 0 ? Math.round((completed.length / total) * 100) : 0;
 
-  // Filter skills into categories
   const highImpact = enriched.filter(s => !s.completed && (s.roi || 0) >= 70);
   const growth = enriched.filter(s => !s.completed && (s.roi || 0) >= 40 && (s.roi || 0) < 70);
   const niceToHave = enriched.filter(s => !s.completed && (s.roi || 0) < 40);
 
-  // Handlers
   const markSkillComplete = (skillName) => {
     if (!active) return;
     const updated = {
@@ -69,31 +98,23 @@ export default function RoadmapPage() {
 
   if (!active) {
     return (
-      <div className="flex-1 flex items-center justify-center py-20">
-        <div
-          className="glass-panel max-w-md p-8 text-center flex flex-col items-center gap-6 rounded-2xl relative z-10"
-          style={{
-            background: 'rgba(12, 19, 34, 0.4)',
-            backdropFilter: 'blur(16px)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 32px rgba(0, 0, 0, 0.2)',
-          }}
-        >
-          <div className="w-16 h-16 bg-primary-container/20 rounded-full flex items-center justify-center border border-primary/20">
-            <span className="material-symbols-outlined text-primary text-3xl">map</span>
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-on-surface mb-2">No Active Analysis</h3>
-            <p className="text-on-surface-variant text-sm leading-relaxed">
+      <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', padding: '16px', boxSizing: 'border-box' }}>
+        <div style={{ ...glassCard({ padding: '48px 24px', textAlign: 'center' }), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+          <RimGlow />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <div style={{ width: 64, height: 64, borderRadius: '16px', background: 'rgba(78,222,163,0.08)', border: '1px solid rgba(78,222,163,0.20)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', boxShadow: '0 0 30px rgba(78,222,163,0.12)' }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: EMERALD, opacity: 0.7 }}>
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+              </svg>
+            </div>
+            <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#d4e4fa', marginBottom: '8px' }}>No Active Analysis</h3>
+            <p style={{ fontSize: '13px', color: 'rgba(187,202,191,0.50)', marginBottom: '24px', lineHeight: 1.6 }}>
               Run an analysis first to see your personalized roadmap.
             </p>
+            <button onClick={() => navigate('/new-analysis')} className="btn-primary" style={{ padding: '12px 28px', minHeight: '44px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+              Start New Analysis
+            </button>
           </div>
-          <button
-            onClick={() => navigate('/new-analysis')}
-            className="bg-primary-container text-white py-3 px-6 rounded-lg font-bold transition-all shadow-[0_4px_15px_rgba(108,93,211,0.4)] hover:shadow-[0_8px_25px_rgba(108,93,211,0.6)] hover:-translate-y-0.5 active:translate-y-0.5"
-          >
-            Start New Analysis →
-          </button>
         </div>
       </div>
     );
@@ -104,287 +125,306 @@ export default function RoadmapPage() {
       id: 'highImpact',
       title: 'High-Impact',
       skills: highImpact,
-      accentColor: '#6C5DD3',
-      accentContainer: '#6C5DD3',
-      rgb: '108, 93, 211',
+      accentColor: EMERALD,
+      rgb: '78,222,163',
       roiLabel: 'High',
-      roiIcon: 'trending_up',
+      roiIcon: TrendingUp,
     },
     {
       id: 'growth',
       title: 'Growth Skills',
       skills: growth,
       accentColor: '#8b5cf6',
-      accentContainer: '#8b5cf6',
-      rgb: '139, 92, 246',
+      rgb: '139,92,246',
       roiLabel: 'Med',
-      roiIcon: 'moving',
-    },
-    {
-      id: 'niceToHave',
-      title: 'Nice-to-Have',
-      skills: niceToHave,
-      accentColor: '#06b6d4',
-      accentContainer: '#06b6d4',
-      rgb: '6, 182, 212',
-      roiLabel: 'Low',
-      roiIcon: 'balance',
+      roiIcon: Move,
     },
   ];
 
-  return (
-    <div
-      style={{
-        position: 'relative',
-        overflow: 'hidden',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        fontFamily: 'sans-serif',
-      }}
-    >
-      
-      {/* Shimmer animation keyframes */}
-      <style>{`
-        @keyframes shimmer {
-          100% { transform: translateX(100%); }
-        }
-      `}</style>
+  const cardStyle = {
+    background: 'rgba(5,20,36,0.4)',
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
+    border: '1px solid rgba(255,255,255,0.08)',
+    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.15)',
+    borderRadius: '16px',
+    padding: '20px',
+    position: 'relative',
+    overflow: 'hidden',
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
+  };
 
-      {/* HEADER GLASS PANEL */}
-      <div className="glass-panel rounded-2xl p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shrink-0 relative z-10">
-        
-        {/* Left Info */}
-        <div>
-          <h2 className="font-display-lg text-3xl md:text-4xl text-on-surface mb-2 tracking-tight font-bold">
+  const SkillCard = ({ skill, col, onComplete, isLocked }) => (
+    <div style={{ ...cardStyle, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, width: 4, height: '100%', borderRadius: '16px 0 0 16px', backgroundColor: col.accentColor, opacity: 0.8 }} />
+      
+      <div style={{ display: 'flex', justifyContent: 'spaceBetween', alignItems: 'flexStart', marginBottom: '4px' }}>
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '4px 10px',
+          borderRadius: '9999px',
+          border: `1px solid ${col.accentColor}4D`,
+          backgroundColor: `${col.accentColor}1A`,
+          color: col.accentColor,
+          fontSize: '10px',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+        }}>
+          <col.roiIcon size={12} />
+          <span>ROI: {col.roiLabel}</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'rgba(187,202,191,0.50)' }}>
+          <Clock size={13} />
+          <span>{skill.timeEstimate || '2-3 wks'}</span>
+        </div>
+      </div>
+
+      <div>
+        <h4 style={{ fontSize: '15px', fontWeight: 700, color: '#d4e4fa', lineHeight: 1.3, marginBottom: '4px' }}>
+          {skill.name}
+        </h4>
+        <p style={{ fontSize: '12px', color: 'rgba(187,202,191,0.45)', lineHeight: 1.5 }}>
+          Learn and apply {skill.name} to strengthen your {skill.category || 'Other'} skills.
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'spaceBetween', alignItems: 'center', marginTop: 'auto', paddingTop: '8px' }}>
+        {!isLocked ? (
+          <button
+            onClick={onComplete}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'rgba(187,202,191,0.45)',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = EMERALD;
+              e.currentTarget.style.borderColor = EMERALD;
+              e.currentTarget.style.color = '#003824';
+              e.currentTarget.style.boxShadow = `0 0 10px ${EMERALD_GLOW}`;
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.10)';
+              e.currentTarget.style.color = 'rgba(187,202,191,0.45)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            <Check size={16} />
+          </button>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div style={{
+              fontSize: '10px',
+              fontFamily: 'monospace',
+              color: 'rgba(187,202,191,0.45)',
+              background: 'rgba(255,255,255,0.04)',
+              backdropFilter: 'blur(8px)',
+              padding: '4px 10px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(255,255,255,0.05)',
+            }}>
+              Locked: Complete higher priority skills first
+            </div>
+            <Lock size={14} style={{ color: 'rgba(187,202,191,0.25)' }} />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }}>
+      
+      {/* HEADER */}
+      <div style={{ ...glassCard({ padding: '28px' }), display: 'flex', flexDirection: 'column', gap: '16px', flexWrap: 'wrap', justifyContent: 'spaceBetween', alignItems: 'flexStart' }}>
+        <RimGlow />
+        <div style={{ position: 'relative', zIndex: 1, flex: 1, minWidth: 280 }}>
+          <h2 style={{ fontSize: '26px', fontWeight: 800, color: '#d4e4fa', letterSpacing: '-0.02em', marginBottom: '8px' }}>
             System Architecture Path
           </h2>
-          <div className="flex items-center gap-4 text-on-surface-variant font-mono text-sm">
-            <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-primary text-sm">calendar_month</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap', fontSize: '12px', color: 'rgba(187,202,191,0.50)', fontFamily: 'monospace' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: EMERALD, opacity: 0.7 }}>
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
               <span>Week {total > 0 ? Math.min(12, Math.ceil((completed.length / total) * 12)) : 4}/12</span>
             </span>
-            <div className="w-1 h-1 rounded-full bg-outline-variant" />
-            <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-tertiary text-sm">check_circle</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: EMERALD, opacity: 0.7 }}>
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
               <span>{completed.length}/{total} skills completed</span>
             </span>
           </div>
         </div>
-
-        {/* Right Progress */}
-        <div className="w-full md:w-1/3 max-w-md">
-          <div className="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-2 text-xs font-bold tracking-wider">
-            <span>Overall Progress</span>
-            <span className="text-primary">{progressPct}%</span>
-          </div>
-          <div className="h-3 w-full bg-surface-container-highest/50 backdrop-blur-sm rounded-full overflow-hidden border border-white/5 relative">
-            <div
-              className="absolute top-0 left-0 h-full bg-primary-container rounded-full glow-progress"
-              style={{
-                width: `${progressPct}%`,
-                transition: 'width 0.4s ease-out',
-                boxShadow: '0 0 10px rgba(108, 93, 211, 0.4)',
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite] translate-x-[-100%]" />
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: 60, height: 60, borderRadius: '14px',
+            background: `conic-gradient(${EMERALD} ${progressPct}%, rgba(255,255,255,0.05) 0%)`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: `0 0 20px ${EMERALD_GLOW}`,
+          }}>
+            <div style={{
+              width: 48, height: 48, borderRadius: '12px',
+              background: 'linear-gradient(135deg, rgba(5,20,36,0.90) 0%, rgba(13,28,45,0.65) 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <span style={{ fontSize: '16px', fontWeight: 900, color: EMERALD, lineHeight: 1 }}>{progressPct}%</span>
             </div>
           </div>
         </div>
-
       </div>
 
-      {/* KANBAN BOARD */}
-      <div
-        className="kanban-scroll"
-        style={{
-          flex: 1,
-          display: 'flex',
-          gap: '24px',
-          overflowX: 'auto',
-          paddingBottom: '32px',
-          height: '100%',
-          position: 'relative',
-          zIndex: 10,
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-        }}
-      >
+      {/* KANBAN COLUMNS */}
+      <div style={{
+        display: 'flex',
+        gap: '20px',
+        overflowX: 'auto',
+        paddingBottom: '24px',
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
+      }}>
         {columns.map((col) => (
-          <div
-            key={col.id}
-            style={{
-              flex: '0 0 320px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              height: '100%',
-              minWidth: 0,
-            }}
-          >
-            
-            {/* Column Header */}
-            <div
-              className="flex items-center justify-between pb-2 border-b-2"
-              style={{ borderColor: `${col.accentColor}80` }}
-            >
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{
-                    backgroundColor: col.accentColor,
-                    boxShadow: `0 0 8px rgba(${col.rgb}, 0.6)`,
-                  }}
-                />
-                <h3 className="font-headline-md text-headline-md text-on-surface font-bold">
+          <div key={col.id} style={{ flex: '0 0 340px', display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'spaceBetween', paddingBottom: '12px', borderBottom: `2px solid ${col.accentColor}50` }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{
+                  width: 10, height: 10, borderRadius: '50%',
+                  backgroundColor: col.accentColor,
+                  boxShadow: `0 0 8px rgba(${col.rgb}, 0.6)`,
+                }} />
+                <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#d4e4fa', letterSpacing: '-0.01em' }}>
                   {col.title}
                 </h3>
               </div>
-              <div className="glass-panel text-on-surface-variant font-mono text-xs px-2 py-1 rounded">
+              <div style={{
+                padding: '4px 10px',
+                borderRadius: '9999px',
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.10)',
+                fontSize: '11px',
+                fontFamily: 'monospace',
+                color: 'rgba(187,202,191,0.50)',
+              }}>
                 {col.skills.length}
               </div>
             </div>
 
-            {/* Column Body */}
-            <div
-              className="kanban-scroll"
-              style={{
-                flex: 1,
-                overflowY: 'auto',
-                paddingRight: '8px',
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-              }}
-            >
-              
+            <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', paddingRight: '8px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {col.skills.map((skill) => (
-                <div
+                <SkillCard
                   key={skill.name}
-                  className="glass-panel card-3d-hover rounded-xl p-5 relative group flex flex-col gap-3"
-                  style={{
-                    background: 'rgba(12, 19, 34, 0.4)',
-                    backdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 12px rgba(0,0,0,0.15)',
-                  }}
-                >
-                  {/* Left Accent strip */}
-                  <div
-                    className="absolute top-0 left-0 w-1 h-full rounded-l-xl opacity-80"
-                    style={{ backgroundColor: col.accentColor }}
-                  />
-
-                  {/* Top Badges Row */}
-                  <div className="flex justify-between items-start mb-1">
-                    <div
-                      className="backdrop-blur-md font-label-caps text-[10px] px-2 py-1 rounded-full border flex items-center gap-1 font-bold"
-                      style={{
-                        backgroundColor: `${col.accentContainer}15`,
-                        color: col.accentColor,
-                        borderColor: `${col.accentColor}30`,
-                      }}
-                    >
-                      <span className="material-symbols-outlined text-[12px]">{col.roiIcon}</span>
-                      <span>ROI: {col.roiLabel}</span>
-                    </div>
-                    <div className="text-on-surface-variant font-mono text-[11px] flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">schedule</span>
-                      <span>{skill.timeEstimate || '2-3 wks'}</span>
-                    </div>
-                  </div>
-
-                  {/* Card Main Info */}
-                  <div>
-                    <h4 className="font-headline-md text-base text-on-surface mb-1 leading-tight font-bold">
-                      {skill.name}
-                    </h4>
-                    <p className="font-body-md text-xs text-on-surface-variant line-clamp-2 leading-relaxed">
-                      Learn and apply {skill.name} to strengthen your {skill.category || 'Other'} skills.
-                    </p>
-                  </div>
-
-                  {/* Bottom Row based on Column Type */}
-                  {col.id === 'highImpact' && (
-                    <div className="flex justify-between items-center mt-auto pt-2">
-                      <div className="w-6 h-6 rounded-full border border-white/10 bg-surface-container/50 flex items-center justify-center text-[10px] text-on-surface font-mono">
-                        {(skill.category || 'OT').slice(0, 2).toUpperCase()}
-                      </div>
-                      <button
-                        onClick={() => markSkillComplete(skill.name)}
-                        className="w-8 h-8 rounded-full bg-surface-variant/50 backdrop-blur-md flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-white transition-all duration-200 group-hover:shadow-[0_0_10px_rgba(108,93,211,0.5)]"
-                      >
-                        <span className="material-symbols-outlined text-lg">check</span>
-                      </button>
-                    </div>
-                  )}
-
-                  {col.id === 'growth' && (
-                    <div className="flex justify-between items-center mt-auto pt-2">
-                      <div className="flex-1 bg-surface-container-highest/50 backdrop-blur-sm rounded-full h-1.5 mr-4">
-                        <div
-                          className="bg-secondary h-1.5 rounded-full"
-                          style={{ width: `${(skill.demand || 3) * 20}%` }}
-                        />
-                      </div>
-                      <span className="font-mono text-[10px] text-secondary">
-                        {(skill.demand || 3) * 20}%
-                      </span>
-                    </div>
-                  )}
-
-                  {col.id === 'niceToHave' && (
-                    <div className="flex justify-between items-center mt-auto pt-2">
-                      <div className="text-[10px] font-mono text-on-surface-variant bg-surface/50 backdrop-blur-md px-2 py-1 rounded border border-white/5 flex items-center gap-1">
-                        Locked: Complete higher priority skills first
-                      </div>
-                      <span className="material-symbols-outlined text-on-surface-variant/50 text-sm">
-                        lock
-                      </span>
-                    </div>
-                  )}
-
-                </div>
+                  skill={skill}
+                  col={col}
+                  onComplete={() => markSkillComplete(skill.name)}
+                  isLocked={col.id === 'niceToHave'}
+                />
               ))}
 
-              {/* Add Custom Skill Button (Bottom of High-Impact only) */}
               {col.id === 'highImpact' && (
                 <button
-                  onClick={() => setShowAddModal(true)}
-                  className="w-full py-4 border-2 border-dashed border-white/10 rounded-xl text-on-surface-variant font-mono text-sm hover:border-primary/50 hover:text-primary transition-colors flex items-center justify-center gap-2 bg-surface-container/20 backdrop-blur-md cursor-pointer"
+                  onClick={() => { setShowAddModal(true); setCustomSkillName(''); }}
+                  style={{
+                    width: '100%',
+                    padding: '16px',
+                    border: '2px dashed rgba(255,255,255,0.10)',
+                    borderRadius: '16px',
+                    background: 'rgba(255,255,255,0.02)',
+                    color: 'rgba(187,202,191,0.45)',
+                    fontSize: '13px',
+                    fontFamily: 'monospace',
+                    cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    transition: 'border-color 0.2s ease, color 0.2s ease, background 0.2s ease',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = `${EMERALD}80`; e.currentTarget.style.color = EMERALD; e.currentTarget.style.background = EMERALD_DIM; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.10)'; e.currentTarget.style.color = 'rgba(187,202,191,0.45)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
                 >
-                  <span className="material-symbols-outlined text-sm">add</span>
+                  <Plus size={16} />
                   <span>Add Custom Skill</span>
                 </button>
               )}
-
             </div>
           </div>
         ))}
+
+        {/* Nice-to-Have (Locked) Column */}
+        {niceToHave.length > 0 && (
+          <div style={{ flex: '0 0 340px', display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'spaceBetween', paddingBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{
+                  width: 10, height: 10, borderRadius: '50%',
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  boxShadow: '0 0 8px rgba(255,255,255,0.1)',
+                }} />
+                <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'rgba(187,202,191,0.50)', letterSpacing: '-0.01em' }}>
+                  Nice-to-Have
+                </h3>
+              </div>
+              <div style={{
+                padding: '4px 10px',
+                borderRadius: '9999px',
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.10)',
+                fontSize: '11px',
+                fontFamily: 'monospace',
+                color: 'rgba(187,202,191,0.30)',
+              }}>
+                {niceToHave.length}
+              </div>
+            </div>
+
+            <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', paddingRight: '8px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              {niceToHave.map((skill) => (
+                <SkillCard
+                  key={skill.name}
+                  skill={skill}
+                  col={{ accentColor: 'rgba(255,255,255,0.2)', rgb: '255,255,255' }}
+                  onComplete={() => {}}
+                  isLocked={true}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
       </div>
 
       {/* ADD CUSTOM SKILL MODAL */}
       {showAddModal && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center"
-          onClick={() => {
-            setShowAddModal(false);
-            setCustomSkillName('');
+          style={{
+            position: 'fixed', inset: 0,
+            background: 'rgba(0,0,0,0.80)',
+            backdropFilter: 'blur(4px)',
+            zIndex: 50,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            animation: 'fadeIn 0.15s ease',
           }}
+          onClick={() => { setShowAddModal(false); setCustomSkillName(''); }}
         >
           <div
-            className="glass-panel rounded-2xl p-6 w-full max-w-sm mx-4"
-            style={{
-              background: 'rgba(12, 19, 34, 0.95)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
-            }}
-            onClick={(e) => e.stopPropagation()}
+            style={{ ...glassCard({ padding: '28px' }), width: '100%', maxWidth: '380px', margin: '0 16px', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}
+            onClick={e => e.stopPropagation()}
           >
-            <h3 className="text-on-surface font-bold text-lg mb-4">
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#d4e4fa', marginBottom: '20px' }}>
               Add Custom Skill
             </h3>
             
@@ -392,29 +432,70 @@ export default function RoadmapPage() {
               type="text"
               placeholder="e.g. GraphQL, Terraform..."
               value={customSkillName}
-              onChange={(e) => setCustomSkillName(e.target.value)}
-              className="w-full bg-surface-container border border-outline-variant rounded-lg py-3 px-4 text-on-surface font-body-md outline-none mb-4"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleAddCustomSkill();
-                }
-              }}
+              onChange={e => setCustomSkillName(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') handleAddCustomSkill(); }}
               autoFocus
+              style={{
+                width: '100%',
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.09)',
+                borderRadius: '10px',
+                padding: '12px 16px',
+                color: '#d4e4fa',
+                fontSize: '13px',
+                fontFamily: 'inherit',
+                outline: 'none',
+                marginBottom: '20px',
+                boxSizing: 'border-box',
+                minHeight: '44px',
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease',
+              }}
+              onFocus={e => { e.currentTarget.style.borderColor = EMERALD; e.currentTarget.style.boxShadow = `0 0 0 3px ${EMERALD_DIM}`; }}
+              onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; e.currentTarget.style.boxShadow = 'none'; }}
             />
 
-            <div className="flex gap-3">
+            <div style={{ display: 'flex', gap: '10px' }}>
               <button
-                onClick={() => {
-                  setShowAddModal(false);
-                  setCustomSkillName('');
+                onClick={() => { setShowAddModal(false); setCustomSkillName(''); }}
+                style={{
+                  flex: 1,
+                  padding: '12px 16px',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  borderRadius: '10px',
+                  background: 'transparent',
+                  color: 'rgba(187,202,191,0.50)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  fontFamily: 'inherit',
+                  cursor: 'pointer',
+                  minHeight: '44px',
+                  transition: 'border-color 0.15s ease, color 0.15s ease, background 0.15s ease',
                 }}
-                className="flex-1 py-3 border border-white/10 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors"
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.color = '#d4e4fa'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.10)'; e.currentTarget.style.color = 'rgba(187,202,191,0.50)'; e.currentTarget.style.background = 'transparent'; }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddCustomSkill}
-                className="flex-1 py-3 bg-primary-container text-white rounded-lg font-bold transition-all shadow-[0_4px_15px_rgba(108,93,211,0.3)] hover:shadow-[0_8px_25px_rgba(108,93,211,0.5)]"
+                disabled={!customSkillName.trim()}
+                style={{
+                  flex: 1,
+                  padding: '12px 16px',
+                  borderRadius: '10px',
+                  background: `linear-gradient(135deg, ${EMERALD} 0%, #34d399 100%)`,
+                  border: 'none',
+                  color: '#003824',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  fontFamily: 'inherit',
+                  cursor: customSkillName.trim() ? 'pointer' : 'not-allowed',
+                  minHeight: '44px',
+                  opacity: customSkillName.trim() ? 1 : 0.55,
+                  transition: 'transform 0.12s ease-out, box-shadow 0.12s ease-out, opacity 0.15s ease',
+                }}
+                onMouseEnter={e => { if (customSkillName.trim()) { e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = `0 6px 20px ${EMERALD_GLOW}`; }}}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(16,185,129,0.25)'; }}
               >
                 Add
               </button>
@@ -422,7 +503,6 @@ export default function RoadmapPage() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

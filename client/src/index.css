@@ -38,19 +38,19 @@
   /* Borders */
   --border:           rgba(255,255,255,0.07);
   --border-bright:    rgba(255,255,255,0.13);
-  --border-glow:      rgba(108,93,211,0.35);
+  --border-glow:      rgba(16,185,129,0.35);
 
   /* Accent palette */
-  --accent:           #6C5DD3;
-  --accent-light:     #8B7CF7;
-  --accent-bright:    #a89cf8;
-  --accent-dim:       rgba(108,93,211,0.18);
-  --accent-glow:      rgba(108,93,211,0.30);
+  --accent:           #10b981;
+  --accent-light:     #34d399;
+  --accent-bright:    #6ee7b7;
+  --accent-dim:       rgba(16,185,129,0.15);
+  --accent-glow:      rgba(16,185,129,0.30);
 
   /* Legacy compat */
   --indigo:       var(--accent);
   --indigo-light: var(--accent-bright);
-  --purple:       #8b5cf6;
+  --purple:       #10b981;
   --green:        #10b981;
   --red:          #f87171;
   --yellow:       #fbbf24;
@@ -66,7 +66,7 @@
   --shadow-md:  0 4px 12px rgba(0,0,0,0.60), 0 1px 2px rgba(0,0,0,0.50), 0 0 0 1px rgba(255,255,255,0.05);
   --shadow-lg:  0 8px 24px rgba(0,0,0,0.70), 0 2px 4px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
   --shadow-xl:  0 16px 40px rgba(0,0,0,0.80), 0 4px 8px rgba(0,0,0,0.60), 0 0 0 1px rgba(255,255,255,0.07);
-  --shadow-accent: 0 0 20px rgba(108,93,211,0.40), 0 4px 16px rgba(0,0,0,0.60);
+  --shadow-accent: 0 0 20px rgba(16,185,129,0.40), 0 4px 16px rgba(0,0,0,0.60);
 
   /* Transition system */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -112,7 +112,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Accessibility: Focus visible ring */
 *:focus-visible {
-  outline: 2px solid #F59E0B;
+  outline: 2px solid #10b981;
   outline-offset: 2px;
 }
 
@@ -389,10 +389,10 @@ select option { background: #111827; color: var(--text-primary); }
    ═══════════════════════════════════════════════ */
 .btn-primary {
   position: relative;
-  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
   border: none;
   border-radius: 10px;
-  color: #07090f;
+  color: #003824;
   font-size: 13px;
   font-weight: 700;
   font-family: inherit;
@@ -402,7 +402,7 @@ select option { background: #111827; color: var(--text-primary); }
   transition: transform var(--dur-fast) var(--ease-out),
               box-shadow var(--dur-fast) var(--ease-out),
               opacity var(--dur-fast) ease;
-  box-shadow: 0 4px 14px rgba(245,158,11,0.25), 0 1px 2px rgba(0,0,0,0.40);
+  box-shadow: 0 4px 14px rgba(16,185,129,0.25), 0 1px 2px rgba(0,0,0,0.40);
 }
 .btn-primary::before {
   content: '';
@@ -413,11 +413,11 @@ select option { background: #111827; color: var(--text-primary); }
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(245,158,11,0.40), 0 2px 4px rgba(0,0,0,0.40);
+  box-shadow: 0 6px 20px rgba(16,185,129,0.40), 0 2px 4px rgba(0,0,0,0.40);
 }
 .btn-primary:active {
   transform: translateY(2px);
-  box-shadow: 0 2px 6px rgba(245,158,11,0.20), 0 0px 1px rgba(0,0,0,0.40);
+  box-shadow: 0 2px 6px rgba(16,185,129,0.20), 0 0px 1px rgba(0,0,0,0.40);
   transition-duration: 60ms;
 }
 .btn-primary:disabled {
@@ -731,8 +731,8 @@ select option { background: #111827; color: var(--text-primary); }
 }
 
 /* ═══════════════════════════════════════════════
-   REDUCED MOTION
-   ═══════════════════════════════════════════════ */
+     REDUCED MOTION
+     ═══════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -798,7 +798,7 @@ select option { background: #111827; color: var(--text-primary); }
   background: var(--accent-dim);
   color: var(--accent-bright);
   font-weight: 600;
-  box-shadow: 0 0 0 1px rgba(108,93,211,0.15), inset 0 0 12px rgba(108,93,211,0.05);
+  box-shadow: 0 0 0 1px rgba(16,185,129,0.15), inset 0 0 12px rgba(16,185,129,0.05);
 }
 .sidebar-nav-item.active::before {
   transform: scaleY(1);
@@ -826,4 +826,15 @@ select option { background: #111827; color: var(--text-primary); }
 }
 .skeleton-line:last-child {
   margin-bottom: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   LAYOUT: Sidebar offset on desktop (unlayered)
+   ═══════════════════════════════════════════════ */
+@media (width >= 64rem) {
+  #app-shell {
+    padding-left: 210px !important;
+    /* TEST: bright border to confirm rule applies */
+    outline: 4px solid red !important;
+  }
 }

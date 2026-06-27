@@ -1,16 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import {
   User,
-  Zap,
   Database,
   Download,
   Upload,
   AlertTriangle,
   Building2,
   Bell,
-  Sun,
-  Moon,
-  Monitor,
   X,
   Plus,
   Check,
@@ -19,76 +15,94 @@ import {
 import { getUser, saveUser, getStorageSize } from '../utils/storage.js';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-const EXP_LEVELS = ['Fresher', '0-1 yr', '1-3 yr', '3-5 yr', '5+ yr'];
+const EMERALD = '#4edea3';
+const EMERALD_DIM = 'rgba(78,222,163,0.12)';
+const EMERALD_GLOW = 'rgba(78,222,163,0.20)';
 
-const SUGGESTED_COMPANIES = [
-  'Google', 'Microsoft', 'Amazon', 'Meta', 'Apple',
-  'Netflix', 'Adobe', 'Salesforce', 'Flipkart', 'Infosys',
-  'TCS', 'Wipro', 'HCL', 'Accenture', 'Deloitte',
-  'Goldman Sachs', 'JPMorgan', 'Uber', 'Stripe', 'Atlassian',
-];
+const glassCard = (extra = {}) => ({
+  background: 'linear-gradient(135deg, rgba(5,20,36,0.90) 0%, rgba(13,28,45,0.65) 100%)',
+  backdropFilter: 'blur(24px)',
+  WebkitBackdropFilter: 'blur(24px)',
+  border: '1px solid rgba(78,222,163,0.18)',
+  boxShadow:
+    '0 4px 6px rgba(0,0,0,0.40), 0 24px 48px rgba(0,0,0,0.55), inset 0 1px 1px rgba(255,255,255,0.08)',
+  borderRadius: '20px',
+  position: 'relative',
+  overflow: 'hidden',
+  ...extra,
+});
 
-const THEME_OPTIONS = [
-  { id: 'dark', label: 'Dark', icon: Moon },
-  { id: 'system', label: 'System', icon: Monitor },
-  { id: 'light', label: 'Light', icon: Sun },
-];
+function RimGlow() {
+  return (
+    <>
+      <div style={{ position:'absolute', inset:0, borderRadius:'inherit',
+        background:'linear-gradient(135deg,rgba(255,255,255,0.07) 0%,transparent 60%)',
+        pointerEvents:'none', zIndex:0 }} />
+      <style>{`@keyframes rim-db{0%,100%{opacity:.3}50%{opacity:1}}`}</style>
+      <div style={{ position:'absolute', inset:0, borderRadius:'inherit', padding:'1px',
+        background:'linear-gradient(135deg,rgba(78,222,163,.7) 0%,rgba(78,222,163,0) 40%,rgba(78,222,163,0) 70%,rgba(78,222,163,.55) 100%)',
+        WebkitMask:'linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)',
+        WebkitMaskComposite:'xor', maskComposite:'exclude',
+        pointerEvents:'none', animation:'rim-db 4s ease-in-out infinite', zIndex:0 }} />
+    </>
+  );
+}
 
-// eslint-disable-next-line no-unused-vars
-const SectionTitle = ({ icon: Icon, title, accent = '#6366f1' }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+const SectionTitle = ({ icon: Icon, title, accent = EMERALD }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
     <div
       style={{
-        width: 30,
-        height: 30,
-        borderRadius: 8,
+        width: 38,
+        height: 38,
+        borderRadius: 10,
         background: `${accent}22`,
         border: `1px solid ${accent}44`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
+        boxShadow: `0 0 12px ${accent}33`,
       }}
     >
-      <Icon size={14} color={accent} />
+      <Icon size={16} color={accent} />
     </div>
-    <span style={{ fontSize: '14px', fontWeight: 700, color: 'white' }}>{title}</span>
+    <span style={{ fontSize: '16px', fontWeight: 800, color: '#d4e4fa', letterSpacing: '-0.01em' }}>{title}</span>
   </div>
 );
 
 const Divider = () => (
-  <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '16px 0' }} />
+  <div style={{ height: '1px', background: 'linear-gradient(90deg, transparent, rgba(78,222,163,0.2), transparent)', margin: '16px 0' }} />
 );
 
 const Label = ({ children }) => (
   <div
     style={{
       fontSize: '11px',
-      fontWeight: 600,
-      color: 'rgba(255,255,255,0.3)',
+      fontWeight: 700,
+      color: 'rgba(187,202,191,0.45)',
       textTransform: 'uppercase',
-      letterSpacing: '0.06em',
-      marginBottom: '6px',
+      letterSpacing: '0.08em',
+      marginBottom: '8px',
     }}
   >
     {children}
   </div>
 );
 
-const ToggleRow = ({ label, description, checked, onChange }) => (
+const ToggleRow = ({ label, description, checked, onChange, accent = EMERALD }) => (
   <div
     style={{
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '12px 0',
+      padding: '14px 0',
       borderBottom: '1px solid rgba(255,255,255,0.04)',
     }}
   >
-    <div style={{ flex: 1, minWidth: 0, marginRight: 12 }}>
-      <div style={{ fontSize: '13px', color: 'white', fontWeight: 500 }}>{label}</div>
+    <div style={{ flex: 1, minWidth: 0, marginRight: 16 }}>
+      <div style={{ fontSize: '14px', color: '#d4e4fa', fontWeight: 500 }}>{label}</div>
       {description && (
-        <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', marginTop: '2px' }}>
+        <div style={{ fontSize: '12px', color: 'rgba(187,202,191,0.40)', marginTop: '3px' }}>
           {description}
         </div>
       )}
@@ -97,6 +111,121 @@ const ToggleRow = ({ label, description, checked, onChange }) => (
       <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
       <span className="toggle-slider" />
     </label>
+  </div>
+);
+
+const InputField = ({ label, value, onChange, placeholder, type = 'text', accent = EMERALD }) => (
+  <div style={{ minWidth: 0 }}>
+    <Label>{label}</Label>
+    <input
+      type={type}
+      style={{
+        width: '100%',
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.09)',
+        borderRadius: '10px',
+        padding: '12px 14px',
+        color: '#d4e4fa',
+        fontSize: '13px',
+        fontFamily: 'inherit',
+        outline: 'none',
+        boxSizing: 'border-box',
+        minHeight: '44px',
+        transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease',
+      }}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      onFocus={e => { e.currentTarget.style.borderColor = accent; e.currentTarget.style.boxShadow = `0 0 0 3px ${accent}26`; e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
+      onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+    />
+  </div>
+);
+
+const SelectField = ({ label, value, onChange, options, accent = EMERALD }) => (
+  <div style={{ minWidth: 0 }}>
+    <Label>{label}</Label>
+    <div style={{ position: 'relative' }}>
+      <select
+        value={value}
+        onChange={onChange}
+        style={{
+          width: '100%',
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(255,255,255,0.09)',
+          borderRadius: '10px',
+          padding: '12px 40px 12px 14px',
+          color: '#d4e4fa',
+          fontSize: '13px',
+          fontFamily: 'inherit',
+          outline: 'none',
+          boxSizing: 'border-box',
+          minHeight: '44px',
+          appearance: 'none',
+          cursor: 'pointer',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease',
+        }}
+        onFocus={e => { e.currentTarget.style.borderColor = accent; e.currentTarget.style.boxShadow = `0 0 0 3px ${accent}26`; e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
+        onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+      >
+        {options.map((e) => (
+          <option key={e} value={e}>{e}</option>
+        ))}
+      </select>
+      <ChevronDown
+        size={14}
+        style={{
+          position: 'absolute',
+          right: 14,
+          top: '50%',
+          transform: 'translateY(-50%)',
+          color: 'rgba(187,202,191,0.35)',
+          pointerEvents: 'none',
+        }}
+      />
+    </div>
+  </div>
+);
+
+const CompanyChip = ({ name, onRemove, accent = '#06b6d4' }) => (
+  <div
+    key={name}
+    style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '6px',
+      background: `${accent}1A`,
+      border: `1px solid ${accent}40`,
+      borderRadius: '9999px',
+      padding: '6px 12px 6px 14px',
+      fontSize: '12px',
+      color: accent,
+      fontWeight: 600,
+    }}
+  >
+    {name}
+    <button
+      onClick={() => onRemove(name)}
+      style={{
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        color: `${accent}99`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '2px',
+        borderRadius: '50%',
+        width: '18px',
+        height: '18px',
+        transition: 'color 0.15s, background 0.15s',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.color = accent; e.currentTarget.style.background = `${accent}1A`; }}
+      onMouseLeave={e => { e.currentTarget.style.color = `${accent}99`; e.currentTarget.style.background = 'none'; }}
+      aria-label={`Remove ${name}`}
+    >
+      <X size={12} />
+    </button>
   </div>
 );
 
@@ -115,11 +244,6 @@ export default function SettingsPage() {
     };
   });
   const [saved, setSaved] = useState(false);
-
-  // AI
-  const [aiEnabled, setAiEnabled] = useState(
-    () => localStorage.getItem('sga_ai_enabled') === 'true'
-  );
 
   // Target Companies
   const [companies, setCompanies] = useState(() => {
@@ -150,17 +274,10 @@ export default function SettingsPage() {
     }
   });
 
-  // Theme
-  const [theme, setTheme] = useState(() => localStorage.getItem('sga_theme') || 'dark');
-
   // Storage
   const [storageB, setStorageB] = useState(() => getStorageSize());
 
-  // ── Persistence ──────────────────────────────────────────────────────────────
-  useEffect(() => {
-    localStorage.setItem('sga_ai_enabled', String(aiEnabled));
-  }, [aiEnabled]);
-
+  // ── Persistence & Effects ──────────────────────────────────────────────────────
   useEffect(() => {
     localStorage.setItem('sga_target_companies', JSON.stringify(companies));
   }, [companies]);
@@ -168,12 +285,6 @@ export default function SettingsPage() {
   useEffect(() => {
     localStorage.setItem('sga_notifs', JSON.stringify(notifs));
   }, [notifs]);
-
-  useEffect(() => {
-    localStorage.setItem('sga_theme', theme);
-    // Apply theme class to root (extend later with actual theme switching)
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
 
   // Close suggestions on outside click
   useEffect(() => {
@@ -204,6 +315,18 @@ export default function SettingsPage() {
   };
 
   const removeCompany = (name) => setCompanies((prev) => prev.filter((c) => c !== name));
+
+  const SUGGESTED_COMPANIES = [
+    'Google', 'Microsoft', 'Amazon', 'Meta', 'Apple', 'Netflix',
+    'Tesla', 'Uber', 'Stripe', 'Atlassian', 'Adobe', 'Salesforce',
+    'Oracle', 'IBM', 'Intel', 'Cisco', 'Spotify', 'Twitter',
+    'LinkedIn', 'Pinterest', 'Airbnb', 'Shopify', 'Reddit', 'Palantir',
+  ];
+
+  const EXP_LEVELS = [
+    'Fresher', '1 year', '2 years', '3 years', '4 years',
+    '5 years', '6-10 years', '10+ years',
+  ];
 
   const filteredSuggestions = SUGGESTED_COMPANIES.filter(
     (c) =>
@@ -258,42 +381,42 @@ export default function SettingsPage() {
 
   // ── Derived ──────────────────────────────────────────────────────────────────
   const storageKB = Math.round(storageB / 1024);
-  const storageMax = 5 * 1024;
-  const storagePct = Math.min(100, (storageKB / storageMax) * 100);
-
-  // ── Styles ───────────────────────────────────────────────────────────────────
-  const cardStyle = {
-    background: 'var(--bg-card)',
-    border: '1px solid var(--border)',
-    borderRadius: '16px',
-    padding: '20px',
-    marginBottom: '14px',
-  };
 
   const inputStyle = {
     width: '100%',
     background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: '9px',
-    padding: '10px 13px',
-    color: 'white',
+    border: '1px solid rgba(255,255,255,0.09)',
+    borderRadius: '10px',
+    padding: '12px 14px',
+    color: '#d4e4fa',
     fontSize: '13px',
     fontFamily: 'inherit',
     outline: 'none',
     boxSizing: 'border-box',
     minHeight: '44px',
-    transition: 'border-color 0.15s',
+    transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease',
   };
 
-  const focusHandler = (e) => (e.target.style.borderColor = '#6366f1');
-  const blurHandler = (e) => (e.target.style.borderColor = 'rgba(255,255,255,0.1)');
+  const focusHandler = (e) => {
+    e.currentTarget.style.borderColor = EMERALD;
+    e.currentTarget.style.boxShadow = `0 0 0 3px ${EMERALD_DIM}`;
+    e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+  };
+
+  const blurHandler = (e) => {
+    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)';
+    e.currentTarget.style.boxShadow = 'none';
+    e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+  };
+  const storageMax = 5 * 1024;
+  const storagePct = Math.min(100, (storageKB / storageMax) * 100);
 
   // ── Render ───────────────────────────────────────────────────────────────────
   return (
-    <div style={{ maxWidth: '680px', margin: '0 auto', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ maxWidth: '840px', margin: '0 auto', width: '100%', padding: '24px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
       {/* ── Section 1: Profile ─────────────────────────────────────── */}
-      <div style={cardStyle}>
+      <div style={glassCard({ padding: '20px' })}>
         <SectionTitle icon={User} title="Profile" />
         <Divider />
         <div
@@ -383,7 +506,7 @@ export default function SettingsPage() {
       </div>
 
       {/* ── Section 2: Target Companies ────────────────────────────── */}
-      <div style={cardStyle}>
+      <div style={glassCard({ padding: '20px', overflow: 'visible' })}>
         <SectionTitle icon={Building2} title="Target Companies" accent="#06b6d4" />
         <Divider />
 
@@ -519,7 +642,7 @@ export default function SettingsPage() {
       </div>
 
       {/* ── Section 3: Notifications ───────────────────────────────── */}
-      <div style={cardStyle}>
+      <div style={glassCard({ padding: '20px' })}>
         <SectionTitle icon={Bell} title="Notifications" accent="#fbbf24" />
         <Divider />
         <div style={{ marginBottom: '-1px' }}>
@@ -550,106 +673,10 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* ── Section 4: Theme ───────────────────────────────────────── */}
-      <div style={cardStyle}>
-        <SectionTitle icon={Sun} title="Appearance" accent="#a5b4fc" />
-        <Divider />
-        <Label>Theme</Label>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '8px',
-          }}
-        >
-          {THEME_OPTIONS.map(({ id, label, icon }) => {
-            const active = theme === id;
-            const Icon = icon;
-            return (
-              <button
-                key={id}
-                onClick={() => setTheme(id)}
-                style={{
-                  background: active ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.03)',
-                  border: active
-                    ? '1px solid rgba(99,102,241,0.5)'
-                    : '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: '10px',
-                  padding: '12px 8px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '7px',
-                  color: active ? '#a5b4fc' : 'rgba(255,255,255,0.4)',
-                  fontFamily: 'inherit',
-                  fontSize: '12px',
-                  fontWeight: active ? 600 : 400,
-                  transition: 'all 0.15s',
-                  minHeight: '72px',
-                }}
-              >
-                <Icon size={18} />
-                {label}
-                {active && (
-                  <div
-                    style={{
-                      width: '5px',
-                      height: '5px',
-                      borderRadius: '50%',
-                      background: '#6366f1',
-                    }}
-                  />
-                )}
-              </button>
-            );
-          })}
-        </div>
-        <div
-          style={{
-            marginTop: '10px',
-            fontSize: '11px',
-            color: 'rgba(255,255,255,0.25)',
-          }}
-        >
-          Full light mode coming soon. Dark mode is the primary experience.
-        </div>
-      </div>
 
-      {/* ── Section 5: AI Settings ─────────────────────────────────── */}
-      <div style={cardStyle}>
-        <SectionTitle icon={Zap} title="AI Settings" accent="#8b5cf6" />
-        <Divider />
-        <ToggleRow
-          label="AI Mode"
-          description="Uses GPT-4o-mini. No key = rule-based fallback."
-          checked={aiEnabled}
-          onChange={setAiEnabled}
-        />
-        {aiEnabled && (
-          <div style={{ marginTop: '14px', fontSize: '13px', color: 'rgba(255,255,255,0.7)' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                background: 'rgba(139,92,246,0.08)',
-                border: '1px solid rgba(139,92,246,0.2)',
-                borderRadius: '8px',
-                padding: '12px 14px',
-              }}
-            >
-              <Zap size={14} color="#a78bfa" style={{ flexShrink: 0 }} />
-              <span>
-                AI features are run securely via the application backend. No client-side API key configuration is required.
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
 
       {/* ── Section 6: Data Management ─────────────────────────────── */}
-      <div style={cardStyle}>
+      <div style={glassCard({ padding: '20px' })}>
         <SectionTitle icon={Database} title="Data & Privacy" accent="#10b981" />
         <Divider />
 

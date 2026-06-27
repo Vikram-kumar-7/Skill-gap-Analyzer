@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   TrendingUp, Zap, Award, Activity, ArrowUpRight,
@@ -61,12 +62,19 @@ export default function DashboardPage() {
     ? Math.round(analyses.reduce((s, a) => s + (a.matchPct || 0), 0) / analyses.length)
     : 0;
 
-  const greeting = () => {
-    const h = new Date().getHours();
-    if (h < 12) return 'Good Morning';
-    if (h < 18) return 'Good Afternoon';
-    return 'Good Evening';
-  };
+  const [greeting, setGreeting] = useState('');
+
+  useEffect(() => {
+    const update = () => {
+      const h = new Date().getHours();
+      if (h < 12) setGreeting('Good Morning');
+      else if (h < 18) setGreeting('Good Afternoon');
+      else setGreeting('Good Evening');
+    };
+    update();
+    const id = setInterval(update, 60_000);
+    return () => clearInterval(id);
+  }, []);
 
   /* radar segments — derived from active analysis, never hardcoded */
   const angles = [-90, -30, 30, 90, 150, 210];
@@ -83,10 +91,10 @@ export default function DashboardPage() {
   })();
 
   return (
-    <div className="fade-in" style={{ display:'flex', flexDirection:'column', gap:'24px', paddingBottom:'24px' }}>
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', paddingBottom: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }}>
 
       {/* ── Welcome Banner ── */}
-      <WelcomeBanner user={user} greeting={greeting()} active={active} avgMatch={avgMatch} onNew={() => navigate('/new-analysis')} />
+      <WelcomeBanner user={user} greeting={greeting} active={active} avgMatch={avgMatch} onNew={() => navigate('/new-analysis')} />
 
       {/* ── Stats Row ── */}
       <StatsRow analyses={analyses} avgMatch={avgMatch} />

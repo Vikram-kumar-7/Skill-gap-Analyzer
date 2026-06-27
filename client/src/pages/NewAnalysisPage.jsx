@@ -121,12 +121,12 @@ export default function NewAnalysisPage() {
   ];
 
   return (
-    <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '28px', paddingBottom: '24px' }}>
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '28px', paddingBottom: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }}>
 
       {/* ── Page header ── */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
         <h1 style={{ fontSize: '30px', fontWeight: 800, color: '#d4e4fa', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-          Data Analysis Engine
+          New Analysis
         </h1>
         <p style={{ fontSize: '13px', color: 'rgba(187,202,191,0.65)', maxWidth: '540px', lineHeight: 1.6 }}>
           Upload your credentials and target objective to generate a high-precision compatibility matrix and optimization roadmap.

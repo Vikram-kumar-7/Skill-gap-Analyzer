@@ -1,63 +1,43 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { supabase } from "../utils/supabase";
 
 export default function CheckEmail() {
   const navigate = useNavigate();
   const location = useLocation();
-  const email = location.state?.email || localStorage.getItem("sga_pending_email") || "you@example.com";
+  const email = location.state?.email || localStorage.getItem("skillgap_pending_email") || "you@example.com";
 
   const [resent, setResent] = useState(false);
+  const [toast, setToast] = useState(null); // { msg, type }
 
-  const handleResend = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: window.location.origin + '/dashboard',
-        },
+  const showToast = (msg, type = "success") => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleSupport = (e) => {
+    e.preventDefault();
+    const supportEmail = "heloeworld1@gmail.com";
+    navigator.clipboard.writeText(supportEmail)
+      .then(() => showToast(`📋 Copied: ${supportEmail}`))
+      .catch(() => {
+        // fallback — open mailto if clipboard blocked
+        window.location.href = `mailto:${supportEmail}?subject=SkillGap Analyzer Support`;
       });
-      if (error) throw error;
-      setResent(true);
-      setTimeout(() => setResent(false), 3000);
-    } catch (err) {
-      console.error("Failed to resend magic link:", err.message);
-    }
   };
 
-  const handleOffline = () => {
-    const current = JSON.parse(localStorage.getItem("sga_user") || "{}");
-    const finalized = { ...current, createdAt: Date.now() };
-    delete finalized.onboardingTemp;
-    localStorage.setItem("sga_user", JSON.stringify(finalized));
-    window.dispatchEvent(new Event("storage"));
+  const handleResend = () => {
+    // await supabase.auth.signInWithOtp({ email });
+    setResent(true);
+    setTimeout(() => setResent(false), 3000);
   };
+
+  const handleOffline = () => navigate("/dashboard");
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
-
-        .material-symbols-outlined {
-          font-family: 'Material Symbols Outlined';
-          font-weight: normal;
-          font-style: normal;
-          font-size: 20px;
-          line-height: 1;
-          letter-spacing: normal;
-          text-transform: none;
-          display: inline-block;
-          white-space: nowrap;
-          word-wrap: normal;
-          direction: ltr;
-          font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-          -webkit-font-smoothing: antialiased;
-          user-select: none;
-        }
-
         .ce-root {
-          height: 100vh;
+          min-height: 100vh;
           width: 100%;
           background-color: #05070A;
           color: #d4e4fa;
@@ -146,6 +126,29 @@ export default function CheckEmail() {
           gap: 8px;
           padding: 4px 0;
           transition: color 0.2s;
+        }
+        .ce-toast {
+          position: fixed;
+          bottom: 32px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(18, 33, 49, 0.95);
+          border: 1px solid rgba(78, 222, 163, 0.3);
+          color: #d4e4fa;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 13px;
+          letter-spacing: 0.03em;
+          padding: 12px 20px;
+          border-radius: 999px;
+          backdrop-filter: blur(16px);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 16px rgba(78,222,163,0.15);
+          white-space: nowrap;
+          z-index: 999;
+          animation: ce-toast-in 0.25s ease;
+        }
+        @keyframes ce-toast-in {
+          from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+          to   { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
         .ce-divider {
           width: 100%;
@@ -268,7 +271,10 @@ export default function CheckEmail() {
         {/* External help */}
         <p style={{ fontFamily: "Inter, sans-serif", fontSize: 13, color: "rgba(187,202,191,0.5)", textAlign: "center", marginBottom: 8, padding: "0 16px" }}>
           Having trouble?{" "}
-          <a href="mailto:support@skillgapanalyzer.com?subject=Technical%20Support%20Request%20-%20SkillGap%20Analyzer" style={{ color: "#4edea3", textDecoration: "none" }}
+          <a
+            href="#"
+            onClick={handleSupport}
+            style={{ color: "#4edea3", textDecoration: "none", cursor: "pointer" }}
             onMouseEnter={e => e.currentTarget.style.textDecoration = "underline"}
             onMouseLeave={e => e.currentTarget.style.textDecoration = "none"}
           >
@@ -277,6 +283,11 @@ export default function CheckEmail() {
         </p>
         <div className="ce-spacer" />
       </div>
+
+      {/* Toast notification */}
+      {toast && (
+        <div className="ce-toast">{toast.msg}</div>
+      )}
     </>
   );
 }

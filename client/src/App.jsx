@@ -43,6 +43,7 @@ function AppShell() {
           flexDirection: 'column',
           height: '100vh',
           overflow: 'hidden',
+          background: 'var(--color-base)',
         }}
       >
         <TopBar onMenuClick={() => setMobileSidebarOpen(true)} />
