@@ -10,8 +10,6 @@ import DashboardPage from './pages/DashboardPage.jsx';
 import NewAnalysisPage from './pages/NewAnalysisPage.jsx';
 import AnalysesPage from './pages/AnalysesPage.jsx';
 import RoadmapPage from './pages/RoadmapPage.jsx';
-import SkillTrackerPage from './pages/SkillTrackerPage.jsx';
-import CareerSimPage from './pages/CareerSimPage.jsx';
 import ProjectsPage from './pages/ProjectsPage.jsx';
 import InterviewPage from './pages/InterviewPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
@@ -63,9 +61,9 @@ function AppShell() {
             <Route path="/new-analysis" element={<NewAnalysisPage />} />
             <Route path="/analyses" element={<AnalysesPage />} />
             <Route path="/roadmap" element={<RoadmapPage />} />
-            <Route path="/skill-tracker" element={<SkillTrackerPage />} />
+            <Route path="/skill-tracker" element={<Navigate to="/projects?tab=skills" replace />} />
             <Route path="/dsa-tracker" element={<DSATrackerPage />} />
-            <Route path="/career-sim" element={<CareerSimPage />} />
+            <Route path="/career-sim" element={<Navigate to="/roadmap?tab=simulator" replace />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/interview" element={<InterviewPage />} />
             <Route path="/settings" element={<SettingsPage />} />

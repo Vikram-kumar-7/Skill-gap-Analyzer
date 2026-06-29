@@ -83,7 +83,7 @@ Return ONLY a valid JSON object:
       return result;
     } catch (e) {
       console.error('[InterviewAI] evaluateAnswer failed:', e);
-      return fallbackEval(e.message);
+      return fallbackEval(userAnswer, expectedAnswer, e.message);
     }
   },
 
@@ -241,18 +241,111 @@ Return ONLY a valid JSON object:
 
 // ── Private helpers ────────────────────────────────────────────
 
-function fallbackEval(reason = 'AI unavailable') {
+function getKeywordsFromAnswer(expectedAnswer) {
+  if (!expectedAnswer) return [];
+  const stopWords = new Set([
+    'the', 'is', 'and', 'to', 'a', 'of', 'in', 'for', 'on', 'with', 'it', 'that', 'this',
+    'as', 'by', 'an', 'are', 'be', 'or', 'from', 'which', 'at', 'but', 'not', 'its', 'was',
+    'what', 'why', 'how', 'who', 'where', 'when', 'you', 'your', 'i', 'we', 'they', 'he',
+    'she', 'it', 'us', 'them', 'my', 'their', 'his', 'her', 'our', 'about', 'can', 'can\'t',
+    'cannot', 'will', 'would', 'should', 'could', 'have', 'has', 'had', 'do', 'does', 'did',
+    'but', 'so', 'then', 'than', 'there', 'their', 'them', 'these', 'those', 'also', 'only',
+    'very', 'just', 'more', 'most', 'some', 'any', 'each', 'every', 'other', 'another',
+    'use', 'used', 'using', 'make', 'makes', 'made', 'call', 'called', 'calling'
+  ]);
+
+  const clean = expectedAnswer
+    .toLowerCase()
+    .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"']/g, " ")
+    .replace(/\s+/g, " ");
+
+  const words = clean.split(' ').filter(w => w.length > 3 && !stopWords.has(w));
+  return Array.from(new Set(words));
+}
+
+function fallbackEval(userAnswer = '', expectedAnswer = '', reason = 'AI unavailable') {
+  const userLower = (userAnswer || '').toLowerCase();
+  const expectedKeywords = getKeywordsFromAnswer(expectedAnswer);
+  
+  const matched = [];
+  const missing = [];
+  
+  expectedKeywords.forEach(kw => {
+    if (userLower.includes(kw)) {
+      matched.push(kw);
+    } else {
+      missing.push(kw);
+    }
+  });
+
+  const matchRatio = expectedKeywords.length > 0 ? (matched.length / expectedKeywords.length) : 0.5;
+  const userLength = userLower.trim().length;
+
+  let technicalAccuracy = 0;
+  let completeness = 0;
+  let clarity = 0;
+  let depth = 0;
+
+  if (userLength < 10) {
+    technicalAccuracy = 15;
+    completeness = 10;
+    clarity = 30;
+    depth = 10;
+  } else {
+    technicalAccuracy = Math.round(30 + matchRatio * 60);
+    completeness = Math.round(40 + matchRatio * 50);
+    
+    // clarity based on length
+    if (userLength > 150) {
+      clarity = 85;
+    } else if (userLength > 50) {
+      clarity = 70;
+    } else {
+      clarity = 50;
+    }
+
+    // depth based on length and matches
+    if (userLength > 250) {
+      depth = Math.round(60 + matchRatio * 30);
+    } else if (userLength > 100) {
+      depth = Math.round(45 + matchRatio * 30);
+    } else {
+      depth = Math.round(25 + matchRatio * 30);
+    }
+  }
+
+  const overallScore = Math.round(
+    technicalAccuracy * 0.4 +
+    completeness * 0.25 +
+    clarity * 0.15 +
+    depth * 0.20
+  );
+
+  const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  const strengths = matched.length > 0 
+    ? matched.slice(0, 3).map(m => `Good reference to key concept: "${capitalize(m)}"`)
+    : ['Response submitted'];
+
+  const missingPoints = missing.length > 0
+    ? missing.slice(0, 4).map(m => `Missing reference to: "${capitalize(m)}"`)
+    : ['None detected'];
+
+  const feedback = `You scored ${overallScore}% based on matching ${matched.length} of ${expectedKeywords.length} key concepts. Compare your answer manually to the expected answer to self-assess details.`;
+
+  const improvementPlan = missing.length > 0
+    ? `Review and practice incorporating the following key terms into your answer: ${missing.slice(0, 3).map(capitalize).join(', ')}.`
+    : 'Excellent keyword match. Try to practice conveying this answer in a live mock interview format.';
+
   return {
-    overallScore: 0,
-    technicalAccuracy: 0,
-    completeness: 0,
-    clarity: 0,
-    depth: 0,
-    feedback: `AI evaluation unavailable (${reason}). Compare your answer to the expected solution manually and self-assess each criterion.`,
-    missingPoints: [],
-    strengths: [],
-    improvementPlan:
-      'Review documentation or course materials for the topics and concepts tested here.',
+    overallScore,
+    technicalAccuracy,
+    completeness,
+    clarity,
+    depth,
+    feedback,
+    missingPoints,
+    strengths,
+    improvementPlan,
     chronicGapRepeated: false,
     chronicGapName: '',
   };

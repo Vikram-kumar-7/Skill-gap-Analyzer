@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Plus, Trash2, Edit2, FolderOpen, ExternalLink, Layers, Cpu } from 'lucide-react';
-import { getProjects, saveProjects, addActivity, getSkills } from '../utils/storage.js';
+import { Plus, Trash2, Edit2, FolderOpen, ExternalLink, Layers, Cpu, Search, Code2, Server, Database, Cloud, Brain, Smartphone } from 'lucide-react';
+import { getProjects, saveProjects, addActivity, getSkills, saveSkills } from '../utils/storage.js';
 import ProjectRecommendations from '../components/ProjectRecommendations';
+import { useSearchParams } from 'react-router-dom';
 
 /* ─── Design tokens ─── */
 const EMERALD = '#4edea3';
@@ -46,71 +47,431 @@ const inputStyle = {
   transition:'border-color 0.18s ease, box-shadow 0.18s ease',
 };
 
-export default function ProjectsPage() {
-  const [projects, setProjects] = useState(() => getProjects());
-  const [modal, setModal]       = useState(false);
-  const [editing, setEditing]   = useState(null);
-  const [form, setForm]         = useState(EMPTY_FORM);
-  const [techInput, setTechInput] = useState('');
-  const [skillInput, setSkillInput] = useState('');
+const CATEGORIES = ['Frontend', 'Backend', 'DevOps', 'Database', 'AI-ML', 'Mobile', 'Other'];
 
-  const sync = (arr) => { saveProjects(arr); setProjects(arr); };
+const CAT_META = {
+  Frontend: { icon: <Code2 size={14} />,     color: '#6C5DD3' },
+  Backend:  { icon: <Server size={14} />,     color: '#8b5cf6' },
+  DevOps:   { icon: <Cloud size={14} />,      color: '#06b6d4' },
+  Database: { icon: <Database size={14} />,   color: '#10b981' },
+  'AI-ML':  { icon: <Brain size={14} />,      color: '#f59e0b' },
+  Mobile:   { icon: <Smartphone size={14} />, color: '#ec4899' },
+  Other:    { icon: <Layers size={14} />,     color: '#6b7280' },
+};
 
-  const openAdd  = () => { setForm(EMPTY_FORM); setEditing(null); setModal(true); };
-  const openEdit = (p) => { setForm({ ...p }); setEditing(p.id); setModal(true); };
-
-  const save = () => {
-    if (!form.name.trim()) return;
-    if (editing) {
-      sync(projects.map(p => p.id === editing ? { ...form, id: editing } : p));
-      addActivity(`Updated project: ${form.name}`);
-    } else {
-      sync([{ ...form, id: Date.now(), createdAt: Date.now() }, ...projects]);
-      addActivity(`Added project: ${form.name}`);
-    }
-    setModal(false);
-  };
-
-  const remove = (id) => {
-    if (!confirm('Delete this project?')) return;
-    sync(projects.filter(p => p.id !== id));
-  };
-
-  const addTag    = (field, value, setter) => { if (!value.trim()) return; setForm(f => ({ ...f, [field]: [...(f[field]||[]), value.trim()] })); setter(''); };
-  const removeTag = (field, idx) => setForm(f => ({ ...f, [field]: f[field].filter((_,i)=>i!==idx) }));
+function SkillTrackerCard({ skill, onDelete, onProgress }) {
+  const meta = CAT_META[skill.category] || CAT_META['Other'];
 
   return (
-    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }}>
-
-      {/* ── Page Header ── */}
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'12px' }}>
-        <div>
-          <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
-            <div style={{ width:36, height:36, borderRadius:'10px', background:'rgba(78,222,163,0.12)', border:'1px solid rgba(78,222,163,0.22)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-              <Layers size={18} color={EMERALD} />
-            </div>
-            <h1 style={{ fontSize:'22px', fontWeight:800, color:'#d4e4fa', letterSpacing:'-0.02em' }}>Projects</h1>
-            <span style={{ fontSize:'11px', fontWeight:700, color:EMERALD, background:'rgba(78,222,163,0.10)', border:'1px solid rgba(78,222,163,0.22)', borderRadius:'999px', padding:'3px 10px' }}>
-              {projects.length}
-            </span>
+    <div
+      style={{
+        borderRadius: '16px',
+        padding: '18px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0',
+        background: 'linear-gradient(135deg, rgba(5,20,36,0.88) 0%, rgba(13,28,45,0.65) 100%)',
+        border: '1px solid rgba(78,222,163,0.14)',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.35), 0 16px 32px rgba(0,0,0,0.50)',
+      }}
+    >
+      {/* Row 1 */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '9px',
+              flexShrink: 0,
+              background: `${meta.color}18`,
+              border: `1px solid ${meta.color}28`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: meta.color,
+            }}
+          >
+            {meta.icon}
           </div>
-          <p style={{ fontSize:'12px', color:'rgba(187,202,191,0.50)', marginTop:'4px', marginLeft:'46px' }}>Showcase and manage your portfolio projects</p>
+          <div
+            style={{
+              fontSize: '13px',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {skill.name}
+          </div>
         </div>
-        <button onClick={openAdd} style={{
-          display:'flex', alignItems:'center', gap:'8px', padding:'10px 20px',
-          background:`linear-gradient(135deg, ${EMERALD} 0%, #10b981 100%)`,
-          border:'none', borderRadius:'12px', color:'#003824', fontSize:'13px', fontWeight:800,
-          cursor:'pointer', fontFamily:'inherit', minHeight:'42px',
-          boxShadow:'0 0 20px rgba(78,222,163,0.25), 0 4px 12px rgba(0,0,0,0.40)',
-          transition:'all 0.18s ease',
-        }}
-          onMouseEnter={e => { e.currentTarget.style.transform='scale(1.04)'; e.currentTarget.style.boxShadow='0 0 28px rgba(78,222,163,0.35), 0 6px 18px rgba(0,0,0,0.40)'; }}
-          onMouseLeave={e => { e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.boxShadow='0 0 20px rgba(78,222,163,0.25), 0 4px 12px rgba(0,0,0,0.40)'; }}
+        <span
+          style={{
+            fontSize: '10px',
+            fontWeight: 700,
+            borderRadius: '6px',
+            padding: '3px 9px',
+            whiteSpace: 'nowrap',
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            background: skill.status === 'Learned' ? 'rgba(78,222,163,0.12)' : 'rgba(251,191,36,0.12)',
+            color: skill.status === 'Learned' ? '#4edea3' : '#fbbf24',
+            border: skill.status === 'Learned' ? '1px solid rgba(78,222,163,0.28)' : '1px solid rgba(251,191,36,0.28)',
+          }}
         >
-          <Plus size={15} /> Add Project
+          {skill.status}
+        </span>
+      </div>
+
+      {/* Progress */}
+      <div style={{ marginTop: '14px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+          <span style={{ fontSize: '11px', color: 'var(--text-faint)' }}>Progress</span>
+          <span style={{ fontSize: '11px', color: 'var(--accent-bright)', fontWeight: 700 }}>
+            {skill.progress}%
+          </span>
+        </div>
+        <div
+          style={{ padding: '6px 0', cursor: 'pointer' }}
+          onClick={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const pct = Math.min(100, Math.max(0, Math.round(((e.clientX - rect.left) / rect.width) * 100)));
+            onProgress(pct);
+          }}
+        >
+          <div style={{ height: '6px', background: 'rgba(255,255,255,0.08)', borderRadius: '9999px', overflow: 'hidden' }}>
+            <div style={{ width: `${skill.progress}%`, height: '100%', background: '#4edea3', borderRadius: '9999px', transition: 'width 0.3s' }} />
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div style={{ marginTop: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span
+          style={{
+            fontSize: '10px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+            color: 'var(--text-faint)',
+            fontWeight: 600,
+          }}
+        >
+          {skill.category}
+        </span>
+        <button
+          onClick={onDelete}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: 'var(--text-faint)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '36px',
+            minWidth: '36px',
+            margin: '-8px -8px -8px 0',
+            borderRadius: '8px',
+            transition: 'color var(--dur-med) ease, background var(--dur-med) ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--red)';
+            e.currentTarget.style.background = 'rgba(248,113,113,0.10)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'var(--text-faint)';
+            e.currentTarget.style.background = 'none';
+          }}
+          aria-label="Delete skill"
+        >
+          <Trash2 size={13} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SkillTrackerContent() {
+  const [skills, setSkills] = useState(() => getSkills());
+  const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState('All');
+  const [modal, setModal] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newCat, setNewCat] = useState('Frontend');
+  const [newStat, setNewStat] = useState('Learning');
+
+  const sync = (arr) => { saveSkills(arr); setSkills(arr); };
+
+  const addSkill = () => {
+    if (!newName.trim()) return;
+    const skill = {
+      id: Date.now(),
+      name: newName.trim(),
+      category: newCat,
+      status: newStat,
+      progress: newStat === 'Learned' ? 100 : 10,
+      addedAt: Date.now(),
+    };
+    sync([...skills, skill]);
+    addActivity(`Added skill: ${skill.name}`);
+    setNewName(''); setNewCat('Frontend'); setNewStat('Learning'); setModal(false);
+  };
+
+  const deleteSkill = (id) => sync(skills.filter((s) => s.id !== id));
+
+  const updateProgress = (id, val) => {
+    const next = skills.map((s) =>
+      s.id === id ? { ...s, progress: val, status: val >= 100 ? 'Learned' : 'Learning' } : s
+    );
+    sync(next);
+  };
+
+  const filtered = skills
+    .filter((s) => filter === 'All' || s.status === filter)
+    .filter((s) => s.name.toLowerCase().includes(search.toLowerCase()));
+
+  const learnedCount = skills.filter((s) => s.status === 'Learned').length;
+  const learningCount = skills.filter((s) => s.status === 'Learning').length;
+
+  const inp = {
+    width: '100%',
+    background: 'rgba(255,255,255,0.04)',
+    border: '1px solid rgba(255,255,255,0.09)',
+    borderRadius: '10px',
+    padding: '10px 14px',
+    color: 'var(--text-primary)',
+    fontSize: '13px',
+    fontFamily: 'inherit',
+    outline: 'none',
+    marginBottom: '14px',
+    boxSizing: 'border-box',
+    transition: 'border-color var(--dur-med) ease, box-shadow var(--dur-med) ease',
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {/* Header Info */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+        <div>
+          <div style={{ display: 'flex', gap: '10px', fontSize: '11px', color: 'var(--text-faint)' }}>
+            <span style={{ color: 'var(--green)' }}>✓ {learnedCount} learned</span>
+            <span style={{ color: '#fbbf24' }}>⟳ {learningCount} in progress</span>
+          </div>
+        </div>
+        <button
+          onClick={() => setModal(true)}
+          style={{
+            padding: '9px 18px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
+            minHeight: '38px',
+            borderRadius: '10px',
+            background: 'linear-gradient(135deg, #4edea3 0%, #10b981 100%)',
+            border: 'none',
+            color: '#003824',
+            fontSize: '13px',
+            fontWeight: 800,
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+          }}
+        >
+          <Plus size={14} /> Add Skill
         </button>
       </div>
 
+      {/* Filter bar */}
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', flex: '1 1 200px', maxWidth: '300px' }}>
+          <Search
+            size={14}
+            color="var(--text-faint)"
+            style={{ position: 'absolute', left: '12px', pointerEvents: 'none' }}
+          />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search skills..."
+            style={{
+              width: '100%',
+              paddingLeft: '34px',
+              paddingRight: '12px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.09)',
+              borderRadius: '10px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+              color: 'var(--text-primary)',
+              fontSize: '13px',
+              fontFamily: 'inherit',
+              outline: 'none',
+              minHeight: '40px',
+            }}
+          />
+        </div>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {['All', 'Learning', 'Learned'].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              style={{
+                padding: '9px 16px',
+                borderRadius: '9999px',
+                border: `1px solid ${filter === f ? 'rgba(78,222,163,0.30)' : 'rgba(255,255,255,0.08)'}`,
+                cursor: 'pointer',
+                background: filter === f ? 'rgba(78,222,163,0.12)' : 'rgba(255,255,255,0.04)',
+                color: filter === f ? '#4edea3' : 'var(--text-muted)',
+                fontSize: '12px',
+                fontWeight: filter === f ? 700 : 400,
+                fontFamily: 'inherit',
+                minHeight: '38px',
+              }}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Grid */}
+      {filtered.length === 0 ? (
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(5,20,36,0.88) 0%, rgba(13,28,45,0.60) 100%)',
+            border: '1px solid rgba(78,222,163,0.14)',
+            borderRadius: '18px',
+            padding: '60px 24px',
+            textAlign: 'center',
+            color: 'var(--text-faint)',
+            fontSize: '14px',
+          }}
+        >
+          {skills.length === 0 ? 'No skills yet. Add your first skill!' : 'No skills match your filters.'}
+        </div>
+      ) : (
+        <div
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px,1fr))', gap: '14px' }}
+        >
+          {filtered.map((skill) => (
+            <SkillTrackerCard
+              key={skill.id}
+              skill={skill}
+              onDelete={() => deleteSkill(skill.id)}
+              onProgress={(v) => updateProgress(skill.id, v)}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Add Skill Modal */}
+      {modal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.75)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px',
+          }}
+          onClick={(e) => { if (e.target === e.currentTarget) setModal(false); }}
+        >
+          <div style={{
+            background: 'linear-gradient(135deg, rgba(5,20,36,0.90) 0%, rgba(13,28,45,0.65) 100%)',
+            border: '1px solid rgba(78,222,163,0.18)',
+            borderRadius: '22px',
+            padding: '28px',
+            width: '100%',
+            maxWidth: '400px',
+            position: 'relative',
+          }}>
+            <RimGlow />
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <div style={{ fontSize: '17px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '22px', letterSpacing: '-0.01em' }}>
+                Add New Skill
+              </div>
+              <label style={{ display: 'block', fontSize: '11px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginBottom: '6px' }}>Skill Name</label>
+              <input
+                style={{ ...inp, minHeight: '44px' }}
+                placeholder="e.g. React, Docker, Python..."
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && addSkill()}
+                autoFocus
+              />
+              <label style={{ display: 'block', fontSize: '11px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginBottom: '6px' }}>Category</label>
+              <select
+                style={{ ...inp, minHeight: '44px', marginBottom: '14px' }}
+                value={newCat}
+                onChange={(e) => setNewCat(e.target.value)}
+              >
+                {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+              <label style={{ display: 'block', fontSize: '11px', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginBottom: '6px' }}>Status</label>
+              <select
+                style={{ ...inp, minHeight: '44px' }}
+                value={newStat}
+                onChange={(e) => setNewStat(e.target.value)}
+              >
+                <option value="Learning">Learning</option>
+                <option value="Learned">Learned</option>
+              </select>
+              <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
+                <button
+                  onClick={() => setModal(false)}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(255,255,255,0.10)',
+                    borderRadius: '12px',
+                    color: 'rgba(255,255,255,0.65)',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    minHeight: '44px',
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={addSkill}
+                  style={{
+                    flex: 1,
+                    padding: '12px',
+                    background: 'linear-gradient(135deg, #4edea3, #10b981)',
+                    border: 'none',
+                    borderRadius: '12px',
+                    color: '#003824',
+                    fontSize: '13px',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    minHeight: '44px',
+                  }}
+                >
+                  Add Skill
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProjectsContent({ projects, openAdd, openEdit, remove, sync }) {
+  return (
+    <>
       {/* ── Empty State ── */}
       {projects.length === 0 ? (
         <div style={{ ...glass({ padding:'64px 24px' }), display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'20px', textAlign:'center' }}>
@@ -153,16 +514,142 @@ export default function ProjectsPage() {
           }}
         />
       </div>
+    </>
+  );
+}
+
+export default function ProjectsPage() {
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') === 'skills' ? 'skills' : 'projects');
+
+  const [projects, setProjects] = useState(() => getProjects());
+  const [modal, setModal]       = useState(false);
+  const [editing, setEditing]   = useState(null);
+  const [form, setForm]         = useState(EMPTY_FORM);
+  const [techInput, setTechInput] = useState('');
+  const [skillInput, setSkillInput] = useState('');
+
+  const sync = (arr) => { saveProjects(arr); setProjects(arr); };
+
+  const openAdd  = () => { setForm(EMPTY_FORM); setEditing(null); setModal(true); };
+  const openEdit = (p) => { setForm({ ...p }); setEditing(p.id); setModal(true); };
+
+  const save = () => {
+    if (!form.name.trim()) return;
+    if (editing) {
+      sync(projects.map(p => p.id === editing ? { ...form, id: editing } : p));
+      addActivity(`Updated project: ${form.name}`);
+    } else {
+      sync([{ ...form, id: Date.now(), createdAt: Date.now() }, ...projects]);
+      addActivity(`Added project: ${form.name}`);
+    }
+    setModal(false);
+  };
+
+  const remove = (id) => {
+    if (!confirm('Delete this project?')) return;
+    sync(projects.filter(p => p.id !== id));
+  };
+
+  const addTag    = (field, value, setter) => { if (!value.trim()) return; setForm(f => ({ ...f, [field]: [...(f[field]||[]), value.trim()] })); setter(''); };
+  const removeTag = (field, idx) => setForm(f => ({ ...f, [field]: f[field].filter((_,i)=>i!==idx) }));
+
+  return (
+    <div style={{ maxWidth: '960px', margin: '0 auto', width: '100%', display: 'flex', flexDirection: 'column', gap: '24px', paddingLeft: '16px', paddingRight: '16px', paddingTop: '16px', boxSizing: 'border-box' }}>
+
+      {/* ── Page Header ── */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'12px' }}>
+        <div>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+            <div style={{ width:36, height:36, borderRadius:'10px', background:'rgba(78,222,163,0.12)', border:'1px solid rgba(78,222,163,0.22)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <Layers size={18} color={EMERALD} />
+            </div>
+            <h1 style={{ fontSize:'22px', fontWeight:800, color:'#d4e4fa', letterSpacing:'-0.02em' }}>
+              {activeTab === 'projects' ? 'Projects' : 'Skill Tracker'}
+            </h1>
+            {activeTab === 'projects' && (
+              <span style={{ fontSize:'11px', fontWeight:700, color:EMERALD, background:'rgba(78,222,163,0.10)', border:'1px solid rgba(78,222,163,0.22)', borderRadius:'999px', padding:'3px 10px' }}>
+                {projects.length}
+              </span>
+            )}
+          </div>
+          <p style={{ fontSize:'12px', color:'rgba(187,202,191,0.50)', marginTop:'4px', marginLeft:'46px' }}>
+            {activeTab === 'projects' ? 'Showcase and manage your portfolio projects' : 'Track your skill acquisition progress'}
+          </p>
+        </div>
+        {activeTab === 'projects' && (
+          <button onClick={openAdd} style={{
+            display:'flex', alignItems:'center', gap:'8px', padding:'10px 20px',
+            background:`linear-gradient(135deg, ${EMERALD} 0%, #10b981 100%)`,
+            border:'none', borderRadius:'12px', color:'#003824', fontSize:'13px', fontWeight:800,
+            cursor:'pointer', fontFamily:'inherit', minHeight:'42px',
+            boxShadow:'0 0 20px rgba(78,222,163,0.25), 0 4px 12px rgba(0,0,0,0.40)',
+            transition:'all 0.18s ease',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform='scale(1.04)'; e.currentTarget.style.boxShadow='0 0 28px rgba(78,222,163,0.35), 0 6px 18px rgba(0,0,0,0.40)'; }}
+            onMouseLeave={e => { e.currentTarget.style.transform='scale(1)'; e.currentTarget.style.boxShadow='0 0 20px rgba(78,222,163,0.25), 0 4px 12px rgba(0,0,0,0.40)'; }}
+          >
+            <Plus size={15} /> Add Project
+          </button>
+        )}
+      </div>
+
+      {/* Tab bar */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+        {[
+          { id: 'projects', label: '📁 Projects'     },
+          { id: 'skills',   label: '⚡ Skill Tracker' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            style={{
+              padding: '8px 18px',
+              borderRadius: '10px',
+              border: activeTab === tab.id
+                ? '1px solid rgba(78,222,163,0.4)'
+                : '1px solid var(--border)',
+              background: activeTab === tab.id
+                ? 'rgba(78,222,163,0.12)'
+                : 'transparent',
+              color: activeTab === tab.id
+                ? '#4edea3'
+                : 'var(--text-muted)',
+              fontSize: '13px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.18s ease',
+              minHeight: '38px',
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === 'projects' && (
+        <ProjectsContent
+          projects={projects}
+          openAdd={openAdd}
+          openEdit={openEdit}
+          remove={remove}
+          sync={sync}
+        />
+      )}
+
+      {activeTab === 'skills' && (
+        <SkillTrackerContent />
+      )}
 
       {/* ── Modal ── */}
       {modal && (
         <div onClick={e => { if(e.target===e.currentTarget) setModal(false); }} style={{
           position:'fixed', inset:0, background:'rgba(0,0,0,0.75)', backdropFilter:'blur(8px)',
-          display:'flex', alignItems:'center', justifyContent:'center', zIndex:9999, padding:'20px',
+          display:'flex', alignItems:'center', justifyContext:'center', zIndex:9999, padding:'20px',
         }}>
           <div style={{
             ...glass({ padding:'28px', borderRadius:'22px', overflow:'auto' }),
-            width:'100%', maxWidth:'480px', maxHeight:'90vh',
+            width:'100%', maxWidth:'480px', maxHeight:'90vh', margin:'auto'
           }}>
             <RimGlow />
             <div style={{ position:'relative', zIndex:1 }}>

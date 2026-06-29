@@ -21,7 +21,7 @@ export function useAI() {
 
     const wakeTimer = setTimeout(() => {
       setIsWakingUp(true);
-    }, 4000);
+    }, 10000);
 
     try {
       const res = await serviceMethod(...args);

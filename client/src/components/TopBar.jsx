@@ -5,11 +5,10 @@ const PAGE_TITLES = {
   '/':             { title: 'Dashboard',          subtitle: 'Your learning overview' },
   '/new-analysis': { title: 'New Analysis',       subtitle: 'Analyze your skill gap' },
   '/analyses':     { title: 'My Analyses',        subtitle: 'View and manage past results' },
-  '/roadmap':      { title: 'Learning Roadmap',   subtitle: 'Your personalized skill path' },
-  '/skill-tracker':{ title: 'Skill Tracker',      subtitle: 'Track your progress' },
-  '/career-sim':   { title: 'Career Simulator',   subtitle: 'Explore earning potential' },
-  '/projects':     { title: 'Projects',           subtitle: 'Showcase your work' },
+  '/roadmap':      { title: 'Roadmap & Career Sim',subtitle: 'Your personalized skill path & earning potential' },
+  '/dsa-tracker':  { title: 'DSA Tracker',        subtitle: 'Track and practice DSA problems' },
   '/interview':    { title: 'Interview Prep',     subtitle: 'Practice with AI-driven questions' },
+  '/projects':     { title: 'Projects & Skills',  subtitle: 'Showcase your work and track skills' },
   '/placement':    { title: 'Placement Readiness',subtitle: 'Industry-ready assessment' },
   '/settings':     { title: 'Settings',           subtitle: 'Manage your account' },
 };
@@ -126,32 +125,28 @@ export default function TopBar({ onMenuClick }) {
         <button
           onClick={() => navigate('/new-analysis')}
           style={{
-            padding: '8px 14px',
+            padding: '8px 16px',
             fontSize: '12px',
             display: 'flex',
             alignItems: 'center',
-            gap: '5px',
+            gap: '6px',
             whiteSpace: 'nowrap',
             minHeight: '36px',
             borderRadius: '9px',
-            background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)',
-            border: 'none',
-            color: '#003824',
-            fontWeight: 700,
+            background: 'rgba(16, 185, 129, 0.12)',
+            border: '1px solid rgba(16, 185, 129, 0.25)',
+            color: '#6ee7b7',
+            fontWeight: 600,
             cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.35)',
-            transition: 'transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-med) ease',
+            transition: 'all 0.2s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(16, 185, 129, 0.55)';
-            e.currentTarget.style.transform = 'translateY(-1px)';
+            e.currentTarget.style.background = 'rgba(16, 185, 129, 0.22)';
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.45)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.35)';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-          onMouseDown={(e) => {
-            e.currentTarget.style.transform = 'translateY(1px)';
+            e.currentTarget.style.background = 'rgba(16, 185, 129, 0.12)';
+            e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.25)';
           }}
         >
           <Plus size={13} />

@@ -91,7 +91,7 @@ export const runGitHubAnalysis = async (username, onProgress = () => {}) => {
   const client = axios.create({
     baseURL: 'https://api.github.com',
     headers,
-    timeout: 1500,
+    timeout: 8000,
   });
 
   try {

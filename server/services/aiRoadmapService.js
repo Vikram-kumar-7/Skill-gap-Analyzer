@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { logStructured } from '../utils/logger.js';
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const BASE_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 const MODELS = {
@@ -11,18 +10,10 @@ const MODELS = {
 
 /**
  * Generate a personalized DSA roadmap using AI
- * Integrates with existing OpenRouter setup
+ * Uses a robust 3-stage failover: OpenRouter -> OpenAI -> Heuristic rule-based
  */
 export const generateDSARoadmap = async (userData, targetGoal = 'FAANG in 3 months') => {
   const { easy, medium, hard, currentScore, weak_topics = [], userId } = userData;
-  
-  if (!OPENROUTER_API_KEY) {
-    logStructured('DSA_ROADMAP_ERROR', {
-      error: 'OPENROUTER_API_KEY not configured',
-      userId,
-    });
-    throw new Error('AI service not configured');
-  }
 
   const prompt = `You are a DSA expert coaching an engineer preparing for FAANG interviews.
 
@@ -65,59 +56,128 @@ Format the response as actionable JSON with this structure:
   "success_metrics": []
 }`;
 
-  try {
-    const response = await axios.post(
-      BASE_URL,
-      {
-        model: MODELS.reasoning,
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an expert DSA coach. Provide practical, actionable roadmaps.',
-          },
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 2000,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
-          'X-Title': 'SkillGap DSA Tracker',
+  // Stage 1: Try OpenRouter
+  const openRouterKey = process.env.OPENROUTER_API_KEY;
+  if (openRouterKey && openRouterKey !== 'your_openrouter_api_key_here') {
+    try {
+      const response = await axios.post(
+        BASE_URL,
+        {
+          model: MODELS.reasoning,
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an expert DSA coach. Provide practical, actionable roadmaps.',
+            },
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 2000,
         },
-        timeout: 30000,
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${openRouterKey}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': process.env.FRONTEND_URL || 'http://localhost:5173',
+            'X-Title': 'SkillGap DSA Tracker',
+          },
+          timeout: 15000,
+        }
+      );
 
-    const content = response.data.choices[0].message.content;
-    
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    const roadmap = jsonMatch ? JSON.parse(jsonMatch[0]) : parseRoadmapText(content);
+      const content = response.data.choices?.[0]?.message?.content || '';
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      const roadmap = jsonMatch ? JSON.parse(jsonMatch[0]) : parseRoadmapText(content);
 
-    logStructured('DSA_ROADMAP_GENERATED', {
-      userId,
-      current_score: currentScore,
-      target_goal: targetGoal,
-    });
+      logStructured('DSA_ROADMAP_GENERATED', {
+        userId,
+        current_score: currentScore,
+        target_goal: targetGoal,
+        source: 'openrouter',
+      });
 
-    return {
-      roadmap,
-      generatedAt: new Date(),
-      model: MODELS.reasoning,
-    };
-  } catch (error) {
-    logStructured('DSA_ROADMAP_ERROR', {
-      userId,
-      error: error.message,
-      status: error.response?.status,
-    });
-    throw new Error(`Failed to generate DSA roadmap: ${error.message}`);
+      return {
+        roadmap,
+        generatedAt: new Date(),
+        model: MODELS.reasoning,
+        source: 'openrouter',
+      };
+    } catch (error) {
+      console.warn('Stage 1 (OpenRouter) roadmap generation failed, trying Stage 2 (OpenAI):', error.message);
+    }
   }
+
+  // Stage 2: Try OpenAI
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (openaiKey && openaiKey !== 'your_openai_api_key_here') {
+    try {
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-4o-mini',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an expert DSA coach. Provide practical, actionable roadmaps. Respond with JSON.',
+            },
+            {
+              role: 'user',
+              content: prompt,
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 2000,
+          response_format: { type: 'json_object' },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${openaiKey}`,
+            'Content-Type': 'application/json',
+          },
+          timeout: 15000,
+        }
+      );
+
+      const content = response.data.choices?.[0]?.message?.content || '';
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      const roadmap = jsonMatch ? JSON.parse(jsonMatch[0]) : parseRoadmapText(content);
+
+      logStructured('DSA_ROADMAP_GENERATED', {
+        userId,
+        current_score: currentScore,
+        target_goal: targetGoal,
+        source: 'openai',
+      });
+
+      return {
+        roadmap,
+        generatedAt: new Date(),
+        model: 'gpt-4o-mini',
+        source: 'openai',
+      };
+    } catch (error) {
+      console.warn('Stage 2 (OpenAI) roadmap generation failed, falling back to Stage 3 (Rule-based):', error.message);
+    }
+  }
+
+  // Stage 3: Rule-based fallback
+  const fallbackRoadmap = generateRuleBasedRoadmap({ easy, medium, hard, currentScore }, targetGoal);
+  logStructured('DSA_ROADMAP_GENERATED', {
+    userId,
+    current_score: currentScore,
+    target_goal: targetGoal,
+    source: 'rule-based',
+  });
+
+  return {
+    roadmap: fallbackRoadmap,
+    generatedAt: new Date(),
+    model: 'rule-based',
+    source: 'rule-based',
+  };
 };
 
 /**
@@ -152,6 +212,46 @@ function parseRoadmapText(text) {
       'Solve daily LeetCode problems',
       'Understand patterns, not just solutions',
       'Track progress weekly',
+    ],
+  };
+}
+
+/**
+ * Dynamic Rule-Based Heuristic Roadmap generator
+ */
+function generateRuleBasedRoadmap(stats, targetGoal) {
+  const easyNeeded = Math.max(0, 100 - stats.easy);
+  const mediumNeeded = Math.max(0, 150 - stats.medium);
+  const hardNeeded = Math.max(0, 40 - stats.hard);
+
+  return {
+    phase_30: {
+      focus: 'Master Easy and Medium fundamentals. Close early logic gaps.',
+      topics: ['Arrays', 'Strings', 'Two Pointers', 'Hashing', 'Sliding Window'],
+      daily_commitment: '1.5 hours',
+      expected_score: Math.min(100, Math.round(stats.currentScore + (100 - stats.currentScore) * 0.35)),
+    },
+    phase_60: {
+      focus: 'Intensive Medium practice on Trees, Graphs, and Heaps.',
+      topics: ['Binary Search', 'BFS & DFS', 'Recursion & Backtracking', 'Greedy Algorithms'],
+      daily_commitment: '2 hours',
+      expected_score: Math.min(100, Math.round(stats.currentScore + (100 - stats.currentScore) * 0.70)),
+    },
+    phase_90: {
+      focus: 'Advanced patterns (DP, Graph algorithms) and mock interviews.',
+      topics: ['Dynamic Programming', 'Trie', 'Segment Trees', 'Monotonic Stack'],
+      daily_commitment: '2.5 hours',
+      expected_score: Math.min(100, Math.round(stats.currentScore + (100 - stats.currentScore) * 0.95)),
+    },
+    key_milestones: [
+      { day: 30, target: `Complete at least ${Math.min(easyNeeded, 30)} Easy and ${Math.min(mediumNeeded, 25)} Medium problems` },
+      { day: 60, target: `Target ${Math.min(mediumNeeded, 50)} more Mediums and basic recursion/graph patterns` },
+      { day: 90, target: `Attempt ${Math.min(hardNeeded, 15)} Hard problems under timed test conditions` },
+    ],
+    success_metrics: [
+      'Understand the visual pattern before jumping straight into code',
+      'Optimize space complexity (e.g. modify in-place where applicable)',
+      'Aim for a consistent daily solving streak',
     ],
   };
 }

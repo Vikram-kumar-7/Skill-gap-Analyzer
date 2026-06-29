@@ -5,7 +5,8 @@ import {
   Target, Briefcase, Terminal, X, FileText, Bolt,
 } from 'lucide-react';
 import { saveAnalysis, addActivity, getUser } from '../utils/storage.js';
-import { runAnalysis } from '../utils/analysisEngine.js';
+import { runAnalysis, runAnalysisWithExtracted } from '../utils/analysisEngine.js';
+import { analyzeResume } from '../services/api.js';
 
 /* ─── design tokens ─── */
 const EMERALD      = '#4edea3';
@@ -57,6 +58,9 @@ export default function NewAnalysisPage() {
   const [error, setError]                   = useState('');
   const [dragging, setDragging]             = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [modalData, setModalData]           = useState(null);
+  const [animatedPct, setAnimatedPct]       = useState(0);
   const [logs, setLogs]                     = useState([
     { time: '00:00:00', text: 'Core parameters initialized.', active: true },
     { time: '--:--:--', text: 'Awaiting credentials upload...', active: false },
@@ -70,6 +74,37 @@ export default function NewAnalysisPage() {
     const t = setTimeout(() => setSignalPct(80), 300);
     return () => clearTimeout(t);
   }, []);
+
+  /* Animate result percentage when modal opens */
+  useEffect(() => {
+    if (showResultModal && modalData) {
+      setAnimatedPct(0);
+      let start = 0;
+      const end = modalData.matchPct;
+      if (start === end) {
+        setAnimatedPct(end);
+        return;
+      }
+      const duration = 1200; // 1.2s animation duration
+      const startTime = performance.now();
+      
+      let animationFrameId;
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = progress * (2 - progress); // ease-out quad
+        const current = Math.round(start + easeProgress * (end - start));
+        setAnimatedPct(current);
+        
+        if (progress < 1) {
+          animationFrameId = requestAnimationFrame(animate);
+        }
+      };
+      
+      animationFrameId = requestAnimationFrame(animate);
+      return () => cancelAnimationFrame(animationFrameId);
+    }
+  }, [showResultModal, modalData]);
 
   const handleFile = (f) => {
     if (!f) return;
@@ -89,12 +124,19 @@ export default function NewAnalysisPage() {
   };
 
   const analyze = async () => {
+    console.log('>>> ANALYZE CLICKED, resume length:', resumeText.length, 'jd length:', jd.length);
     const resume = resumeText.trim();
     const jdText = jd.trim();
     const errs = {};
-    if (!resume) errs.resume = 'Please provide your resume text or upload a PDF.';
-    if (!jdText) errs.jd    = 'Please paste the job description.';
+
+    if (mode === 'pdf' && !file) {
+      errs.resume = 'Please upload your resume PDF.';
+    } else if (mode === 'text' && !resume) {
+      errs.resume = 'Please paste your resume text.';
+    }
+    if (!jdText) errs.jd = 'Please paste the job description.';
     if (Object.keys(errs).length > 0) { setValidationErrors(errs); return; }
+
     setValidationErrors({});
     setError('');
     setLoading(true);
@@ -106,12 +148,76 @@ export default function NewAnalysisPage() {
       return next;
     });
 
-    await new Promise(r => setTimeout(r, 600));
-    const result = runAnalysis({ resumeText: resume, jobDescription: jdText, targetRole: role });
+    let result;
+    try {
+      const formData = new FormData();
+      if (mode === 'pdf') {
+        formData.append('resume', file);
+      } else {
+        formData.append('resumeText', resume);
+      }
+      formData.append('jobDescription', jdText);
+      formData.append('targetRole', role);
+      formData.append('aiMode', 'true');
+
+      setLogs(prev => {
+        const next = [...prev];
+        next.push({ time: ts(), text: 'Connecting to server API...', active: true });
+        return next;
+      });
+
+      const response = await analyzeResume(formData);
+
+      if (response && response.success && response.data) {
+        const data = response.data;
+        result = runAnalysisWithExtracted({
+          resumeSkills: data.resumeSkills || [],
+          jdSkills: data.jobSkills || [],
+          targetRole: role,
+          insights: data.insights || null,
+        });
+      } else {
+        throw new Error('Invalid server response structure');
+      }
+    } catch (err) {
+      console.warn('Backend analysis failed, attempting fallback:', err.message);
+
+      if (mode === 'pdf') {
+        setError('The server is offline or encountered an error. Please paste your resume as text in "Paste Text" mode or ensure the backend server is running.');
+        setLoading(false);
+        return;
+      } else {
+        setLogs(prev => {
+          const next = [...prev];
+          next.push({ time: ts(), text: 'Server offline. Falling back to local neural simulator...', active: true });
+          return next;
+        });
+        await new Promise(r => setTimeout(r, 600));
+        result = runAnalysis({ resumeText: resume, jobDescription: jdText, targetRole: role });
+      }
+    }
+
+    // TEMP DEBUG — show on screen
+    const debugInfo = {
+      allResume: [...result.presentSkills, ...result.extraSkills],
+      jdRequired: result.missingSkills.concat(result.presentSkills),
+      gaps: result.missingSkills,
+      matchPct: result.matchPct,
+    };
+    localStorage.setItem('sga_debug', JSON.stringify(debugInfo));
+
     saveAnalysis(result);
     addActivity(`Analyzed for ${role} — ${result.matchPct}% match`);
     setLoading(false);
-    navigate('/analyses');
+
+    // Open the result modal with animation instead of the blocking alert
+    setModalData({
+      matchPct: result.matchPct,
+      role: role,
+      present: result.presentSkills,
+      missing: result.missingSkills,
+    });
+    setShowResultModal(true);
   };
 
   const depthOptions = [
@@ -469,6 +575,117 @@ export default function NewAnalysisPage() {
           .na-desc{font-size:10px!important;line-height:1.4!important}
         }
       `}</style>
+
+      {/* ── Result Modal Overlay ── */}
+      {showResultModal && modalData && (
+        <div style={{
+          position: 'fixed', inset: 0,
+          background: 'rgba(5, 7, 12, 0.85)', backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          zIndex: 9999, display: 'flex', alignItems: 'center',
+          justifyContent: 'center', transition: 'all 0.3s ease',
+          padding: '20px', boxSizing: 'border-box'
+        }}>
+          <div style={{
+            width: '420px', maxWidth: '100%', padding: '32px',
+            background: 'linear-gradient(to bottom, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.6) 100%), rgba(8,16,28,0.95)',
+            border: '1px solid rgba(78,222,163,0.3)', borderRadius: '24px',
+            boxShadow: '0 30px 70px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.1)',
+            textAlign: 'center', position: 'relative', overflow: 'hidden',
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            animation: 'modal-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+          }}>
+            {/* radial green glow */}
+            <div style={{ position: 'absolute', top: '-100px', left: '50%', transform: 'translateX(-50%)', width: '200px', height: '200px', borderRadius: '50%', background: 'rgba(78,222,163,0.15)', filter: 'blur(50px)', pointerEvents: 'none' }} />
+            
+            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '8px', zIndex: 1 }}>
+              Analysis Complete!
+            </h3>
+            <p style={{ fontSize: '13px', color: 'rgba(187,202,191,0.6)', marginBottom: '20px', zIndex: 1 }}>
+              Role: <span style={{ color: EMERALD, fontWeight: 700 }}>{modalData.role}</span>
+            </p>
+
+            {/* Circular Progress Gauge */}
+            <div style={{ display: 'inline-flex', position: 'relative', alignItems: 'center', justifyContent: 'center', width: '130px', height: '130px', margin: '0 auto 24px', zIndex: 1 }}>
+              <svg style={{ transform: 'rotate(-90deg)', width: '120px', height: '120px' }}>
+                <circle cx="60" cy="60" r="50" stroke="rgba(255, 255, 255, 0.04)" strokeWidth="6" fill="transparent" />
+                <circle 
+                  cx="60" 
+                  cy="60" 
+                  r="50" 
+                  stroke={EMERALD} 
+                  strokeWidth="6" 
+                  fill="transparent" 
+                  strokeDasharray="314.16" 
+                  strokeDashoffset={314.16 - (314.16 * animatedPct) / 100}
+                  strokeLinecap="round"
+                  style={{ transition: 'stroke-dashoffset 0.05s ease-out' }}
+                />
+              </svg>
+              <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <span style={{ fontSize: '32px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em', textShadow: `0 0 15px rgba(78,222,163,0.4)` }}>
+                  {animatedPct}%
+                </span>
+                <span style={{ fontSize: '9px', fontWeight: 700, color: 'rgba(187,202,191,0.5)', textTransform: 'uppercase', letterSpacing: '0.08em', marginTop: '-2px' }}>
+                  Match Score
+                </span>
+              </div>
+            </div>
+
+            {/* Present / Missing Skills summary */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', width: '100%', marginBottom: '28px', textAlign: 'left', zIndex: 1 }}>
+              {modalData.present && modalData.present.length > 0 && (
+                <div>
+                  <div style={{ fontSize: '10px', fontWeight: 700, color: EMERALD, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Matched Skills</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {modalData.present.slice(0, 6).map((sk, i) => (
+                      <span key={i} style={{ fontSize: '11px', background: 'rgba(78,222,163,0.08)', color: EMERALD, border: '1px solid rgba(78,222,163,0.2)', padding: '3px 8px', borderRadius: '6px' }}>{sk}</span>
+                    ))}
+                    {modalData.present.length > 6 && <span style={{ fontSize: '11px', color: 'rgba(187,202,191,0.4)', padding: '3px 4px' }}>+{modalData.present.length - 6} more</span>}
+                  </div>
+                </div>
+              )}
+
+              {modalData.missing && modalData.missing.length > 0 && (
+                <div>
+                  <div style={{ fontSize: '10px', fontWeight: 700, color: '#f87171', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>Skill Gaps Identified</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                    {modalData.missing.slice(0, 6).map((sk, i) => (
+                      <span key={i} style={{ fontSize: '11px', background: 'rgba(248,113,113,0.08)', color: '#f87171', border: '1px solid rgba(248,113,113,0.2)', padding: '3px 8px', borderRadius: '6px' }}>{sk}</span>
+                    ))}
+                    {modalData.missing.length > 6 && <span style={{ fontSize: '11px', color: 'rgba(187,202,191,0.4)', padding: '3px 4px' }}>+{modalData.missing.length - 6} more</span>}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* CTA */}
+            <button
+              onClick={() => {
+                setShowResultModal(false);
+                navigate('/analyses');
+              }}
+              style={{
+                width: '100%', padding: '14px',
+                background: `linear-gradient(135deg, ${EMERALD} 0%, #10b981 100%)`,
+                border: 'none', borderRadius: '12px',
+                color: '#003824', fontSize: '13px', fontWeight: 800,
+                cursor: 'pointer', display: 'flex', alignItems: 'center',
+                justifyContent: 'center', gap: '8px', zIndex: 1,
+                boxShadow: `0 0 20px rgba(78,222,163,0.25)`
+              }}
+            >
+              View Optimization Report
+            </button>
+          </div>
+          <style>{`
+            @keyframes modal-pop {
+              from { transform: scale(0.95); opacity: 0; }
+              to { transform: scale(1); opacity: 1; }
+            }
+          `}</style>
+        </div>
+      )}
     </div>
   );
 }

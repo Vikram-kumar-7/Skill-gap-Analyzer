@@ -22,6 +22,7 @@ import {
   Bot,
   ArrowRight,
   ChevronsRight,
+  X,
 } from 'lucide-react';
 import { HistoryService } from '../utils/userHistory';
 import { useAI } from '../services/useAI';
@@ -1155,7 +1156,21 @@ export default function InterviewPage() {
         {/* Hints */}
         {(loadingStates.generateHints || hints) && (
           <div style={{ position:'relative', zIndex:1, background:'rgba(78,222,163,0.04)', border:'1px solid rgba(78,222,163,0.15)', borderRadius:14, padding:'18px 20px', display:'flex', flexDirection:'column', gap:12 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:6 }}><Lightbulb size={13} color="#4edea3" /><span style={{ color:'#4edea3', fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em' }}>Progressive Hints</span></div>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                <Lightbulb size={13} color="#4edea3" />
+                <span style={{ color:'#4edea3', fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em' }}>Progressive Hints</span>
+              </div>
+              <button
+                onClick={() => setHints(null)}
+                style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', cursor:'pointer', padding:4, display:'flex', alignItems:'center', justifyContent:'center', transition:'color 0.15s' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#f87171'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+                title="Close hints"
+              >
+                <X size={14} />
+              </button>
+            </div>
             {loadingStates.generateHints ? (
               <div style={{ display:'flex', flexDirection:'column', gap:10, padding:'4px 0' }}>
                 <div className="skeleton-pulse skeleton-line" style={{ height:'14px', width:'90%' }} />
@@ -1178,7 +1193,21 @@ export default function InterviewPage() {
         {/* Outline */}
         {(loadingStates.generateAnswerOutline || outline) && (
           <div style={{ position:'relative', zIndex:1, background:'rgba(139,92,246,0.04)', border:'1px solid rgba(139,92,246,0.15)', borderRadius:14, padding:'18px 20px', display:'flex', flexDirection:'column', gap:16 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:6 }}><List size={13} color="#a78bfa" /><span style={{ color:'#c4b5fd', fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em' }}>Structured Answer Outline</span></div>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                <List size={13} color="#a78bfa" />
+                <span style={{ color:'#c4b5fd', fontSize:11, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.07em' }}>Structured Answer Outline</span>
+              </div>
+              <button
+                onClick={() => setOutline(null)}
+                style={{ background:'none', border:'none', color:'rgba(255,255,255,0.4)', cursor:'pointer', padding:4, display:'flex', alignItems:'center', justifyContent:'center', transition:'color 0.15s' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#f87171'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+                title="Close outline"
+              >
+                <X size={14} />
+              </button>
+            </div>
             {loadingStates.generateAnswerOutline ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '4px 0' }}>
                 <div className="skeleton-pulse skeleton-line" style={{ height: '12px', width: '60%', marginBottom: '8px' }} />

@@ -55,14 +55,24 @@ function getSkillPct(skillName, base, range) {
 export default function DashboardPage() {
   const navigate = useNavigate();
   const user      = getUser() || {};
-  const analyses  = getAnalyses();
-  const activities = (getActivity() || []).slice(0, 5);
+  const [analyses, setAnalyses] = useState(() => getAnalyses());
+  const [activities, setActivities] = useState(() => (getActivity() || []).slice(0, 5));
+
   const active    = analyses.find((a) => a.isActive);
   const avgMatch  = analyses.length
     ? Math.round(analyses.reduce((s, a) => s + (a.matchPct || 0), 0) / analyses.length)
     : 0;
 
   const [greeting, setGreeting] = useState('');
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setAnalyses(getAnalyses());
+      setActivities((getActivity() || []).slice(0, 5));
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   useEffect(() => {
     const update = () => {

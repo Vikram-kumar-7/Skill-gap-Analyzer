@@ -2,6 +2,7 @@ import { API_BASE_URL } from '../services/api';
 
 /**
  * Frontend DSA API client
+ * Fixes double '/api/api' path duplication
  */
 
 export const dsaAPI = {
@@ -9,7 +10,7 @@ export const dsaAPI = {
    * Fetch LeetCode stats from our backend
    */
   fetchLeetCodeStats: async (username) => {
-    const response = await fetch(`${API_BASE_URL}/api/dsa/leetcode/${username}`);
+    const response = await fetch(`${API_BASE_URL}/dsa/leetcode/${username}`);
     if (!response.ok) throw new Error('Failed to fetch LeetCode stats');
     return response.json();
   },
@@ -18,7 +19,7 @@ export const dsaAPI = {
    * Save DSA score
    */
   saveDSAScore: async (userId, scoreData) => {
-    const response = await fetch(`${API_BASE_URL}/api/dsa/score/save`, {
+    const response = await fetch(`${API_BASE_URL}/dsa/score/save`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, ...scoreData }),
@@ -31,7 +32,7 @@ export const dsaAPI = {
    * Get current DSA score
    */
   getDSAScore: async (userId) => {
-    const response = await fetch(`${API_BASE_URL}/api/dsa/score/${userId}`);
+    const response = await fetch(`${API_BASE_URL}/dsa/score/${userId}`);
     if (!response.ok) throw new Error('Failed to get DSA score');
     return response.json();
   },
@@ -40,7 +41,7 @@ export const dsaAPI = {
    * Get DSA score history
    */
   getScoreHistory: async (userId, limit = 30) => {
-    const response = await fetch(`${API_BASE_URL}/api/dsa/history/${userId}?limit=${limit}`);
+    const response = await fetch(`${API_BASE_URL}/dsa/history/${userId}?limit=${limit}`);
     if (!response.ok) throw new Error('Failed to get score history');
     return response.json();
   },
@@ -49,7 +50,7 @@ export const dsaAPI = {
    * Save LeetCode username for auto-sync
    */
   saveLeetcodeUsername: async (userId, leetcodeUsername) => {
-    const response = await fetch(`${API_BASE_URL}/api/dsa/leetcode-username`, {
+    const response = await fetch(`${API_BASE_URL}/dsa/leetcode-username`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId, leetcodeUsername }),
@@ -62,7 +63,7 @@ export const dsaAPI = {
    * Generate AI roadmap
    */
   generateRoadmap: async (userId, scoreData, targetGoal) => {
-    const response = await fetch(`${API_BASE_URL}/api/dsa/roadmap/generate`, {
+    const response = await fetch(`${API_BASE_URL}/dsa/roadmap/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -83,7 +84,7 @@ export const dsaAPI = {
    * Import GFG stats manually
    */
   importGFGStats: async (userId, username, stats) => {
-    const response = await fetch(`${API_BASE_URL}/api/dsa/gfg/import`, {
+    const response = await fetch(`${API_BASE_URL}/dsa/gfg/import`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

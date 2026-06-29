@@ -100,11 +100,13 @@ router.post('/chat', async (req, res) => {
 
   // Stage 1: Try OpenRouter (Gemma 31B)
   if (openRouterKey && openRouterKey !== 'your_openrouter_api_key_here') {
+    let response;
+    let usedModel = openRouterModel;
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), safeTimeout / 2);
 
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${openRouterKey}`,
@@ -125,72 +127,128 @@ router.post('/chat', async (req, res) => {
       });
 
       clearTimeout(timeoutId);
-      const durationMs = Date.now() - startTime;
 
       if (response.status === 429) {
         throw new Error('RATE_LIMITED');
       }
+    } catch (err) {
+      console.warn('Proxy Stage 1 (OpenRouter Gemma 4) failed, attempting Stage 1.5 (Llama 3.3 70B)...', err.message);
+    }
 
-      if (response.ok) {
+    // Stage 1.5: Fallback to Llama 3.3 70B on OpenRouter if Gemma 4 fails or is rate-limited
+    if (!response || !response.ok) {
+      try {
+        usedModel = 'meta-llama/llama-3.3-70b-instruct:free';
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), safeTimeout / 2);
+
+        response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${openRouterKey}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': 'http://localhost:5000',
+            'X-Title': 'SkillGapAnalyzer',
+          },
+          body: JSON.stringify({
+            model: usedModel,
+            messages: [
+              { role: 'system', content: system },
+              { role: 'user', content: prompt },
+            ],
+            temperature: 0.7,
+            max_tokens: enableReasoning ? 8192 : 2048,
+          }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+      } catch (err) {
+        console.warn('Proxy Stage 1.5 (OpenRouter Llama 3.3 70B) failed:', err.message);
+      }
+    }
+
+    if (response && response.ok) {
+      try {
         const data = await response.json();
+        const durationMs = Date.now() - startTime;
         logStructured({
           event: 'ai_request',
           stage: 'proxy_openrouter',
-          model: openRouterModel,
+          model: usedModel,
           success: true,
           durationMs,
         });
         return res.json(data);
-      } else {
-        const errText = await response.text();
-        throw new Error(`HTTP ${response.status}: ${errText}`);
+      } catch (jsonErr) {
+        console.warn('Failed to parse OpenRouter response JSON:', jsonErr.message);
       }
-    } catch (err) {
-      const durationMs = Date.now() - startTime;
-      logStructured({
-        event: 'ai_request',
-        stage: 'proxy_openrouter',
-        model: openRouterModel,
-        success: false,
-        durationMs,
-        error: err.message,
-      });
-      console.warn('Proxy Stage 1 (OpenRouter) failed, trying Stage 2 (OpenAI):', err.message);
     }
   }
 
-  // Stage 2: Try OpenAI (gpt-4o-mini)
+  // Stage 2: Try OpenAI (gpt-4o-mini) OR redirect to OpenRouter if key is an OpenRouter key
   const openaiKey = process.env.OPENAI_API_KEY;
   const openaiModel = 'gpt-4o-mini';
   if (openaiKey && openaiKey !== 'your_openai_api_key_here') {
     try {
-      const payload = {
-        model: openaiModel,
-        messages: [
-          { role: 'system', content: system },
-          { role: 'user', content: prompt },
-        ],
-        temperature: 0.7,
-        max_tokens: enableReasoning ? 4096 : 2048,
-      };
-      if (jsonOutput) {
-        payload.response_format = { type: 'json_object' };
-      }
+      const isOpenRouterKey = openaiKey.startsWith('sk-or-v1-');
+      let responseData;
+      let usedModel = openaiModel;
 
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        payload,
-        {
-          headers: { Authorization: `Bearer ${openaiKey}` },
-          timeout: safeTimeout / 2,
+      if (isOpenRouterKey) {
+        console.log('Redirecting Stage 2 to OpenRouter (using Llama 3.3 70B)...');
+        usedModel = 'meta-llama/llama-3.3-70b-instruct:free';
+        const apiRes = await axios.post(
+          'https://openrouter.ai/api/v1/chat/completions',
+          {
+            model: usedModel,
+            messages: [
+              { role: 'system', content: system },
+              { role: 'user', content: prompt },
+            ],
+            temperature: 0.7,
+            max_tokens: enableReasoning ? 4096 : 2048,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${openaiKey}`,
+              'Content-Type': 'application/json',
+              'HTTP-Referer': 'http://localhost:5000',
+              'X-Title': 'SkillGapAnalyzer',
+            },
+            timeout: safeTimeout / 2,
+          }
+        );
+        responseData = apiRes.data;
+      } else {
+        const payload = {
+          model: openaiModel,
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: prompt },
+          ],
+          temperature: 0.7,
+          max_tokens: enableReasoning ? 4096 : 2048,
+        };
+        if (jsonOutput) {
+          payload.response_format = { type: 'json_object' };
         }
-      );
+        const apiRes = await axios.post(
+          'https://api.openai.com/v1/chat/completions',
+          payload,
+          {
+            headers: { Authorization: `Bearer ${openaiKey}` },
+            timeout: safeTimeout / 2,
+          }
+        );
+        responseData = apiRes.data;
+      }
 
       const durationMs = Date.now() - startTime;
       logStructured({
         event: 'ai_request',
-        stage: 'proxy_openai',
-        model: openaiModel,
+        stage: isOpenRouterKey ? 'proxy_openai_redirect_openrouter' : 'proxy_openai',
+        model: usedModel,
         success: true,
         durationMs,
       });
@@ -199,7 +257,7 @@ router.post('/chat', async (req, res) => {
         choices: [
           {
             message: {
-              content: response.data.choices[0].message.content,
+              content: responseData.choices[0].message.content,
               role: 'assistant',
             },
           },
@@ -215,7 +273,7 @@ router.post('/chat', async (req, res) => {
         durationMs,
         error: err.message,
       });
-      console.warn('Proxy Stage 2 (OpenAI) failed:', err.message);
+      console.warn('Proxy Stage 2 (OpenAI/Redirect) failed:', err.message);
     }
   }
 

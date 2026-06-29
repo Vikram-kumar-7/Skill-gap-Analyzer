@@ -13,12 +13,12 @@ export const ScoreGauge = ({ score = 0, size = 200, strokeWidth = 8 }) => {
   const formatted = formatScoreWithStyle(score);
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ position: 'relative', width: size, height: size, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        style={{ transform: 'rotate(-90deg)' }}
+        style={{ transform: 'rotate(-90deg)', position: 'absolute', top: 0, left: 0 }}
       >
         {/* Background circle */}
         <circle
@@ -50,27 +50,30 @@ export const ScoreGauge = ({ score = 0, size = 200, strokeWidth = 8 }) => {
 
       <div
         style={{
-          position: 'relative',
-          marginTop: `-${size * 0.6}px`,
-          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
           zIndex: 1,
         }}
       >
         <div
           style={{
-            fontSize: `${size * 0.25}px`,
+            fontSize: `${size * 0.22}px`,
             fontWeight: 700,
             color: formatted.color,
             letterSpacing: '-1px',
+            lineHeight: 1,
           }}
         >
           {formatted.score}
         </div>
         <div
           style={{
-            fontSize: `${size * 0.1}px`,
+            fontSize: `${size * 0.08}px`,
             color: 'rgba(248, 250, 252, 0.6)',
-            marginTop: `${size * 0.02}px`,
+            marginTop: `${size * 0.04}px`,
+            lineHeight: 1,
           }}
         >
           / 100

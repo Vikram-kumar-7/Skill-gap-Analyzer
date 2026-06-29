@@ -94,10 +94,30 @@ export default function PlacementPage() {
     return () => clearTimeout(timer);
   }, [analyzingGit]);
 
-  // LeetCode / DSA state
-  const [lcEasy, setLcEasy] = useState(() => Number(localStorage.getItem('sga_lc_easy') || '40'));
-  const [lcMedium, setLcMedium] = useState(() => Number(localStorage.getItem('sga_lc_medium') || '30'));
-  const [lcHard, setLcHard] = useState(() => Number(localStorage.getItem('sga_lc_hard') || '5'));
+  // LeetCode / DSA state - synchronized with DSA Tracker page
+  const [lcEasy] = useState(() => {
+    try {
+      const dsaData = JSON.parse(localStorage.getItem('dsa_score') || 'null');
+      if (dsaData && typeof dsaData.easy === 'number') return dsaData.easy;
+    } catch {}
+    return Number(localStorage.getItem('sga_lc_easy') || '40');
+  });
+
+  const [lcMedium] = useState(() => {
+    try {
+      const dsaData = JSON.parse(localStorage.getItem('dsa_score') || 'null');
+      if (dsaData && typeof dsaData.medium === 'number') return dsaData.medium;
+    } catch {}
+    return Number(localStorage.getItem('sga_lc_medium') || '30');
+  });
+
+  const [lcHard] = useState(() => {
+    try {
+      const dsaData = JSON.parse(localStorage.getItem('dsa_score') || 'null');
+      if (dsaData && typeof dsaData.hard === 'number') return dsaData.hard;
+    } catch {}
+    return Number(localStorage.getItem('sga_lc_hard') || '5');
+  });
 
   // CS Quiz state
   const [quizQuestions, setQuizQuestions] = useState([]);        // full bank from server
@@ -138,10 +158,30 @@ export default function PlacementPage() {
     fetchQuiz();
   }, []);
 
-  // Compute DSA Score based on LeetCode questions (derived value computed directly during render)
-  const lcScore = Math.min(100, Math.round(
-    (lcEasy * 0.4 + lcMedium * 1.0 + lcHard * 2.2) / 150 * 100
-  ));
+  // Compute DSA Score based on LeetCode questions (synchronized directly with DSA Tracker score)
+  const computeDSAScore = () => {
+    try {
+      const dsaData = JSON.parse(localStorage.getItem('dsa_score') || 'null');
+      if (dsaData && typeof dsaData.score === 'number') {
+        return Math.min(100, Math.round(dsaData.score));
+      }
+    } catch {}
+    // Fallback calculation using logarithmic scaling if no score saved yet
+    const rawScore =
+      Math.log(lcEasy + 1) * 10 +
+      Math.log(lcMedium + 1) * 25 +
+      Math.log(lcHard + 1) * 40;
+
+    const maxScore =
+      Math.log(501) * 10 +
+      Math.log(301) * 25 +
+      Math.log(151) * 40;
+
+    const normalizedScore = (rawScore / maxScore) * 100;
+    return Math.min(100, Math.round(normalizedScore));
+  };
+
+  const lcScore = computeDSAScore();
 
   // Compute Projects Score
   const computeProjectsScore = () => {
@@ -281,7 +321,7 @@ export default function PlacementPage() {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedOptionIndex(null);
     } else {
-      // Quiz finished â€” score based on correct / total shown
+      // Quiz finished - score based on correct / total shown
       const scorePercentage = Math.round((correctCount / activeQuizQuestions.length) * 100);
       setQuizScore(scorePercentage);
       localStorage.setItem('sga_cs_quiz_score', scorePercentage.toString());
@@ -324,9 +364,9 @@ export default function PlacementPage() {
   });
 
   /* SVG gauge */
-  const radius = 50, stroke = 8;
-  const normalizedRadius = radius - stroke * 2;
-  const circumference = normalizedRadius * 2 * Math.PI;
+  const stroke = 8;
+  const radius = 66;
+  const circumference = radius * 2 * Math.PI;
   const strokeDashoffset = circumference - (overallScore / 100) * circumference;
 
   return (
@@ -342,12 +382,12 @@ export default function PlacementPage() {
         <div style={{ position:'relative', zIndex:1, flexShrink:0 }}>
           <div style={{ position:'relative', width:'148px', height:'148px', display:'flex', alignItems:'center', justifyContent:'center' }}>
             <svg width="148" height="148" style={{ position:'absolute', inset:0 }}>
-              <circle stroke="rgba(255,255,255,0.05)" fill="transparent" strokeWidth={stroke} r={normalizedRadius} cx={74} cy={74} />
+              <circle stroke="rgba(255,255,255,0.05)" fill="transparent" strokeWidth={stroke} r={radius} cx={74} cy={74} />
               <circle
                 stroke="url(#pl-grad)" fill="transparent" strokeWidth={stroke}
                 strokeDasharray={`${circumference} ${circumference}`}
                 style={{ strokeDashoffset, transition:'stroke-dashoffset 0.8s ease-in-out', filter:'drop-shadow(0 0 12px rgba(78,222,163,0.50))' }}
-                r={normalizedRadius} cx={74} cy={74} strokeLinecap="round" transform="rotate(-90 74 74)"
+                r={radius} cx={74} cy={74} strokeLinecap="round" transform="rotate(-90 74 74)"
               />
               <defs>
                 <linearGradient id="pl-grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -378,9 +418,37 @@ export default function PlacementPage() {
             </button>
           </div>
 
-          <p style={{ fontSize:'12px', color:'rgba(187,202,191,0.45)', lineHeight:1.65, marginBottom:'16px' }}>
-            Transparent, weighted score combining technical skills, portfolio validation, core CS, and data structures. Zero hardcoded magic numbers.
-          </p>
+          <div style={{ marginBottom: '16px' }}>
+            <p style={{ fontSize:'12px', color:'rgba(187,202,191,0.45)', lineHeight:1.65, marginBottom: '8px' }}>
+              Transparent, weighted score combining technical skills, portfolio validation, core CS, and data structures. Your score increases or decreases as you update your progress:
+            </p>
+            <ul style={{ fontSize: '11px', color: 'rgba(187,202,191,0.55)', paddingLeft: '16px', margin: '0 0 12px 0', lineHeight: 1.6 }}>
+              <li>
+                <strong>DSA Score ({(weights.dsa * 100).toFixed(0)}%)</strong>: Syncs with problems solved on the{' '}
+                <a onClick={() => navigate('/dsa-tracker')} style={{ color: EMERALD, cursor: 'pointer', textDecoration: 'underline' }}>
+                  DSA Tracker
+                </a>
+                .
+              </li>
+              <li>
+                <strong>Projects ({(weights.projects * 100).toFixed(0)}%)</strong>: Boosted by the count and difficulty of projects in{' '}
+                <a onClick={() => navigate('/projects')} style={{ color: EMERALD, cursor: 'pointer', textDecoration: 'underline' }}>
+                  Projects & Skills
+                </a>
+                .
+              </li>
+              <li>
+                <strong>Resume ({(weights.resume * 100).toFixed(0)}%)</strong>: Sourced from the compatibility percentage of your active resume under{' '}
+                <a onClick={() => navigate('/dashboard')} style={{ color: EMERALD, cursor: 'pointer', textDecoration: 'underline' }}>
+                  Dashboard Analyses
+                </a>
+                .
+              </li>
+              <li>
+                <strong>Core CS ({(weights.coreCs * 100).toFixed(0)}%)</strong>: Driven by your score on the Core CS Quiz below.
+              </li>
+            </ul>
+          </div>
 
           {/* Weights Config */}
           {showSettings && (
@@ -413,16 +481,16 @@ export default function PlacementPage() {
           )}
 
           {/* Score breakdown badges */}
-          <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'10px' }}>
             {[
               { label:'DSA Score',  value:lcScore,       color:'#fbbf24', weight:weights.dsa },
               { label:'Projects',   value:projectsScore, color:EMERALD,   weight:weights.projects },
               { label:'Resume',     value:resumeScore,   color:'#818cf8', weight:weights.resume },
               { label:'Core CS',    value:quizScore,     color:'#22d3ee', weight:weights.coreCs },
             ].map(({ label, value, color, weight }) => (
-              <div key={label} style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)', padding:'7px 12px', borderRadius:'9px', display:'inline-flex', alignItems:'center', gap:'6px' }}>
+              <div key={label} style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.07)', padding:'7px 14px', borderRadius:'9px', display:'inline-flex', alignItems:'center', gap:'8px' }}>
                 <span style={{ fontSize:'11px', color:'rgba(187,202,191,0.45)', lineHeight:'16px' }}>{label}</span>
-                <span style={{ fontSize:'14px', fontWeight:800, color, lineHeight:'16px' }}>{value}/100</span>
+                <span style={{ fontSize:'14px', fontWeight:800, color, lineHeight:'16px' }}>{value} / 100</span>
                 <span style={{ fontSize:'10px', color:'rgba(255,255,255,0.25)', lineHeight:'16px' }}>({(weight*100).toFixed(0)}%)</span>
               </div>
             ))}
@@ -544,7 +612,7 @@ export default function PlacementPage() {
                       ].map(({ label, val }) => (
                         <div key={label}>
                           <div style={{ fontSize:'9px', color:'rgba(187,202,191,0.35)', textTransform:'uppercase', letterSpacing:'0.06em', marginBottom:'4px' }}>{label}</div>
-                          <div style={{ fontSize:'16px', fontWeight:800, color:'#818cf8' }}>{val ?? 'â€”'}</div>
+                          <div style={{ fontSize:'16px', fontWeight:800, color:'#818cf8' }}>{val ?? '\u2014'}</div>
                         </div>
                       ))}
                     </div>
@@ -625,8 +693,8 @@ export default function PlacementPage() {
                       const answered   = selectedOptionIndex !== null;
                       let bg = 'rgba(255,255,255,0.03)', border = 'rgba(255,255,255,0.07)', icon = null;
                       if (answered) {
-                        if (isCorrect) { bg='rgba(78,222,163,0.08)'; border='rgba(78,222,163,0.30)'; icon='âœ“'; }
-                        else if (isSelected) { bg='rgba(244,63,94,0.08)'; border='rgba(244,63,94,0.30)'; icon='âœ—'; }
+                        if (isCorrect) { bg='rgba(78,222,163,0.08)'; border='rgba(78,222,163,0.30)'; icon='\u2713'; }
+                        else if (isSelected) { bg='rgba(244,63,94,0.08)'; border='rgba(244,63,94,0.30)'; icon='\u2717'; }
                       }
                       return (
                         <button key={index} onClick={() => handleOptionSelect(index)} style={{
@@ -637,7 +705,7 @@ export default function PlacementPage() {
                           fontFamily:'inherit', minHeight:'44px', transition:'background 0.15s, border-color 0.15s',
                         }}>
                           <span>{option}</span>
-                          {icon && <span style={{ fontWeight:900, color: icon==='âœ“' ? EMERALD : '#f43f5e' }}>{icon}</span>}
+                          {icon && <span style={{ fontWeight:900, color: icon==='\u2713' ? EMERALD : '#f43f5e' }}>{icon}</span>}
                         </button>
                       );
                     })}
@@ -662,7 +730,7 @@ export default function PlacementPage() {
               {quizFinished && (
                 <div style={{ textAlign:'center', padding:'24px 0' }}>
                   <div style={{ fontSize:'52px', fontWeight:900, color: quizScore>=70 ? EMERALD : quizScore>=40 ? '#fbbf24' : '#f87171', letterSpacing:'-0.03em', lineHeight:1 }}>{quizScore}%</div>
-                  <div style={{ fontSize:'14px', fontWeight:700, color:'#d4e4fa', marginTop:'10px' }}>Quiz Completed! ðŸŽ‰</div>
+                  <div style={{ fontSize:'14px', fontWeight:700, color:'#d4e4fa', marginTop:'10px' }}>Quiz Completed! {"\uD83C\uDF89"}</div>
                   <div style={{ fontSize:'12px', color:'rgba(187,202,191,0.45)', marginTop:'5px', marginBottom:'20px', lineHeight:1.6 }}>
                     Your Core CS Score has been updated to {quizScore}/100 and mapped into the placement formula.
                   </div>
@@ -720,7 +788,7 @@ export default function PlacementPage() {
 
               <div style={{ marginTop:'14px', background:'rgba(255,255,255,0.02)', border:'1px solid rgba(255,255,255,0.05)', borderRadius:'10px', padding:'10px 14px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                 <span style={{ fontSize:'10px', color:'rgba(187,202,191,0.35)', textTransform:'uppercase', letterSpacing:'0.06em' }}>Projects Score</span>
-                <span style={{ fontSize:'18px', fontWeight:900, color:EMERALD, letterSpacing:'-0.02em' }}>{projectsScore}<span style={{ fontSize:'11px', fontWeight:400, color:'rgba(255,255,255,0.25)' }}>/100</span></span>
+                <span style={{ fontSize:'18px', fontWeight:900, color:EMERALD, letterSpacing:'-0.02em' }}>{projectsScore}<span style={{ fontSize:'11px', fontWeight:400, color:'rgba(255,255,255,0.25)' }}> / 100</span></span>
               </div>
             </div>
           </div>

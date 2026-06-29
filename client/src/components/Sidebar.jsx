@@ -1,31 +1,40 @@
 import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard,
-  PlusCircle,
-  FileText,
-  Map,
-  BarChart2,
-  TrendingUp,
-  FolderOpen,
-  MessageSquare,
-  Settings,
-  X,
-  Award,
+  LayoutDashboard, PlusCircle, FileText,
+  Map, TrendingUp, MessageSquare,
+  FolderOpen, Award, Settings,
+  BarChart2, DollarSign, X,
 } from 'lucide-react';
 import { getUser } from '../utils/storage.js';
 
-const NAV = [
-  { icon: LayoutDashboard, label: 'Dashboard',         to: '/',             end: true },
-  { icon: PlusCircle,      label: 'New Analysis',      to: '/new-analysis'           },
-  { icon: FileText,        label: 'My Analyses',       to: '/analyses'               },
-  { icon: Map,             label: 'Roadmap',           to: '/roadmap'                },
-  { icon: BarChart2,       label: 'Skill Tracker',     to: '/skill-tracker'          },
-  { icon: TrendingUp,      label: 'DSA Tracker',       to: '/dsa-tracker'            },
-  { icon: TrendingUp,      label: 'Career Simulator',  to: '/career-sim'             },
-  { icon: FolderOpen,      label: 'Projects',          to: '/projects'               },
-  { icon: MessageSquare,   label: 'Interview Prep',    to: '/interview'              },
-  { icon: Award,           label: 'Placement',         to: '/placement'              },
-  { icon: Settings,        label: 'Settings',          to: '/settings'               },
+const NAV_GROUPS = [
+  {
+    label: 'CORE',
+    items: [
+      { icon: LayoutDashboard, label: 'Dashboard',    to: '/',             end: true },
+      { icon: PlusCircle,      label: 'New Analysis', to: '/new-analysis'           },
+      { icon: FileText,        label: 'My Analyses',  to: '/analyses'               },
+    ],
+  },
+  {
+    label: 'GROW',
+    items: [
+      { icon: Map,          label: 'Roadmap',       to: '/roadmap'    },
+      { icon: TrendingUp,   label: 'DSA Tracker',   to: '/dsa-tracker'},
+      { icon: MessageSquare,label: 'Interview Prep',to: '/interview'  },
+    ],
+  },
+  {
+    label: 'PORTFOLIO',
+    items: [
+      { icon: FolderOpen, label: 'Projects',   to: '/projects'  },
+      { icon: Award,      label: 'Placement',  to: '/placement' },
+    ],
+  },
+];
+
+const BOTTOM_NAV = [
+  { icon: Settings, label: 'Settings', to: '/settings' },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -142,29 +151,59 @@ export default function Sidebar({ isOpen, onClose }) {
           style={{ flex: 1, padding: '10px 8px', overflowY: 'auto', overflowX: 'hidden' }}
           aria-label="Main navigation"
         >
-          {NAV.map((item) => (
+          {NAV_GROUPS.map((group) => (
+            <div key={group.label} style={{ marginBottom: '6px' }}>
+              {/* Section label */}
+              <div style={{
+                fontSize: '9px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                color: 'var(--text-faint)',
+                padding: '10px 10px 4px',
+                textTransform: 'uppercase',
+                opacity: 0.5,
+              }}>
+                {group.label}
+              </div>
+
+              {/* Items */}
+              {group.items.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  onClick={() => { if (window.innerWidth < 1024) onClose(); }}
+                  className={({ isActive }) =>
+                    `sidebar-nav-item${isActive ? ' active' : ''}`
+                  }
+                >
+                  <item.icon size={16} style={{ flexShrink: 0 }} />
+                  <span style={{
+                    fontSize: '13px', flex: 1, minWidth: 0,
+                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                  }}>
+                    {item.label}
+                  </span>
+                </NavLink>
+              ))}
+            </div>
+          ))}
+
+          {/* Divider */}
+          <div style={{ height: '1px', background: 'var(--border)', margin: '8px 10px' }} />
+
+          {/* Settings at bottom of nav */}
+          {BOTTOM_NAV.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.end}
               onClick={() => { if (window.innerWidth < 1024) onClose(); }}
               className={({ isActive }) =>
                 `sidebar-nav-item${isActive ? ' active' : ''}`
               }
             >
               <item.icon size={16} style={{ flexShrink: 0 }} />
-              <span
-                style={{
-                  fontSize: '13px',
-                  flex: 1,
-                  minWidth: 0,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {item.label}
-              </span>
+              <span style={{ fontSize: '13px', flex: 1 }}>{item.label}</span>
             </NavLink>
           ))}
         </nav>

@@ -16,6 +16,9 @@ export const ActionabilityEngine = ({ suggestions, currentScore, targetScore }) 
           borderRadius: '12px',
           padding: '20px',
           textAlign: 'center',
+          maxWidth: '500px',
+          width: '100%',
+          margin: '0 auto',
         }}
       >
         <div style={{ fontSize: '32px', marginBottom: '8px' }}>🎉</div>
@@ -39,6 +42,9 @@ export const ActionabilityEngine = ({ suggestions, currentScore, targetScore }) 
         border: '1px solid rgba(255, 255, 255, 0.08)',
         borderRadius: '12px',
         padding: '20px',
+        maxWidth: '500px',
+        width: '100%',
+        margin: '0 auto',
       }}
     >
       <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px', color: 'rgba(248, 250, 252, 0.9)' }}>

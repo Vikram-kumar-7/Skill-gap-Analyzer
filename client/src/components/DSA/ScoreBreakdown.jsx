@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 /**
  * Score Breakdown Visualization
  * Shows how much each difficulty contributes to the total score
  */
 export const ScoreBreakdown = ({ breakdown = { easy: 0, medium: 0, hard: 0 }, score = 0 }) => {
+  const [showFormula, setShowFormula] = useState(false);
   const total = breakdown.easy + breakdown.medium + breakdown.hard;
 
   const getDifficultyInfo = (difficulty) => {
@@ -38,28 +40,54 @@ export const ScoreBreakdown = ({ breakdown = { easy: 0, medium: 0, hard: 0 }, sc
         border: '1px solid rgba(255, 255, 255, 0.08)',
         borderRadius: '12px',
         padding: '20px',
+        maxWidth: '500px',
+        width: '100%',
+        margin: '0 auto',
       }}
     >
-      <h3 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '16px', color: 'rgba(248, 250, 252, 0.9)' }}>
-        Score Breakdown
-      </h3>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+        <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'rgba(248, 250, 252, 0.9)', margin: 0 }}>
+          Score Breakdown
+        </h3>
+        <button
+          onClick={() => setShowFormula(!showFormula)}
+          title="Toggle Formula Details"
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'rgba(248, 250, 252, 0.6)',
+            cursor: 'pointer',
+            padding: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent)'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(248, 250, 252, 0.6)'}
+        >
+          {showFormula ? <EyeOff size={16} /> : <Eye size={16} />}
+        </button>
+      </div>
 
       {/* Formula explanation */}
-      <div
-        style={{
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          border: '1px solid rgba(16, 185, 129, 0.2)',
-          borderRadius: '8px',
-          padding: '12px',
-          marginBottom: '16px',
-          fontSize: '12px',
-          color: 'rgba(248, 250, 252, 0.7)',
-        }}
-      >
-        <strong>Formula:</strong> (Easy×1 + Medium×3 + Hard×6) / maxPossible × 100
-        <br />
-        <strong>Actual:</strong> log(easy+1)×10 + log(medium+1)×25 + log(hard+1)×40
-      </div>
+      {showFormula && (
+        <div
+          style={{
+            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
+            borderRadius: '8px',
+            padding: '12px',
+            marginBottom: '16px',
+            fontSize: '12px',
+            color: 'rgba(248, 250, 252, 0.7)',
+          }}
+        >
+          <strong>Formula:</strong> (Easy×1 + Medium×3 + Hard×6) / maxPossible × 100
+          <br />
+          <strong>Actual:</strong> log(easy+1)×10 + log(medium+1)×25 + log(hard+1)×40
+        </div>
+      )}
 
       {/* Breakdown bars */}
       <div style={{ display: 'grid', gap: '12px' }}>
@@ -115,16 +143,7 @@ export const ScoreBreakdown = ({ breakdown = { easy: 0, medium: 0, hard: 0 }, sc
                 />
               </div>
 
-              {/* Formula text */}
-              <div
-                style={{
-                  fontSize: '11px',
-                  color: 'rgba(248, 250, 252, 0.5)',
-                  marginTop: '4px',
-                }}
-              >
-                {info.formula}
-              </div>
+
             </div>
           );
         })}

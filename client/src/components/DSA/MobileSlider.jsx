@@ -17,8 +17,16 @@ export const MobileSlider = ({
 
   const percentage = ((value - min) / (max - min)) * 100;
 
-  const handleStart = () => {
+  const handleStart = (e) => {
     isDragging.current = true;
+    if (sliderRef.current) {
+      const rect = sliderRef.current.getBoundingClientRect();
+      const x = (e.touches?.[0]?.clientX || e.clientX) - rect.left;
+      const newValue = Math.round(
+        (x / rect.width) * (max - min) + min
+      );
+      onChange?.(Math.max(min, Math.min(max, newValue)));
+    }
   };
 
   const handleEnd = () => {
@@ -38,20 +46,25 @@ export const MobileSlider = ({
   };
 
   useEffect(() => {
-    if (isDragging.current) {
-      window.addEventListener('mousemove', handleMove);
-      window.addEventListener('touchmove', handleMove);
-      window.addEventListener('mouseup', handleEnd);
-      window.addEventListener('touchend', handleEnd);
+    const onMove = (e) => {
+      handleMove(e);
+    };
+    const onEnd = () => {
+      handleEnd();
+    };
 
-      return () => {
-        window.removeEventListener('mousemove', handleMove);
-        window.removeEventListener('touchmove', handleMove);
-        window.removeEventListener('mouseup', handleEnd);
-        window.removeEventListener('touchend', handleEnd);
-      };
-    }
-  }, [value, min, max]);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchend', onEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('mouseup', onEnd);
+      window.removeEventListener('touchend', onEnd);
+    };
+  }, [min, max, onChange]);
 
   return (
     <div style={{ width: '100%' }}>
@@ -126,6 +139,7 @@ export const MobileSlider = ({
         value={value}
         min={min}
         max={max}
+        onFocus={(e) => e.target.select()}
         onChange={(e) => onChange?.(Math.max(min, Math.min(max, parseInt(e.target.value) || 0)))}
         style={{
           width: '100%',
