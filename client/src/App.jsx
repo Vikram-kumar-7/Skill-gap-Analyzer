@@ -78,6 +78,9 @@ function AppShell() {
 
 export default function App() {
   const [user, setUser] = useState(() => {
+    if (localStorage.getItem('sga_logged_out') === 'true') {
+      return null;
+    }
     try {
       const u = JSON.parse(localStorage.getItem('sga_user') || 'null');
       return u && !u.onboardingTemp ? u : null;
@@ -88,6 +91,10 @@ export default function App() {
 
   useEffect(() => {
     const onStorage = () => {
+      if (localStorage.getItem('sga_logged_out') === 'true') {
+        setUser(null);
+        return;
+      }
       try {
         const u = JSON.parse(localStorage.getItem('sga_user') || 'null');
         setUser(u && !u.onboardingTemp ? u : null);
@@ -101,36 +108,40 @@ export default function App() {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        const u = session.user;
-        const currentLocal = JSON.parse(localStorage.getItem('sga_user') || '{}');
-        const profile = {
-          name: u.user_metadata?.name || currentLocal.name || u.email?.split('@')[0] || 'User',
-          course: u.user_metadata?.course || currentLocal.course || '',
-          targetRole: u.user_metadata?.target_role || currentLocal.targetRole || '',
-          email: u.email,
-          createdAt: currentLocal.createdAt || Date.now(),
-        };
-        localStorage.setItem('sga_user', JSON.stringify(profile));
-        setUser(profile);
+      const isLoggedOut = localStorage.getItem('sga_logged_out') === 'true';
 
-        // Sync details to Supabase 'users' table
-        try {
-          await supabase.from('users').upsert({
-            id: u.id,
-            email: u.email,
-            name: profile.name,
-            course: profile.course,
-            target_role: profile.targetRole,
-            updated_at: new Date().toISOString(),
-          });
-          syncRemoteToLocal();
-        } catch (err) {
-          console.error('Failed to sync profile to Supabase users table:', err.message);
-        }
-      } else if (event === 'SIGNED_OUT') {
+      if (isLoggedOut || !session?.user) {
         localStorage.removeItem('sga_user');
         setUser(null);
+        return;
+      }
+
+      const u = session.user;
+      const currentLocal = JSON.parse(localStorage.getItem('sga_user') || '{}');
+      const profile = {
+        name: u.user_metadata?.full_name || u.user_metadata?.name || currentLocal.name || u.email?.split('@')[0] || 'User',
+        avatarUrl: u.user_metadata?.avatar_url || currentLocal.avatarUrl || null,
+        course: u.user_metadata?.course || currentLocal.course || '',
+        targetRole: u.user_metadata?.target_role || currentLocal.targetRole || '',
+        email: u.email,
+        createdAt: currentLocal.createdAt || Date.now(),
+      };
+      localStorage.setItem('sga_user', JSON.stringify(profile));
+      setUser(profile);
+
+      // Sync details to Supabase 'users' table
+      try {
+        await supabase.from('users').upsert({
+          id: u.id,
+          email: u.email,
+          name: profile.name,
+          course: profile.course,
+          target_role: profile.targetRole,
+          updated_at: new Date().toISOString(),
+        });
+        syncRemoteToLocal();
+      } catch (err) {
+        console.error('Failed to sync profile to Supabase users table:', err.message);
       }
     });
 

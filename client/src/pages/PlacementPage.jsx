@@ -33,6 +33,7 @@ const Github = (props) => (
   </svg>
 );
 import { getAnalyses, getProjects, saveUser, getUser } from '../utils/storage.js';
+import { supabase } from '../utils/supabase';
 import { 
   analyzeGitHub, 
   getGitHubJobStatus, 
@@ -70,6 +71,15 @@ export default function PlacementPage() {
   // GitHub state
   const [githubUser, setGithubUser] = useState(user.githubUsername || '');
   const [analyzingGit, setAnalyzingGit] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const gitName = session?.user?.user_metadata?.user_name || session?.user?.user_metadata?.preferred_username;
+      if (gitName) {
+        setGithubUser(gitName);
+      }
+    });
+  }, []);
   const [, setGitJobId] = useState(null);
   const [gitProgress, setGitProgress] = useState(0);
   const [gitResult, setGitResult] = useState(() => {

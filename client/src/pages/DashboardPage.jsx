@@ -166,8 +166,9 @@ function WelcomeBanner({ user, greeting, avgMatch, onNew }) {
           <p style={{ fontSize:'12px', color:'rgba(187,202,191,0.55)', letterSpacing:'0.08em', fontWeight:700, textTransform:'uppercase', marginBottom:'6px' }}>
             {greeting}
           </p>
-          <h1 style={{ fontSize:'28px', fontWeight:800, color:'#d4e4fa', letterSpacing:'-0.02em', marginBottom:'8px' }}>
-            Welcome back, {user.name || 'Analyst'} 👋
+          <h1 style={{ fontSize:'28px', fontWeight:800, color:'#d4e4fa', letterSpacing:'-0.02em', marginBottom:'8px', display:'flex', alignItems:'center', gap:'12px' }}>
+            <span>Welcome back, {user.name || 'Analyst'} 👋</span>
+            {user.avatarUrl && <img src={user.avatarUrl} alt="Avatar" style={{ borderRadius:'50%', width:36, height:36, border:'1px solid rgba(78,222,163,0.3)' }} />}
           </h1>
           <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
             {user.course && <Tag label={user.course} />}

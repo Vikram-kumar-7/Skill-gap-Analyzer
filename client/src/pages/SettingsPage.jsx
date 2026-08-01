@@ -13,6 +13,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { getUser, saveUser, getStorageSize } from '../utils/storage.js';
+import { supabase } from '../utils/supabase.js';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 const EMERALD = '#4edea3';
@@ -370,13 +371,17 @@ export default function SettingsPage() {
     reader.readAsText(file);
   };
 
-  const fullReset = () => {
-    if (!confirm('This will delete ALL your data. Are you absolutely sure?')) return;
-    for (const key of Object.keys(localStorage)) {
-      if (isAppKey(key)) localStorage.removeItem(key);
+  const fullReset = async () => {
+    if (!confirm('This will delete ALL your data and log you out. Are you absolutely sure?')) return;
+    try {
+      await supabase.auth.signOut({ scope: 'global' });
+    } catch (err) {
+      console.error('Sign out error:', err);
     }
+    localStorage.clear();
+    sessionStorage.clear();
+    localStorage.setItem('sga_logged_out', 'true');
     window.dispatchEvent(new Event('storage'));
-    window.location.reload();
   };
 
   // ── Derived ──────────────────────────────────────────────────────────────────

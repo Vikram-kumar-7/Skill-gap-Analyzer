@@ -28,7 +28,11 @@ export default function SaveProgress() {
       localStorage.setItem("sga_pending_email", email.trim());
       navigate("/check-email", { state: { email: email.trim() } });
     } catch (err) {
-      setError(err.message || "Failed to send magic link.");
+      if (err.message && (err.message.includes("Failed to fetch") || err.message.includes("fetch"))) {
+        setError("Failed to fetch. This usually means the database server or Supabase project is offline or paused. If you are the owner, please restore/unpause your project 'ebyuyxescmsyfzbpwwze' in the Supabase dashboard, or check your internet connection.");
+      } else {
+        setError(err.message || "Failed to send magic link.");
+      }
     } finally {
       setLoading(false);
     }

@@ -3,9 +3,10 @@ import {
   LayoutDashboard, PlusCircle, FileText,
   Map, TrendingUp, MessageSquare,
   FolderOpen, Award, Settings,
-  BarChart2, DollarSign, X,
+  BarChart2, DollarSign, X, LogOut,
 } from 'lucide-react';
 import { getUser } from '../utils/storage.js';
+import { supabase } from '../utils/supabase.js';
 
 const NAV_GROUPS = [
   {
@@ -274,6 +275,42 @@ export default function Sidebar({ isOpen, onClose }) {
                 {u.course || 'No course set'}
               </div>
             </div>
+            <button
+              onClick={async () => {
+                try {
+                  await supabase.auth.signOut({ scope: 'global' });
+                } catch (err) {
+                  console.error('Sign out error:', err);
+                }
+                localStorage.clear();
+                sessionStorage.clear();
+                localStorage.setItem('sga_logged_out', 'true');
+                window.dispatchEvent(new Event('storage'));
+              }}
+              title="Sign Out"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--text-faint)',
+                cursor: 'pointer',
+                padding: '6px',
+                borderRadius: '6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'color 0.15s, background 0.15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#f87171';
+                e.currentTarget.style.background = 'rgba(248,113,113,0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-faint)';
+                e.currentTarget.style.background = 'none';
+              }}
+            >
+              <LogOut size={15} />
+            </button>
           </div>
         </div>
       </div>
